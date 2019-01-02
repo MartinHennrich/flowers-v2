@@ -5,8 +5,10 @@ import './flower.dart';
 @immutable
 class AppState {
   List<Flower> flowers;
+  bool isFetchingData;
 
   AppState({
-    this.flowers
+    this.flowers,
+    this.isFetchingData
   });
 }
