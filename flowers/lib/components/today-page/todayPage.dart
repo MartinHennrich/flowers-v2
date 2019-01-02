@@ -20,7 +20,6 @@ class FlowerList extends StatelessWidget {
 
   List<Widget> _getFlowersListWidgets(List<Flower> flowers) {
     return flowers.map((flower) {
-      print(flower.name);
       return GestureDetector(
         onTap: () {
           print('watering');
@@ -30,7 +29,7 @@ class FlowerList extends StatelessWidget {
           decoration: BoxDecoration(
             color: SecondMainColor,
             image: DecorationImage(
-              image: NetworkImage('https://i.imgur.com/svViHqm.jpg'),
+              image: NetworkImage(flower.imageUrl),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -61,29 +60,51 @@ class FlowerList extends StatelessWidget {
     }).toList();
   }
 
+  List<Widget> _getTitle() {
+    return [
+      Container(
+        height: 20,
+        alignment: Alignment(-1.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
+        child: Text('Today',
+          style: TextStyle(
+            fontSize: 60,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(0, 0, 0, 0.3)
+          ),
+        ),
+      ),
+      Container(
+        height: 20,
+      )
+    ];
+  }
+
+  List<Flower> _getFlowersThatNeedWater(List<Flower> flowers) {
+    DateTime dateTime = DateTime.now();
+    List<Flower> flowersThatNeedWater = [];
+    flowers.forEach((flower){
+      int waterDay = flower.nextWaterTime.day;
+      int waterMonth = flower.nextWaterTime.month;
+
+      if (waterDay == dateTime.day && waterMonth == dateTime.month) {
+        flowersThatNeedWater.add(flower);
+      }
+    });
+
+    return flowersThatNeedWater;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
-        List<Widget> children = [
-          Container(
-            height: 20,
-            alignment: Alignment(-1.0, 0.0),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
-            child: Text('Today',
-              style: TextStyle(
-                fontSize: 60,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(0, 0, 0, 0.3)
-              ),
-            ),
-          ),
-          Container(
-            height: 20,
-          )
-        ];
-        children.addAll(_getFlowersListWidgets(vm.flowers));
+        List<Widget> children = _getTitle();
+        List<Widget> flowers = _getFlowersListWidgets(
+          _getFlowersThatNeedWater(vm.flowers)
+        );
+        children.addAll(flowers);
 
         return GridView.count(
           primary: false,
