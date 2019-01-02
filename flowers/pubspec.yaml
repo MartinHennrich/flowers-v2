@@ -21,6 +21,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_redux: ^0.5.2
   redux: ^3.0.0
+  firebase_database: ^1.0.5
+  shared_preferences: ^0.4.3
+  uuid: ^1.0.3
 
 dev_dependencies:
   flutter_test:
