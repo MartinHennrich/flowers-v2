@@ -7,5 +7,11 @@ List<Flower> flowersReducer(List<Flower> state, dynamic action) {
     state.add(action.flower);
     return state;
   }
+
+  if (action is AddFlowersAction) {
+    return action.flowers;
+  }
+
   return state;
 }
+
