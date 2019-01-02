@@ -4,10 +4,21 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import './store.dart';
+import './actions/actions.dart';
 import './appState.dart';
 import './components/MaintabBarNavigation.dart';
+import './utils/firebase.dart';
+import './utils/firebase-redux.dart';
+
+Database database = Database();
 
 void main() {
+  database
+    .getIntialData()
+    .then((snapshot) {
+      addSnapshotToRedux(snapshot);
+      AppStore.dispatch(FetchingData.Completed);
+    });
   runApp(App(store: AppStore));
 }
 
