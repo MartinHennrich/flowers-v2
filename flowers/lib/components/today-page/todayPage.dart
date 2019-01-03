@@ -6,6 +6,7 @@ import '../../flower.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';
+import './flowersList.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -19,50 +20,6 @@ class TodayPage extends StatelessWidget {
 
 class FlowerList extends StatelessWidget {
 
-  // TODO: split to seperate StatelessWidget
-  List<Widget> _getFlowersListWidgets(List<Flower> flowers) {
-    return flowers.map((flower) {
-      return GestureDetector(
-        onTap: () {
-          print('watering');
-        },
-        child: Container(
-          width: 160,
-          height: 190,
-          margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
-          decoration: BoxDecoration(
-            color: SecondMainColor,
-            image: DecorationImage(
-              image: NetworkImage(flower.imageUrl),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: 50,
-                alignment: Alignment(-1.0, 0.0),
-                padding: EdgeInsets.only(left: 16),
-                decoration: BoxDecoration(
-                  color: SecondMainColor,
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(8.0)),
-                ),
-                child: Text(
-                  flower.name,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  )
-                )
-              ),
-            ],
-          )
-        )
-      );
-    }).toList();
-  }
   // TODO: split to seperate StatelessWidget
   Widget _getTitle() {
     return Container(
@@ -128,36 +85,21 @@ class FlowerList extends StatelessWidget {
     ];
   }
 
-  List<Row> _buildFlowerRows(List<List<Widget>> pairedFlowers) {
-    return pairedFlowers.map((flowerPair) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: flowerPair.cast<Widget>(),
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
-        List<Widget> flowersToWater = _buildFlowerRows(
-          pairFlowers(
-            _getFlowersListWidgets(
-              getFlowersThatNeedWater(vm.flowers)
-            )
-          )
+        List<Flower> flowersToWater = getFlowersThatNeedWater(vm.flowers);
+        var flowersToWaterWidget = FlowersList(
+          flowers: flowersToWater
         );
 
         // TODO: have a blur ish or gray color overlay instaed of pink
         // or change opacity of card
-        List<Widget> flowersBeenWatered = _buildFlowerRows(
-          pairFlowers(
-            _getFlowersListWidgets(
-              getFlowersThatHasBeenWatered(vm.flowers)
-            )
-          )
+        List<Flower> flowersBeenWatered = getFlowersThatHasBeenWatered(vm.flowers);
+        var flowersBeenWateredWidget = FlowersList(
+          flowers: flowersBeenWatered
         );
 
         List<Widget> children = [
@@ -165,17 +107,12 @@ class FlowerList extends StatelessWidget {
           flowersToWater.length <= 0 ? _getNoFlowersToWater() : Container(),
         ]
         ..add(
-          Container(
-            height: 300,
-            child: Column(
-              children: flowersToWater,
-            )
-          )
+          flowersToWaterWidget
         )
         ..add(
           flowersBeenWatered.length > 0 ? _getWateredTodayTitle() : Container()
         )
-        ..addAll(flowersBeenWatered);
+        ..add(flowersBeenWateredWidget);
 
         return ListView(
           shrinkWrap: true,
