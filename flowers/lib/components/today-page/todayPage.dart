@@ -19,6 +19,7 @@ class TodayPage extends StatelessWidget {
 
 class FlowerList extends StatelessWidget {
 
+  // TODO: split to seperate StatelessWidget
   List<Widget> _getFlowersListWidgets(List<Flower> flowers) {
     return flowers.map((flower) {
       return GestureDetector(
@@ -62,7 +63,7 @@ class FlowerList extends StatelessWidget {
       );
     }).toList();
   }
-
+  // TODO: split to seperate StatelessWidget
   Widget _getTitle() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 24, 0, 40),
@@ -75,23 +76,23 @@ class FlowerList extends StatelessWidget {
       ),
     );
   }
-
+  // TODO: split to seperate StatelessWidget
   Widget _getWateredTodayTitle() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 24, 0, 40),
       child: Text('Watered',
         style: TextStyle(
-          fontSize: 48,
+          fontSize: 40,
           fontWeight: FontWeight.bold,
           color: Color.fromRGBO(0, 0, 0, 0.3)
         ),
       ),
     );
   }
-
+  // TODO: split to seperate StatelessWidget
   Widget _getNoFlowersToWater() {
     return Container(
-      height: 200,
+      height: 300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -111,6 +112,20 @@ class FlowerList extends StatelessWidget {
         ],
       )
     );
+  }
+  // TODO: split to seperate StatelessWidget
+  List<Widget> _getLoadingScreen() {
+    return [
+      _getTitle(),
+      Container(
+        height: 300,
+        child: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(SecondMainColor),
+          )
+        )
+      )
+    ];
   }
 
   List<Row> _buildFlowerRows(List<List<Widget>> pairedFlowers) {
@@ -135,6 +150,8 @@ class FlowerList extends StatelessWidget {
           )
         );
 
+        // TODO: have a blur ish or gray color overlay instaed of pink
+        // or change opacity of card
         List<Widget> flowersBeenWatered = _buildFlowerRows(
           pairFlowers(
             _getFlowersListWidgets(
@@ -145,9 +162,16 @@ class FlowerList extends StatelessWidget {
 
         List<Widget> children = [
           _getTitle(),
-          flowersToWater.length == 0 ? _getNoFlowersToWater() : Container(),
+          flowersToWater.length <= 0 ? _getNoFlowersToWater() : Container(),
         ]
-        ..addAll(flowersToWater)
+        ..add(
+          Container(
+            height: 300,
+            child: Column(
+              children: flowersToWater,
+            )
+          )
+        )
         ..add(
           flowersBeenWatered.length > 0 ? _getWateredTodayTitle() : Container()
         )
@@ -156,7 +180,7 @@ class FlowerList extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           padding: EdgeInsets.all(20.0),
-          children: children
+          children: vm.isFetchingData == true ? _getLoadingScreen() : children
         );
     });
   }
@@ -164,14 +188,17 @@ class FlowerList extends StatelessWidget {
 
 class _ViewModel {
   final List<Flower> flowers;
+  final bool isFetchingData;
 
   _ViewModel({
-    this.flowers
+    this.flowers,
+    this.isFetchingData
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      flowers: store.state.flowers
+      flowers: store.state.flowers,
+      isFetchingData: store.state.isFetchingData
     );
   }
 }
