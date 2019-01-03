@@ -1,19 +1,15 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
-
-String generateUserId() {
-  Uuid uuid = new Uuid();
-  return uuid.v4();
-}
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Database {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
   DatabaseReference userDatabaseReference;
-  String userId;
+  FirebaseUser currentUser;
 
-  Database() {
-    getIntialData();
+  Future<FirebaseUser> _signInAnonymous() async {
+    FirebaseUser user = await firebaseAuth.signInAnonymously();
+    return user;
   }
 
   Future<DataSnapshot> _fetchData() {
@@ -24,14 +20,11 @@ class Database {
     userDatabaseReference = FirebaseDatabase
       .instance
       .reference()
-      .child(userId);
+      .child(currentUser.uid);
   }
 
-  Future<DataSnapshot> _createNewUser(SharedPreferences prefs) async {
-    userId = generateUserId();
-    await prefs.setString('my_userId_2', userId);
-
-    await databaseReference.child(userId).set({
+  Future<DataSnapshot> _createInitialData() async {
+    await databaseReference.child(currentUser.uid).set({
       'flowers': {
         '__none__': {
           'name': '',
@@ -48,14 +41,13 @@ class Database {
 
   void dispose() {}
 
-  Future<DataSnapshot> getIntialData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userId = (prefs.getString('my_userId_2') ?? null);
+   Future<DataSnapshot> getIntialData() async {
+    currentUser = await firebaseAuth.currentUser();
 
-    if (userId == null) {
-      return await _createNewUser(prefs);
+    if (currentUser == null) {
+      currentUser = await _signInAnonymous();
+      return await _createInitialData();
     }
-
     _setUserRef();
     return await _fetchData();
   }
