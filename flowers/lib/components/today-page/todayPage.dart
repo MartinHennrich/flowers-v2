@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import '../../flower.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
+import '../../utils/flowerHelpers.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -25,6 +26,8 @@ class FlowerList extends StatelessWidget {
           print('watering');
         },
         child: Container(
+          width: 160,
+          height: 190,
           margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
           decoration: BoxDecoration(
             color: SecondMainColor,
@@ -60,39 +63,63 @@ class FlowerList extends StatelessWidget {
     }).toList();
   }
 
-  List<Widget> _getTitle() {
-    return [
-      Container(
-        height: 20,
-        alignment: Alignment(-1.0, 0.0),
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
-        child: Text('Today',
-          style: TextStyle(
-            fontSize: 60,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 0, 0, 0.3)
-          ),
+  Widget _getTitle() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 24, 0, 40),
+      child: Text('Today',
+        style: TextStyle(
+          fontSize: 60,
+          fontWeight: FontWeight.bold,
+          color: Color.fromRGBO(0, 0, 0, 0.3)
         ),
       ),
-      Container(
-        height: 20,
-      )
-    ];
+    );
   }
 
-  List<Flower> _getFlowersThatNeedWater(List<Flower> flowers) {
-    DateTime dateTime = DateTime.now();
-    List<Flower> flowersThatNeedWater = [];
-    flowers.forEach((flower){
-      int waterDay = flower.nextWaterTime.day;
-      int waterMonth = flower.nextWaterTime.month;
+  Widget _getWateredTodayTitle() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 24, 0, 40),
+      child: Text('Watered',
+        style: TextStyle(
+          fontSize: 48,
+          fontWeight: FontWeight.bold,
+          color: Color.fromRGBO(0, 0, 0, 0.3)
+        ),
+      ),
+    );
+  }
 
-      if (waterDay == dateTime.day && waterMonth == dateTime.month) {
-        flowersThatNeedWater.add(flower);
-      }
-    });
+  Widget _getNoFlowersToWater() {
+    return Container(
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            Icons.sentiment_satisfied,
+            color: SecondMainColor,
+            size: 70,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Text('no flowers to water',
+              style: TextStyle(
+                color: Color.fromRGBO(0, 0, 0, 0.3)
+              ),
+            )
+          ),
+        ],
+      )
+    );
+  }
 
-    return flowersThatNeedWater;
+  List<Row> _buildFlowerRows(List<List<Widget>> pairedFlowers) {
+    return pairedFlowers.map((flowerPair) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: flowerPair.cast<Widget>(),
+      );
+    }).toList();
   }
 
   @override
@@ -100,16 +127,34 @@ class FlowerList extends StatelessWidget {
     return StoreConnector(
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
-        List<Widget> children = _getTitle();
-        List<Widget> flowers = _getFlowersListWidgets(
-          _getFlowersThatNeedWater(vm.flowers)
+        List<Widget> flowersToWater = _buildFlowerRows(
+          pairFlowers(
+            _getFlowersListWidgets(
+              getFlowersThatNeedWater(vm.flowers)
+            )
+          )
         );
-        children.addAll(flowers);
 
-        return GridView.count(
-          primary: false,
-          crossAxisSpacing: 10.0,
-          crossAxisCount: 2,
+        List<Widget> flowersBeenWatered = _buildFlowerRows(
+          pairFlowers(
+            _getFlowersListWidgets(
+              getFlowersThatHasBeenWatered(vm.flowers)
+            )
+          )
+        );
+
+        List<Widget> children = [
+          _getTitle(),
+          flowersToWater.length == 0 ? _getNoFlowersToWater() : Container(),
+        ]
+        ..addAll(flowersToWater)
+        ..add(
+          flowersBeenWatered.length > 0 ? _getWateredTodayTitle() : Container()
+        )
+        ..addAll(flowersBeenWatered);
+
+        return ListView(
+          shrinkWrap: true,
           padding: EdgeInsets.all(20.0),
           children: children
         );
