@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../flower.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';
+import './waterDialog.dart';
 
 class FlowersList extends StatelessWidget {
   final List<Flower> flowers;
@@ -18,9 +19,7 @@ class FlowersList extends StatelessWidget {
           print('watering');
           showDialog(
             context: context,
-            builder: (_) => SimpleDialog(
-              title: Text('STREAK'),
-            )
+            builder: (_) => WaterDialog(flower: flower)
           );
         },
         child: Container(
