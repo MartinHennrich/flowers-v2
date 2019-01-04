@@ -6,6 +6,7 @@ import '../../flower.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';
+import '../../presentation/custom_icons_icons.dart';
 import './flowersList.dart';
 
 class TodayPage extends StatelessWidget {
@@ -49,12 +50,13 @@ class FlowerList extends StatelessWidget {
   // TODO: split to seperate StatelessWidget
   Widget _getNoFlowersToWater() {
     return Container(
-      height: 300,
+      /* height: 200, */
+      padding: EdgeInsets.fromLTRB(0, 68, 0, 68),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
-            Icons.sentiment_satisfied,
+            CustomIcons.emo_grin,
             color: SecondMainColor,
             size: 70,
           ),
