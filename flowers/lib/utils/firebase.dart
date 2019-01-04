@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../flower.dart';
+
 class Database {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
@@ -41,7 +43,7 @@ class Database {
 
   void dispose() {}
 
-   Future<DataSnapshot> getIntialData() async {
+  Future<DataSnapshot> getIntialData() async {
     currentUser = await firebaseAuth.currentUser();
 
     if (currentUser == null) {
@@ -51,5 +53,21 @@ class Database {
     _setUserRef();
     return await _fetchData();
   }
+
+  Future<void> waterFlower(Flower flower) async {
+    return userDatabaseReference.child('flowers').child(flower.key)
+      .update({
+        'nextWaterTime': flower.nextWaterTime.toIso8601String(),
+        'lastTimeWatered': flower.lastTimeWatered.toIso8601String()
+      });
+  }
+
+  Future<void> postponeWatering(Flower flower) async {
+    return userDatabaseReference.child('flowers').child(flower.key)
+      .update({
+        'nextWaterTime': flower.nextWaterTime.toIso8601String(),
+      });
+  }
 }
 
+Database database = Database();
