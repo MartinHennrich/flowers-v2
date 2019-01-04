@@ -81,7 +81,7 @@ class FlowersList extends StatelessWidget {
     );
 
     return Container(
-      height: 300,
+      height: 200,
       child: Column(
         children: flowersToWater,
       )
