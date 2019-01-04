@@ -10,8 +10,6 @@ import './components/MaintabBarNavigation.dart';
 import './utils/firebase.dart';
 import './utils/firebase-redux.dart';
 
-Database database = Database();
-
 void main() {
   database
     .getIntialData()
