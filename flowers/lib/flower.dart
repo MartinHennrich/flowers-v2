@@ -3,6 +3,7 @@ class Flower {
   String name;
   String imageUrl;
   String key;
+  int waterInterval;
   DateTime lastTimeWatered;
   DateTime nextWaterTime;
 
@@ -11,6 +12,7 @@ class Flower {
     this.lastTimeWatered,
     this.nextWaterTime,
     this.imageUrl,
-    this.key
+    this.key,
+    this.waterInterval
   });
 }
