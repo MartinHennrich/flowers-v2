@@ -1,4 +1,18 @@
 
+import './constants/enums.dart';
+
+class WaterTime {
+  DateTime wateredTime;
+  SoilMoisture soilMoisture;
+  WaterAmount waterAmount;
+
+  WaterTime({
+    this.wateredTime,
+    this.soilMoisture,
+    this.waterAmount,
+  });
+}
+
 class Flower {
   String name;
   String imageUrl;
@@ -6,6 +20,7 @@ class Flower {
   int waterInterval;
   DateTime lastTimeWatered;
   DateTime nextWaterTime;
+  List<WaterTime> waterTimes = [];
 
   Flower({
     this.name,
@@ -13,6 +28,7 @@ class Flower {
     this.nextWaterTime,
     this.imageUrl,
     this.key,
-    this.waterInterval
+    this.waterInterval,
+    this.waterTimes,
   });
 }
