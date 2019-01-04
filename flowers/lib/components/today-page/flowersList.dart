@@ -7,15 +7,17 @@ import './waterDialog.dart';
 
 class FlowersList extends StatelessWidget {
   final List<Flower> flowers;
+  final bool disabled;
 
   FlowersList({
-    this.flowers
+    this.flowers,
+    this.disabled = false
   });
 
   List<Widget> _getFlowersListWidgets(List<Flower> flowers, BuildContext context) {
     return flowers.map((flower) {
       return GestureDetector(
-        onTap: () {
+        onTap: disabled ? null : () {
           print('watering');
           showDialog(
             context: context,
@@ -25,7 +27,7 @@ class FlowersList extends StatelessWidget {
         child: Container(
           width: 160,
           height: 190,
-          margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
+          margin: EdgeInsets.fromLTRB(0, 16, 16, 0),
           decoration: BoxDecoration(
             color: SecondMainColor,
             image: DecorationImage(
@@ -42,7 +44,7 @@ class FlowersList extends StatelessWidget {
                 alignment: Alignment(-1.0, 0.0),
                 padding: EdgeInsets.only(left: 16),
                 decoration: BoxDecoration(
-                  color: SecondMainColor,
+                  color: disabled ? Color.fromRGBO(196, 196, 196, 1) : SecondMainColor,
                   borderRadius: BorderRadius.vertical(bottom: Radius.circular(8.0)),
                 ),
                 child: Text(
@@ -81,7 +83,6 @@ class FlowersList extends StatelessWidget {
     );
 
     return Container(
-      height: 200,
       child: Column(
         children: flowersToWater,
       )

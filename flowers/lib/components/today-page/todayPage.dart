@@ -101,7 +101,8 @@ class FlowerList extends StatelessWidget {
         // or change opacity of card
         List<Flower> flowersBeenWatered = getFlowersThatHasBeenWatered(vm.flowers);
         var flowersBeenWateredWidget = FlowersList(
-          flowers: flowersBeenWatered
+          flowers: flowersBeenWatered,
+          disabled: true,
         );
 
         List<Widget> children = [
