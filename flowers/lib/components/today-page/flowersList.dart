@@ -63,7 +63,7 @@ class FlowersList extends StatelessWidget {
   List<Row> _buildFlowerRows(List<List<Widget>> pairedFlowers) {
     return pairedFlowers.map((flowerPair) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: flowerPair.cast<Widget>(),
       );
     }).toList();
