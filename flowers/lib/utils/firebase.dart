@@ -24,21 +24,24 @@ class Database {
     userDatabaseReference = FirebaseDatabase
       .instance
       .reference()
+      .child('users')
       .child(currentUser.uid);
   }
 
   Future<DataSnapshot> _createInitialData() async {
-    await databaseReference.child(currentUser.uid).set({
-      'flowers': {
-        '__none__': {
-          'name': '',
-          'image': '',
-          'lastTimeWatered': '',
-          'nextWaterTime': ''
-        }
-      },
-      'created_at': DateTime.now().toIso8601String()
-    });
+    await databaseReference
+      .child('users')
+      .child(currentUser.uid).set({
+        'flowers': {
+          '__none__': {
+            'name': '',
+            'image': '',
+            'lastTimeWatered': '',
+            'nextWaterTime': ''
+          }
+        },
+        'created_at': DateTime.now().toIso8601String()
+      });
     _setUserRef();
     return await _fetchData();
   }
@@ -56,16 +59,24 @@ class Database {
     return await _fetchData();
   }
 
-  Future<void> waterFlower(Flower flower, WaterTime waterTime) async {
-    await userDatabaseReference.child('flowers').child(flower.key)
+  Future<void> addWaterTime(String key, WaterTime waterTime) async {
+    return databaseReference
       .child('waterTimes')
+      .child(currentUser.uid)
+      .child(key)
       .push().set({
         'time': waterTime.wateredTime.toIso8601String(),
         'amount': waterAmountToInt(waterTime.waterAmount),
         'soil': soilMoistureToInt(waterTime.soilMoisture)
       });
+  }
 
-    return userDatabaseReference.child('flowers').child(flower.key)
+  Future<void> waterFlower(Flower flower, WaterTime waterTime) async {
+    await addWaterTime(flower.key, waterTime);
+
+    return userDatabaseReference
+      .child('flowers')
+      .child(flower.key)
       .update({
         'nextWaterTime': flower.nextWaterTime.toIso8601String(),
         'lastTimeWatered': flower.lastTimeWatered.toIso8601String()
