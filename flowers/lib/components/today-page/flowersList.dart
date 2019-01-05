@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../flower.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';
-import './waterDialog.dart';
+import './water-dialog/waterDialog.dart';
 
 class FlowersList extends StatelessWidget {
   final List<Flower> flowers;
