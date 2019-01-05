@@ -29,6 +29,15 @@ class Flower {
     this.imageUrl,
     this.key,
     this.waterInterval,
-    this.waterTimes,
   });
+
+  void setWaterTimes(List<WaterTime> waterTimes) {
+    this.waterTimes = waterTimes;
+  }
+
+  void addWaterTime(WaterTime waterTime) {
+    var tmp = this.waterTimes;
+    tmp.add(waterTime);
+    this.waterTimes = tmp;
+  }
 }

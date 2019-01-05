@@ -91,14 +91,14 @@ WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture s
     wateredTime: wateredTime
   );
 
-  if (nextWaterDays <= 0) {
+  if (nextWaterDays < 0) {
     nextWaterDays = 1;
   } else {
     nextWaterDays += flower.waterInterval;
   }
 
   flower.lastTimeWatered = wateredTime;
-  flower.waterTimes.add(waterTime);
+  flower.addWaterTime(waterTime);
 
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
   flower.nextWaterTime = nextWaterTime;

@@ -9,6 +9,7 @@ import '../utils/firebase.dart';
 import '../utils/waterAmount.dart';
 import '../utils/soilMoisture.dart';
 
+// TODO: use this in flower overview page
 List<WaterTime> snapshotToWaterTime(dynamic waterTimesSnapshot) {
   List<WaterTime> waterTimes = [];
 
@@ -50,7 +51,7 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
     DateTime lastTimeWatered = DateTime.parse(value['lastTimeWatered']);
     DateTime nextWaterTime = DateTime.parse(value['nextWaterTime']);
     int waterInterval = value['waterInterval'];
-    List<WaterTime> waterTimes = snapshotToWaterTime(value['waterTimes']);
+
     flowers.add(
       Flower(
         name: name,
@@ -59,7 +60,6 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
         nextWaterTime: nextWaterTime,
         key: k,
         waterInterval: waterInterval,
-        waterTimes: waterTimes
       )
     );
   });
