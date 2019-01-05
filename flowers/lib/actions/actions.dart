@@ -11,10 +11,10 @@ class AddFlowersAction {
   AddFlowersAction(this.flowers);
 }
 
-class UpdateFlowersAction {
+class UpdateFlowerAction {
   Flower flower;
 
-  UpdateFlowersAction(this.flower);
+  UpdateFlowerAction(this.flower);
 }
 
 enum FetchingData {

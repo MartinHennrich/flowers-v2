@@ -12,7 +12,7 @@ List<Flower> flowersReducer(List<Flower> state, dynamic action) {
     return action.flowers;
   }
 
-  if (action is UpdateFlowersAction) {
+  if (action is UpdateFlowerAction) {
     return state.map((flower) {
       if (action.flower.key == flower.key) {
         return action.flower;

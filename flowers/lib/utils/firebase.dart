@@ -2,7 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../flower.dart';
-import '../utils/firebase-redux.dart';
+import '../utils/waterAmount.dart';
+import '../utils/soilMoisture.dart';
 
 class Database {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -56,7 +57,7 @@ class Database {
   }
 
   Future<void> waterFlower(Flower flower, WaterTime waterTime) async {
-    userDatabaseReference.child('flowers').child(flower.key)
+    await userDatabaseReference.child('flowers').child(flower.key)
       .child('waterTimes')
       .push().set({
         'time': waterTime.wateredTime.toIso8601String(),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../flower.dart';
+import '../constants/enums.dart';
+import '../utils/soilMoisture.dart';
+import '../utils/waterAmount.dart';
 
 List<Flower> getFlowersThatHasBeenWatered(List<Flower> flowers) {
   DateTime dateTime = DateTime.now();
@@ -51,4 +54,57 @@ List<List<Widget>> pairFlowers(List<Widget> inputList) {
   });
 
   return pairedList;
+}
+
+Flower postponeWatering(Flower flower, SoilMoisture soilMoisture) {
+  int nextWaterDays = postponeSoilMoistureToDays(soilMoisture);
+  if (nextWaterDays <= 0) {
+    nextWaterDays = 1;
+  } else {
+    nextWaterDays += flower.waterInterval;
+  }
+
+  DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
+  flower.nextWaterTime = nextWaterTime;
+
+  return flower;
+}
+
+class WateredFlower {
+  Flower flower;
+  WaterTime waterTime;
+  WateredFlower(
+    this.flower,
+    this.waterTime
+  );
+}
+
+WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture soilMoisture) {
+  DateTime wateredTime = DateTime.now();
+
+  int nextWaterDaysFromSoil = soilMoistureToNextWaterDays(soilMoisture);
+  int nextWaterDaysFromAmount = waterAmountToNextWaterDays(waterAmount);
+  int nextWaterDays = nextWaterDaysFromSoil + nextWaterDaysFromAmount;
+  WaterTime waterTime = WaterTime(
+    waterAmount: waterAmount,
+    soilMoisture: soilMoisture,
+    wateredTime: wateredTime
+  );
+
+  if (nextWaterDays <= 0) {
+    nextWaterDays = 1;
+  } else {
+    nextWaterDays += flower.waterInterval;
+  }
+
+  flower.lastTimeWatered = wateredTime;
+  flower.waterTimes.add(waterTime);
+
+  DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
+  flower.nextWaterTime = nextWaterTime;
+
+  return WateredFlower(
+    flower,
+    waterTime
+  );
 }
