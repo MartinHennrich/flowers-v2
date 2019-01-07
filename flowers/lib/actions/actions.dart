@@ -21,3 +21,8 @@ enum FetchingData {
   Completed,
   Fetching
 }
+
+enum CreatingFlower {
+  Creating,
+  Available
+}

@@ -6,9 +6,11 @@ import './flower.dart';
 class AppState {
   List<Flower> flowers;
   bool isFetchingData;
+  bool isCreatingFlower;
 
   AppState({
     this.flowers,
-    this.isFetchingData
+    this.isFetchingData,
+    this.isCreatingFlower
   });
 }

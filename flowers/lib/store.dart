@@ -7,6 +7,7 @@ final AppStore = Store<AppState>(
   appReducer,
   initialState: AppState(
     isFetchingData: true,
-    flowers: []
+    flowers: [],
+    isCreatingFlower: false
   ),
 );
