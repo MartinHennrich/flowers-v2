@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
+import './components/create-flower/createFlower.dart';
 import './store.dart';
 import './actions/actions.dart';
 import './appState.dart';
@@ -32,13 +33,19 @@ class App extends StatelessWidget {
     ));
 
     return StoreProvider(
-        store: store,
-        child: MaterialApp(
-          title: 'Flowers',
-          theme: ThemeData(
-            primarySwatch: Colors.grey),
-          home: MainPagesTabBar(),
-        ));
+      store: store,
+      child: MaterialApp(
+        title: 'Flowers',
+        theme: ThemeData(
+          primaryColor: Colors.white
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => MainPagesTabBar(),
+          '/create-flower': (context) => CreateFlower()
+        },
+      ),
+    );
   }
 }
 

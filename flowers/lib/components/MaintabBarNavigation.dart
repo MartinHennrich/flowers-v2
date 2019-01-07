@@ -24,7 +24,9 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
   Widget _getFloatingActionButton() {
     return FloatingActionButton(
       backgroundColor: MainSecondColor,
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, '/create-flower');
+      },
       child: Icon(
         Icons.add,
         color: Colors.white,
