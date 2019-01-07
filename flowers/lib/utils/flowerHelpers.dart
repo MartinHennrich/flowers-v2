@@ -34,7 +34,7 @@ List<Flower> getFlowersThatNeedWater(List<Flower> flowers) {
     int waterDay = flower.nextWaterTime.day;
     int waterMonth = flower.nextWaterTime.month;
 
-    if (waterDay == dateTime.day && waterMonth == dateTime.month) {
+    if (waterDay <= dateTime.day && waterMonth == dateTime.month) {
       flowersThatNeedWater.add(flower);
     }
   });
