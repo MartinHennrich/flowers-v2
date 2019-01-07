@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../flower.dart';
 import '../utils/waterAmount.dart';
 import '../utils/soilMoisture.dart';
+import './firebase-storage.dart';
 
 class Database {
+  Storage _storage;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
   DatabaseReference userDatabaseReference;
@@ -88,6 +92,39 @@ class Database {
       .update({
         'nextWaterTime': flower.nextWaterTime.toIso8601String(),
       });
+  }
+
+  _initialStorage() {
+    _storage = Storage(currentUser.uid);
+  }
+
+  Future<String> _uploadImageFile(File file) async {
+    if (_storage == null) {
+      _initialStorage();
+    }
+
+    return await _storage.uploadImageFile(file);
+  }
+
+  Future<dynamic> createFlower(File file, String name, DateTime lastWaterTime, DateTime nextWaterTime, int intervall) async {
+    String fileUrl = await _uploadImageFile(file);
+
+    DatabaseReference flowerPush = userDatabaseReference
+      .child('flowers')
+      .push();
+
+     await flowerPush.set({
+        'name': name,
+        'image': fileUrl,
+        'lastTimeWatered': lastWaterTime.toIso8601String(),
+        'nextWaterTime': nextWaterTime.toIso8601String(),
+        'waterInterval': intervall,
+      });
+
+    return {
+      'imageUrl': fileUrl,
+      'key': flowerPush.key
+    };
   }
 }
 
