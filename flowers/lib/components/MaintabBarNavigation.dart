@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
 import './fabBottomAppBar.dart';
 import '../constants/colors.dart';
 import './today-page/todayPage.dart';
+import '../appState.dart';
 
 class MainPagesTabBar extends StatefulWidget {
   @override
@@ -21,16 +25,20 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     });
   }
 
-  Widget _getFloatingActionButton() {
+  Widget _getFloatingActionButton(bool isLoading) {
     return FloatingActionButton(
-      backgroundColor: MainSecondColor,
+      backgroundColor: GreenBlueMain,
       onPressed: () {
         Navigator.pushNamed(context, '/create-flower');
       },
-      child: Icon(
-        Icons.add,
-        color: Colors.white,
-      ),
+      child: isLoading
+        ? CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          )
+        : Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
     );
   }
 
@@ -38,7 +46,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     return FABBottomAppBar(
       centerItemText: 'Add flower',
       color: Colors.grey,
-      selectedColor: MainColor,
+      selectedColor: BlueMain,
       onTabSelected: _onItemTapped,
       items: [
         FABBottomAppBarItem(iconData: Icons.local_florist, text: 'Today'),
@@ -49,17 +57,35 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
-      ),
-      bottomNavigationBar: _getBittomNavigationBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _getFloatingActionButton(),
-    );
+    return StoreConnector(
+      converter: _ViewModel.fromStore,
+      builder: (context, _ViewModel vm) {
+        return Scaffold(
+          body: Center(
+            child: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
+          ),
+          bottomNavigationBar: _getBittomNavigationBar(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: _getFloatingActionButton(vm.isCreatingFlower),
+        );
+    });
   }
 }
 
+
+class _ViewModel {
+  final bool isCreatingFlower;
+
+  _ViewModel({
+    this.isCreatingFlower
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      isCreatingFlower: store.state.isCreatingFlower,
+    );
+  }
+}
 
 class HomePage2 extends StatelessWidget {
   @override
@@ -71,3 +97,4 @@ class HomePage2 extends StatelessWidget {
     );
   }
 }
+

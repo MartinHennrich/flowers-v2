@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../flower.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';
 import './water-dialog/waterDialog.dart';
+import '../../utils/colors.dart';
 
 class FlowersList extends StatelessWidget {
   final List<Flower> flowers;
@@ -29,9 +31,9 @@ class FlowersList extends StatelessWidget {
           height: 190,
           margin: EdgeInsets.fromLTRB(0, 16, 16, 0),
           decoration: BoxDecoration(
-            color: SecondMainColor,
+            color: Colors.black12,
             image: DecorationImage(
-              image: NetworkImage(flower.imageUrl),
+              image: CachedNetworkImageProvider(flower.imageUrl),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -44,7 +46,9 @@ class FlowersList extends StatelessWidget {
                 alignment: Alignment(-1.0, 0.0),
                 padding: EdgeInsets.only(left: 16),
                 decoration: BoxDecoration(
-                  color: disabled ? Color.fromRGBO(196, 196, 196, 1) : SecondMainColor,
+                  gradient: disabled
+                    ? BlueGradient
+                    : getColorBasedOnTime(flower.nextWaterTime),
                   borderRadius: BorderRadius.vertical(bottom: Radius.circular(8.0)),
                 ),
                 child: Text(

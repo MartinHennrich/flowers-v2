@@ -28,7 +28,7 @@ class WaterAmountSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.water_amount_small),
                   iconSize: 48,
-                  color: waterAmount == WaterAmount.Small ? MainSecondColor : Colors.black,
+                  color: waterAmount == WaterAmount.Small ? BlueMain : Colors.black,
                   onPressed: () {
                     onPress(WaterAmount.Small);
                   },
@@ -36,7 +36,7 @@ class WaterAmountSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.water_amount_medium),
                   iconSize: 48,
-                  color: waterAmount == WaterAmount.Normal ? MainSecondColor : Colors.black,
+                  color: waterAmount == WaterAmount.Normal ? BlueMain : Colors.black,
                   onPressed: () {
                     onPress(WaterAmount.Normal);
                   },
@@ -44,7 +44,7 @@ class WaterAmountSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.water_amount_large),
                   iconSize: 40,
-                  color: waterAmount == WaterAmount.Lots ? MainSecondColor : Colors.black,
+                  color: waterAmount == WaterAmount.Lots ? BlueMain : Colors.black,
                   onPressed: () {
                     onPress(WaterAmount.Lots);
                   },

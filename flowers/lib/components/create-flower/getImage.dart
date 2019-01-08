@@ -21,7 +21,7 @@ class GetImage extends StatelessWidget {
       width: 100,
       margin: EdgeInsets.fromLTRB(0, 28, 0, 6),
       decoration: BoxDecoration(
-        color: SecondMainColor,
+        gradient: GreenBlueGradient,
         image: imageForm.value == null ? null : DecorationImage(
           image: FileImage(imageForm.value),
           fit: BoxFit.cover,
@@ -67,7 +67,7 @@ class GetImage extends StatelessWidget {
                 },
                 child: _getImageContainer(imageForm),
               ),
-              Text('Flower image',
+              Text('Take Image',
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 16

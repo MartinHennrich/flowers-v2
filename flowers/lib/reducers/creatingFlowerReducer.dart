@@ -1,6 +1,6 @@
 import "../actions/actions.dart";
 
-bool creatingFlowerReducer(bool state, dynamic action) {
+bool isCreatingFlowerReducer(bool state, dynamic action) {
   if (action == CreatingFlower.Available) {
     return false;
   }

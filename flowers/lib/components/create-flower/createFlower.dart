@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:gradient_widgets/gradient_widgets.dart';
 
 import '../../constants/colors.dart';
 import '../../utils/firebase.dart';
@@ -10,6 +11,7 @@ import '../../actions/actions.dart';
 import './getImage.dart';
 import './lastWaterTime.dart';
 import './waterIntervall.dart';
+import '../scrollBehavior.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -68,8 +70,10 @@ class _CreateFlowerState extends State<CreateFlower> {
         elevation: 0,
         title: Text('ADD FLOWER'),
       ),
-      body: ListView(
-
+      body: ScrollConfiguration(
+        behavior: MyBehavior(),
+        child: ListView(
+        shrinkWrap: true,
         children: [
           Form(
             key: _formKey,
@@ -90,7 +94,7 @@ class _CreateFlowerState extends State<CreateFlower> {
                     },
                     decoration: InputDecoration(
                       hintText: 'Batman?',
-                      labelText: 'Flower name',
+                      labelText: 'Name',
                     ),
                     validator: (String value) {
                       return value.length < 2 ? 'Minimun of 2 chars' : null;
@@ -110,14 +114,13 @@ class _CreateFlowerState extends State<CreateFlower> {
                   ),
 
                   Container(
-                    margin: EdgeInsets.only(top: 48),
-                    alignment: Alignment(0, 0),
-                    child: MaterialButton(
-                      height: 60,
-                      minWidth: 200,
-                      color: MainColor,
-                      disabledColor: Colors.grey,
-                      onPressed: _isCreatingFlower ? null : () async {
+                    margin: EdgeInsets.only(top: 106),
+                    child: GradientButton(
+                      gradient: BlueGradient,
+                      increaseHeightBy: 30,
+                      increaseWidthBy: 300,
+                      shapeRadius: BorderRadius.horizontal(left: Radius.circular(0)),
+                      callback: _isCreatingFlower ? null : () async {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
                           setState(() {
@@ -147,6 +150,6 @@ class _CreateFlowerState extends State<CreateFlower> {
           ),
         ]
       )
-    );
+    ));
   }
 }

@@ -1,6 +1,6 @@
 import "../actions/actions.dart";
 
-bool flowersReducer(bool state, dynamic action) {
+bool isFetchingDataReducer(bool state, dynamic action) {
   if (action == FetchingData.Completed) {
     return false;
   }

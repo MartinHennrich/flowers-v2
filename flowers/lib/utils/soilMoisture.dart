@@ -39,13 +39,13 @@ int postponeSoilMoistureToDays(SoilMoisture soilMoisture) {
   switch (soilMoisture) {
     case SoilMoisture.Soil25:
     case SoilMoisture.Soil0:
-      return 0;
+      return 1;
     case SoilMoisture.Soil50:
       return 1;
     case SoilMoisture.Soil75:
-      return 1;
-    case SoilMoisture.Soil100:
       return 2;
+    case SoilMoisture.Soil100:
+      return 3;
     default:
       return 0;
   }

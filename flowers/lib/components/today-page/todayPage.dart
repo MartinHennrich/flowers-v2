@@ -9,6 +9,7 @@ import '../../utils/flowerHelpers.dart';
 import './flowersList.dart';
 import './noFlowersToWater.dart';
 import './title.dart';
+import '../scrollBehavior.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -55,7 +56,10 @@ class FlowerList extends StatelessWidget {
         List<Widget> children = [
           TodayPageTitle(title: 'Today'),
           flowersToWater.length <= 0
-            ? NoFlowersToWater()
+            ? NoFlowersToWater(
+              hasNoFlowers: vm.flowers.length == 0,
+              hasCompleted: flowersBeenWatered.length > 0
+            )
             : Container(),
         ]
         ..add(
@@ -68,10 +72,13 @@ class FlowerList extends StatelessWidget {
         )
         ..add(flowersBeenWateredWidget);
 
-        return ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(20.0),
-          children: vm.isFetchingData == true ? _getLoadingScreen() : children
+        return ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(20.0),
+            children: vm.isFetchingData == true ? _getLoadingScreen() : children
+          )
         );
     });
   }

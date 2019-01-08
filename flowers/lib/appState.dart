@@ -4,13 +4,13 @@ import './flower.dart';
 
 @immutable
 class AppState {
-  List<Flower> flowers;
-  bool isFetchingData;
-  bool isCreatingFlower;
+  final List<Flower> flowers;
+  final bool isFetchingData;
+  final bool isCreatingFlower;
 
   AppState({
     this.flowers,
     this.isFetchingData,
-    this.isCreatingFlower
+    this.isCreatingFlower = false
   });
 }

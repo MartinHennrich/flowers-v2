@@ -5,6 +5,7 @@ import '../../../constants/colors.dart';
 import '../../../constants/enums.dart';
 import '../../../utils/firebase-redux.dart';
 import '../../../utils/soilMoisture.dart';
+import '../../gradientMaterialButton.dart';
 
 class ActionButtons extends StatelessWidget {
   final bool isLoading;
@@ -22,8 +23,6 @@ class ActionButtons extends StatelessWidget {
   });
 
   Widget _getSubtitleWidget(String subtitle) {
-    /* String subtitle = _getWaterSubtitleString(); */
-
     if (subtitle == null) {
       return Container();
     }
@@ -77,11 +76,10 @@ class ActionButtons extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          MaterialButton(
+          GradientButton(
             height: 80,
-            minWidth: 120,
-            color: SecondMainColor,
-            disabledColor: Colors.grey,
+            width: 120,
+            gradient: YellowGradient,
             onPressed: isLoading ? null : () {
               onPress();
               postponeWatering(flower, soilMoisture)
@@ -103,11 +101,9 @@ class ActionButtons extends StatelessWidget {
               )
           ),
           Expanded(
-            child:
-            MaterialButton(
+            child: GradientButton(
               height: 80,
-              color: MainSecondColor,
-              disabledColor: Colors.grey,
+              gradient: BlueGradient,
               onPressed: isLoading ? null : () {
                 onPress();
                 waterFlower(flower, waterAmount, soilMoisture)
@@ -126,7 +122,7 @@ class ActionButtons extends StatelessWidget {
                   ),
                   _getSubtitleWidget(_getWaterSubtitleString())
                 ],
-              )
+              ),
             ),
           ),
         ]

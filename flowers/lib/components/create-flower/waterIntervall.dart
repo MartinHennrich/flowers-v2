@@ -51,7 +51,7 @@ class WaterIntervall extends StatelessWidget {
                         waterintervallFrom.value.toString(),
                         style: TextStyle(
                           fontSize: 40,
-                          color: SecondMainColor
+                          color: BlueMain
                         ),
                       ),
                     ),

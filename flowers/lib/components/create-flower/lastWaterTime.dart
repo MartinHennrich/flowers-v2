@@ -15,12 +15,14 @@ class LastWaterTime extends StatelessWidget {
     @required this.onSave
   });
 
-  Widget _getGenericButton(Function onPressed, String text, LastWaterTimes activeValue, LastWaterTimes lastWaterTime, {ShapeBorder shape}) {
+  Widget _getGenericButton(Function onPressed, String text, LastWaterTimes activeValue, LastWaterTimes lastWaterTime, {
+    ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(0)))
+  }) {
     return FlatButton(
       onPressed: () {
         onPressed();
       },
-      color: activeValue == lastWaterTime ? SecondMainColor : Colors.black12,
+      color: activeValue == lastWaterTime ? BlueMain : Colors.black12,
       shape: shape,
       child: Text(text,
         style: TextStyle(
@@ -65,12 +67,13 @@ class LastWaterTime extends StatelessWidget {
     return FlatButton(
       onPressed: () async {
         DateTime time = DateTime.now();
+        DateTime firstDate = time.subtract(Duration(days: 20));
 
         DateTime pickedTime = await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(time.year, time.month, 1),
-          lastDate: DateTime(time.year, time.month, 31),
+          initialDate: DateTime.now().subtract(Duration(days: 2)),
+          firstDate: DateTime(firstDate.year, firstDate.month, 1),
+          lastDate: DateTime(time.year, time.month, time.day),
         );
 
         if (pickedTime != null) {
@@ -81,7 +84,7 @@ class LastWaterTime extends StatelessWidget {
           lastWaterTimeForm.setState(() {});
         }
       },
-      color: lastWaterTimeForm.value['enum'] == LastWaterTimes.Custom ? SecondMainColor : Colors.black12,
+      color: lastWaterTimeForm.value['enum'] == LastWaterTimes.Custom ? BlueMain : Colors.black12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(20))),
       child: lastWaterTimeForm.value['enum'] == LastWaterTimes.Custom
         ? Text('${lastWaterTimeForm.value['time'].month} / ${lastWaterTimeForm.value['time'].day}', style: TextStyle(color: Colors.white))
