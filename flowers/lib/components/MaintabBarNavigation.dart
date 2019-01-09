@@ -29,7 +29,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
   Widget _getFloatingActionButton(bool isLoading) {
     return FloatingActionButton(
       backgroundColor: GreenMain,
-      onPressed: () {
+      onPressed: isLoading ? null : () {
         Navigator.pushNamed(context, '/create-flower');
       },
       child: isLoading
@@ -43,7 +43,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     );
   }
 
-  Widget _getBittomNavigationBar() {
+  Widget _getBottomNavigationBar() {
     return FABBottomAppBar(
       centerItemText: 'Add flower',
       color: Colors.grey,
@@ -65,7 +65,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
           body: Center(
             child: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
           ),
-          bottomNavigationBar: _getBittomNavigationBar(),
+          bottomNavigationBar: _getBottomNavigationBar(),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: _getFloatingActionButton(vm.isCreatingFlower),
         );
