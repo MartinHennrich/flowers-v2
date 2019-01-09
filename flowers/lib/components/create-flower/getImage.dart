@@ -48,7 +48,7 @@ class GetImageState extends State<GetImage> {
       width: width,
       margin: EdgeInsets.fromLTRB(0, 28, 0, 6),
       decoration: BoxDecoration(
-        gradient: GreenBlueGradient,
+        gradient: BlueGradient,
         image: (value != null && type == _imageSourceType) ?  DecorationImage(
           image: FileImage(value),
           fit: BoxFit.cover,
