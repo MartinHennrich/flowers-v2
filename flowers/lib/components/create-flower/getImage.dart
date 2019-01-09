@@ -4,36 +4,75 @@ import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
 
-class GetImage extends StatelessWidget {
+class GetImage extends StatefulWidget {
   final Function(File) onSave;
 
   GetImage({
     @required this.onSave
   });
 
-  Future<File> _getImage() async {
-    return await ImagePicker.pickImage(source: ImageSource.camera);
+
+  @override
+    State<StatefulWidget> createState() {
+      return GetImageState();
+    }
+}
+
+enum ImageSourceType {
+  Camera,
+  Gallery
+}
+
+class GetImageState extends State<GetImage> {
+  ImageSourceType _imageSourceType = ImageSourceType.Camera;
+
+  Future<File> _getImageFromCamera() async {
+    var value = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _imageSourceType = ImageSourceType.Camera;
+    });
+    return value;
   }
 
-  Widget _getImageContainer(FormFieldState<dynamic> imageForm) {
+  Future<File> _getImageFromGallery() async {
+    var value = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _imageSourceType = ImageSourceType.Gallery;
+    });
+    return value;
+  }
+
+  Widget _getImageContainer(double height, double width, Icon icon, ImageSourceType type, dynamic value) {
     return Container(
-      height: 100,
-      width: 100,
+      height: height,
+      width: width,
       margin: EdgeInsets.fromLTRB(0, 28, 0, 6),
       decoration: BoxDecoration(
         gradient: GreenBlueGradient,
-        image: imageForm.value == null ? null : DecorationImage(
-          image: FileImage(imageForm.value),
+        image: (value != null && type == _imageSourceType) ?  DecorationImage(
+          image: FileImage(value),
           fit: BoxFit.cover,
-        ),
+        ) : null,
         borderRadius: BorderRadius.all(Radius.circular(50)),
       ),
-      child: Icon(
-        Icons.camera_alt,
-        size: 28,
-        color: Colors.white,
-      )
+      child: icon
     );
+  }
+
+  Widget _getCameraContainer(FormFieldState<dynamic> imageForm) {
+    return _getImageContainer(100, 100, Icon(
+      Icons.camera_alt,
+      size: 28,
+      color: Colors.white,
+    ), ImageSourceType.Camera, imageForm.value);
+  }
+
+  Widget _getGalleryContainer(FormFieldState<dynamic> imageForm) {
+    return _getImageContainer(60, 60, Icon(
+      Icons.image,
+      size: 20,
+      color: Colors.white,
+    ), ImageSourceType.Gallery, imageForm.value);
   }
 
   Widget _getErrorWidget(bool hasError, String errorText) {
@@ -50,32 +89,61 @@ class GetImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormField(
       onSaved: (File file) {
-        onSave(file);
+        widget.onSave(file);
       },
       validator: (value) {
-        return value == null ? 'Image of flower is required' : null;
+        return value == null ? 'Select or take new image' : null;
       },
       builder: (imageForm) {
-        return Center(
-          child: Column(
+        return Row(
             children: <Widget>[
-              GestureDetector(
-                onTap: () async {
-                  File image = await _getImage();
-                  imageForm.setValue(image);
-                  imageForm.setState((){});
-                },
-                child: _getImageContainer(imageForm),
-              ),
-              Text('Take Image',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () async {
+                        File image = await _getImageFromGallery();
+                        imageForm.setValue(image);
+                        imageForm.setState((){});
+                      },
+                      child: _getGalleryContainer(imageForm),
+                    ),
+                    Text('Select Image',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12
+                      )
+                    ),
+                    _getErrorWidget(imageForm.hasError, imageForm.errorText)
+                  ],
                 )
               ),
-              _getErrorWidget(imageForm.hasError, imageForm.errorText)
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () async {
+                        File image = await _getImageFromCamera();
+                        imageForm.setValue(image);
+                        imageForm.setState((){});
+                      },
+                      child: _getCameraContainer(imageForm),
+                    ),
+                    Text('Capture Image',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 16
+                      )
+                    ),
+                    _getErrorWidget(imageForm.hasError, imageForm.errorText)
+                  ],
+                )
+              )
             ],
-          )
+
         );
       },
     );
