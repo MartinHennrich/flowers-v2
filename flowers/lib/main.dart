@@ -35,6 +35,7 @@ class App extends StatelessWidget {
     return StoreProvider(
       store: store,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flowers',
         theme: ThemeData(
           primaryColor: Colors.white
