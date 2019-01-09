@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import './fabBottomAppBar.dart';
 import '../constants/colors.dart';
 import './today-page/todayPage.dart';
+import './flowers-list-page/flowersListPage.dart';
 import '../appState.dart';
 
 class MainPagesTabBar extends StatefulWidget {
@@ -17,7 +18,7 @@ class MainPagesTabBar extends StatefulWidget {
 class MainPagesTabBarState extends State<MainPagesTabBar>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
-  final _widgetOptions = [TodayPage(), HomePage2()];
+  final _widgetOptions = [TodayPage(), FlowersListPage()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -27,7 +28,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
   Widget _getFloatingActionButton(bool isLoading) {
     return FloatingActionButton(
-      backgroundColor: GreenBlueMain,
+      backgroundColor: GreenMain,
       onPressed: () {
         Navigator.pushNamed(context, '/create-flower');
       },
@@ -83,17 +84,6 @@ class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       isCreatingFlower: store.state.isCreatingFlower,
-    );
-  }
-}
-
-class HomePage2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[Text('HEJ 2')],
-      ),
     );
   }
 }
