@@ -45,7 +45,7 @@ class NoFlowersToWater extends StatelessWidget {
       return YellowMain;
     }
 
-    return PurpleMain;
+    return GreenMain;
   }
 
   @override
