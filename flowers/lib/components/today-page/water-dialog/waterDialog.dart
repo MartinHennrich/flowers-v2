@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../flower.dart';
 import '../../../constants/enums.dart';
@@ -39,7 +40,7 @@ class WaterDialogState extends State<WaterDialog> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(widget.flower.imageUrl),
+                    image: CachedNetworkImageProvider(widget.flower.imageUrl),
                     fit: BoxFit.cover,
                   ),
                 ),
