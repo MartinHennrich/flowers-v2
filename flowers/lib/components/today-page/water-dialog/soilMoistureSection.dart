@@ -29,7 +29,7 @@ class SoilMoistureSection extends StatelessWidget {
                   icon: Icon(CustomIcons.soil_0),
                   iconSize: 32,
                   padding: EdgeInsets.all(0),
-                  color: soilMoisture == SoilMoisture.Soil0 ? PurpleMain : Colors.black,
+                  color: soilMoisture == SoilMoisture.Soil0 ? YellowSecond : Colors.black,
                   onPressed: () {
                     onPress(SoilMoisture.Soil0);
                   },
@@ -37,7 +37,7 @@ class SoilMoistureSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.soil_25),
                   iconSize: 32,
-                  color: soilMoisture == SoilMoisture.Soil25 ? PurpleMain : Colors.black,
+                  color: soilMoisture == SoilMoisture.Soil25 ? YellowSecond : Colors.black,
                   onPressed: () {
                     onPress(SoilMoisture.Soil25);
                   },
@@ -45,7 +45,7 @@ class SoilMoistureSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.soil_50),
                   iconSize: 32,
-                  color: soilMoisture == SoilMoisture.Soil50 ? PurpleMain : Colors.black,
+                  color: soilMoisture == SoilMoisture.Soil50 ? YellowSecond : Colors.black,
                   onPressed: () {
                     onPress(SoilMoisture.Soil50);
                   },
@@ -53,7 +53,7 @@ class SoilMoistureSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.soil_100),
                   iconSize: 32,
-                  color: soilMoisture == SoilMoisture.Soil75 ? PurpleMain : Colors.black,
+                  color: soilMoisture == SoilMoisture.Soil75 ? YellowSecond : Colors.black,
                   onPressed: () {
                     onPress(SoilMoisture.Soil75);
                   },
@@ -61,7 +61,7 @@ class SoilMoistureSection extends StatelessWidget {
                 IconButton(
                   icon: Icon(CustomIcons.soil_75),
                   iconSize: 32,
-                  color: soilMoisture == SoilMoisture.Soil100 ? PurpleMain : Colors.black,
+                  color: soilMoisture == SoilMoisture.Soil100 ? YellowSecond : Colors.black,
                   onPressed: () {
                     onPress(SoilMoisture.Soil100);
                   },
