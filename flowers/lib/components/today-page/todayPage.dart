@@ -6,10 +6,10 @@ import '../../flower.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';
-import './flowersList.dart';
+import '../flowersList.dart';
 import './noFlowersToWater.dart';
-import './title.dart';
-import '../scrollBehavior.dart';
+import '../page-title.dart';
+import './water-dialog/waterDialog.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -25,16 +25,23 @@ class FlowerList extends StatelessWidget {
 
   List<Widget> _getLoadingScreen() {
     return [
-      TodayPageTitle(title: 'Today'),
+      PageTitle(title: 'Today'),
       Container(
         height: 300,
         child: Center(
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(SecondMainColor),
+            valueColor: AlwaysStoppedAnimation<Color>(BlueMain),
           )
         )
       )
     ];
+  }
+
+  void openDialog(BuildContext context, Flower flower) {
+    showDialog(
+      context: context,
+      builder: (_) => WaterDialog(flower: flower)
+    );
   }
 
   @override
@@ -44,17 +51,21 @@ class FlowerList extends StatelessWidget {
       builder: (context, _ViewModel vm) {
         List<Flower> flowersToWater = getFlowersThatNeedWater(vm.flowers);
         var flowersToWaterWidget = FlowersList(
-          flowers: flowersToWater
+          flowers: flowersToWater,
+          onPress: (Flower flower) {
+            openDialog(context, flower);
+          },
         );
 
         List<Flower> flowersBeenWatered = getFlowersThatHasBeenWatered(vm.flowers);
         var flowersBeenWateredWidget = FlowersList(
           flowers: flowersBeenWatered,
           disabled: true,
+
         );
 
         List<Widget> children = [
-          TodayPageTitle(title: 'Today'),
+          PageTitle(title: 'Today'),
           flowersToWater.length <= 0
             ? NoFlowersToWater(
               hasNoFlowers: vm.flowers.length == 0,
@@ -67,18 +78,18 @@ class FlowerList extends StatelessWidget {
         )
         ..add(
           flowersBeenWatered.length > 0
-            ? TodayPageTitle(title: 'Watered', fontSize: 40,)
+            ? PageTitle(
+                title: 'Watered',
+                fontSize: 40,
+                padding: EdgeInsets.fromLTRB(0, 40, 0, 16)
+              )
             : Container()
         )
         ..add(flowersBeenWateredWidget);
 
-        return ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.all(20.0),
-            children: vm.isFetchingData == true ? _getLoadingScreen() : children
-          )
+        return ListView(
+          padding: EdgeInsets.all(20.0),
+          children: vm.isFetchingData == true ? _getLoadingScreen() : children
         );
     });
   }
