@@ -28,6 +28,7 @@ dependencies:
   uuid: ^1.0.3
   gradient_widgets: ^0.3.1
   cached_network_image: ^0.5.1
+  flutter_image_compress: ^0.2.3
 
 dev_dependencies:
   flutter_test:
