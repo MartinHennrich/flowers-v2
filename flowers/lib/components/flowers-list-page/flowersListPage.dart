@@ -46,7 +46,6 @@ class FlowersListPage extends StatelessWidget {
             onPress: (Flower flower) {
 
             },
-            overrideColor: GreenGradient
           ),
           vm.flowers.length == 0
             ? EmptyList()
