@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-class TodayPageTitle extends StatelessWidget {
+class PageTitle extends StatelessWidget {
   final String title;
   final double fontSize;
+  final EdgeInsets padding;
 
-  TodayPageTitle({
+  PageTitle({
     this.title,
-    this.fontSize = 60
+    this.fontSize = 60,
+    this.padding = const EdgeInsets.fromLTRB(0, 24, 0, 40)
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 24, 0, 40),
+      padding: padding,
       child: Text(title,
         style: TextStyle(
           fontSize: fontSize,
