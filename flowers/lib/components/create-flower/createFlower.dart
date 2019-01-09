@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:gradient_widgets/gradient_widgets.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import '../../constants/colors.dart';
 import '../../utils/firebase.dart';
@@ -11,7 +13,6 @@ import '../../actions/actions.dart';
 import './getImage.dart';
 import './lastWaterTime.dart';
 import './waterIntervall.dart';
-import '../scrollBehavior.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -30,24 +31,31 @@ class _CreateFlowerState extends State<CreateFlower> {
   final _formKey = GlobalKey<FormState>();
   FlowerFormData flowerFormData = FlowerFormData();
 
-
   Future<void> _onCreateFlower() async {
+    File image = flowerFormData.image;
+    var dir = Directory.systemTemp;
+    var targetPath = dir.absolute.path + "/temp.jpg";
+
+    var result = await FlutterImageCompress.compressAndGetFile(
+      image.absolute.path,
+      targetPath,
+      quality: 40,
+      rotate: -90,
+      minHeight: 300,
+      minWidth: 300
+    );
+
     var response = await database.createFlower(
-      flowerFormData.image,
+      result,
       flowerFormData.flowerName,
       flowerFormData.lastWaterTime,
       flowerFormData.lastWaterTime,
       flowerFormData.waterIntervall,
     );
 
-    DateTime today = DateTime.now();
     DateTime nextWaterTime = flowerFormData
       .lastWaterTime
       .add(Duration(days: flowerFormData.waterIntervall));
-
-    if (nextWaterTime.day <= today.day && nextWaterTime.month <= today.month) {
-      nextWaterTime = today;
-    }
 
     Flower flower = Flower(
       key: response['key'],
@@ -60,6 +68,8 @@ class _CreateFlowerState extends State<CreateFlower> {
 
     AppStore.dispatch(AddFlowerAction(flower));
     AppStore.dispatch(CreatingFlower.Available);
+
+    dir.delete();
   }
 
   @override
@@ -70,10 +80,7 @@ class _CreateFlowerState extends State<CreateFlower> {
         elevation: 0,
         title: Text('ADD FLOWER'),
       ),
-      body: ScrollConfiguration(
-        behavior: MyBehavior(),
-        child: ListView(
-        shrinkWrap: true,
+      body: ListView(
         children: [
           Form(
             key: _formKey,
@@ -150,6 +157,6 @@ class _CreateFlowerState extends State<CreateFlower> {
           ),
         ]
       )
-    ));
+    );
   }
 }
