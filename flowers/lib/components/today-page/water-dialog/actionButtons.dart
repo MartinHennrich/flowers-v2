@@ -67,6 +67,47 @@ class ActionButtons extends StatelessWidget {
     return '$days days';
   }
 
+  Widget getPostponeButtonChild() {
+    if (!isLoading) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('POSTPONE',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white
+            ),
+          ),
+          _getSubtitleWidget(_getPostponeSubtitle())
+        ],
+      );
+    }
+
+    return CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+    );
+  }
+
+  Widget getWaterButtonChild() {
+    if (!isLoading) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('WATER',
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.white
+            ),
+          ),
+          _getSubtitleWidget(_getWaterSubtitleString())
+        ],
+      );
+    }
+    return CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -87,18 +128,7 @@ class ActionButtons extends StatelessWidget {
                   Navigator.of(context).pop();
                 });
             },
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('POSTPONE',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white
-                    ),
-                  ),
-                  _getSubtitleWidget(_getPostponeSubtitle())
-                ],
-              )
+            child: getPostponeButtonChild()
           ),
           Expanded(
             child: GradientButton(
@@ -111,18 +141,7 @@ class ActionButtons extends StatelessWidget {
                     Navigator.of(context).pop();
                   });
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('WATER',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white
-                    ),
-                  ),
-                  _getSubtitleWidget(_getWaterSubtitleString())
-                ],
-              ),
+              child: getWaterButtonChild(),
             ),
           ),
         ]
