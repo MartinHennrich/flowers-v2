@@ -39,6 +39,13 @@ List<Flower> getFlowersThatNeedWater(List<Flower> flowers) {
     }
   });
 
+  DateTime today = DateTime.now();
+  flowersThatNeedWater.sort((a, b) {
+    int aDiffDays = a.nextWaterTime.difference(today).inDays;
+    int bDiffDays = b.nextWaterTime.difference(today).inDays;
+    return aDiffDays.compareTo(bDiffDays);
+  });
+
   return flowersThatNeedWater;
 }
 
