@@ -6,18 +6,33 @@ LinearGradient getColorBasedOnTime(DateTime time) {
   Duration difference = time.difference(today);
   int days = difference.inDays;
 
-  if (days < -2) {
-    return RedPinkGradient;
+  if (days == 0) {
+    return YellowGradient;
   }
 
-  switch (days) {
-    case 0:
-      return GreenBlueGradient;
-    case -1:
-      return YellowGradient;
-    case -2:
-      return RedPinkGradient;
-    default:
-      return GreenBlueGradient;
+  if (days > 0) {
+    return GreenGradient;
   }
+
+  return RedGradient;
+}
+
+Color getColorBasedOnTime2(DateTime time, DateTime lastTime) {
+  DateTime today = DateTime.now();
+  Duration difference = time.difference(today);
+  int days = difference.inDays;
+
+  if (today.day == lastTime.day && lastTime.month == today.month) {
+    return BlueMain;
+  }
+
+  if (days == 0) {
+    return YellowMain;
+  }
+
+  if (days > 0) {
+    return GreenMain;
+  }
+
+  return RedMain;
 }
