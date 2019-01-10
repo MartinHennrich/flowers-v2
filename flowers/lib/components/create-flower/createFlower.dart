@@ -104,7 +104,15 @@ class _CreateFlowerState extends State<CreateFlower> {
                       labelText: 'Name',
                     ),
                     validator: (String value) {
-                      return value.length < 2 ? 'Minimun of 2 chars' : null;
+                      if (value.length < 2) {
+                        return 'Minimun of 2 chars';
+                      }
+
+                      if (value.length > 12) {
+                        return 'Max of 12 chars';
+                      }
+
+                      return null;
                     },
                   ),
 
@@ -121,7 +129,7 @@ class _CreateFlowerState extends State<CreateFlower> {
                   ),
 
                   Container(
-                    margin: EdgeInsets.only(top: 106),
+                    margin: EdgeInsets.only(top: 78),
                     child: GradientButton(
                       gradient: BlueGradient,
                       increaseHeightBy: 30,
