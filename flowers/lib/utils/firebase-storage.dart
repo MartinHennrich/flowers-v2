@@ -3,8 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class Storage {
-  final String storageBucket = 'gs://flowers-98123.appspot.com';
-  final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://flutter-firebase-plugins.appspot.com');
+  final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://flowers-98123.appspot.com');
   StorageReference userRef;
 
   Storage(String userId) {
