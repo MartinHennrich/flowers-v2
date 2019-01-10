@@ -9,6 +9,7 @@ import '../../utils/firebase.dart';
 import '../../flower.dart';
 import '../../store.dart';
 import '../../actions/actions.dart';
+import '../../utils/notifications.dart';
 
 import './getImage.dart';
 import './lastWaterTime.dart';
@@ -68,6 +69,12 @@ class _CreateFlowerState extends State<CreateFlower> {
 
     AppStore.dispatch(AddFlowerAction(flower));
     AppStore.dispatch(CreatingFlower.Available);
+
+    scheduleNotification(
+      flower.key,
+      flower.name,
+      flower.nextWaterTime
+    );
 
     dir.delete();
   }
