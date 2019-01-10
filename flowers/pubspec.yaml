@@ -30,6 +30,7 @@ dependencies:
   cached_network_image: ^0.5.1
   flutter_image_compress: ^0.2.3
   flutter_local_notifications: ^0.4.3
+  shared_preferences: ^0.4.3
 
 dev_dependencies:
   flutter_test:
