@@ -52,9 +52,12 @@ class FlowersListPage extends StatelessWidget {
             : Container()
         ];
 
-        return ListView(
-          padding: EdgeInsets.all(20.0),
-          children: vm.isFetchingData == true ? _getLoadingScreen() : children
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: ListView(
+            padding: EdgeInsets.all(20.0),
+            children: vm.isFetchingData == true ? _getLoadingScreen() : children
+          ),
         );
       }
     );
