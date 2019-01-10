@@ -10,6 +10,7 @@ import './appState.dart';
 import './components/MaintabBarNavigation.dart';
 import './utils/firebase.dart';
 import './utils/firebase-redux.dart';
+import './utils/notifications.dart';
 
 void main() {
   database
@@ -18,6 +19,7 @@ void main() {
       addSnapshotToRedux(snapshot);
       AppStore.dispatch(FetchingData.Completed);
     });
+  initNotifications();
   runApp(App(store: AppStore));
 }
 

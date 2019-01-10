@@ -4,6 +4,7 @@ import '../flower.dart';
 import '../constants/enums.dart';
 import '../utils/soilMoisture.dart';
 import '../utils/waterAmount.dart';
+import '../utils/notifications.dart';
 
 List<Flower> getFlowersThatHasBeenWatered(List<Flower> flowers) {
   DateTime dateTime = DateTime.now();
@@ -74,6 +75,12 @@ Flower postponeWatering(Flower flower, SoilMoisture soilMoisture) {
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
   flower.nextWaterTime = nextWaterTime;
 
+  rescheduleNotification(
+    flower.key,
+    flower.name,
+    flower.nextWaterTime
+  );
+
   return flower;
 }
 
@@ -109,6 +116,12 @@ WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture s
 
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
   flower.nextWaterTime = nextWaterTime;
+
+  scheduleNotification(
+    flower.key,
+    flower.name,
+    flower.nextWaterTime
+  );
 
   return WateredFlower(
     flower,
