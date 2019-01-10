@@ -23,7 +23,7 @@ class WaterIntervall extends StatelessWidget {
             padding: EdgeInsets.only(top: 16),
             child: Column(
               children: <Widget>[
-                Text('Watering intervall',
+                Text('Water frequency',
                   style: TextStyle(
                       color: Colors.black54,
                       fontSize: 16
@@ -47,6 +47,7 @@ class WaterIntervall extends StatelessWidget {
                       ),
                     ),
                     Container(
+                      padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                       child: Text(
                         waterintervallFrom.value.toString(),
                         style: TextStyle(
@@ -68,7 +69,13 @@ class WaterIntervall extends StatelessWidget {
                       ),
                     )
                   ],
-                )
+                ),
+                Text('days',
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16
+                  )
+                ),
               ],
             )
           )
