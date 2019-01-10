@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 
-LinearGradient getColorBasedOnTime(DateTime time) {
+LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
   DateTime today = DateTime.now();
   Duration difference = time.difference(today);
   int days = difference.inDays;
+
+  if (today.day == lastTime.day && lastTime.month == today.month) {
+    return BlueGradient;
+  }
 
   if (days == 0) {
     return YellowGradient;

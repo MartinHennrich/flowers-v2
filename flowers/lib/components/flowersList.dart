@@ -24,7 +24,7 @@ class FlowersList extends StatelessWidget {
       return BlueGradient;
     }
 
-    return getColorBasedOnTime(flower.nextWaterTime);
+    return getColorBasedOnTime(flower.nextWaterTime, flower.lastTimeWatered);
   }
 
   List<Widget> _getFlowersListWidgets(List<Flower> flowers, BuildContext context) {
