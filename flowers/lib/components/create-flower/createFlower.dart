@@ -39,10 +39,10 @@ class _CreateFlowerState extends State<CreateFlower> {
     var result = await FlutterImageCompress.compressAndGetFile(
       image.absolute.path,
       targetPath,
-      quality: 40,
-      rotate: -90,
-      minHeight: 300,
-      minWidth: 300
+      quality: 50,
+      rotate: 90,
+      minHeight: 400,
+      minWidth: 400
     );
 
     var response = await database.createFlower(
