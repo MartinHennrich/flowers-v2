@@ -52,3 +52,10 @@ const RedGradient = LinearGradient(
   ],
 );
 
+const GreyGradient = LinearGradient(
+  stops: [1],
+  colors: [
+    Colors.grey
+  ],
+);
+
