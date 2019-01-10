@@ -109,13 +109,12 @@ class GetImageState extends State<GetImage> {
                       },
                       child: _getGalleryContainer(imageForm),
                     ),
-                    Text('Select Image',
+                    Text('select',
                       style: TextStyle(
                         color: Colors.black54,
                         fontSize: 12
                       )
                     ),
-                    _getErrorWidget(imageForm.hasError, imageForm.errorText)
                   ],
                 )
               ),
@@ -124,19 +123,23 @@ class GetImageState extends State<GetImage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    GestureDetector(
-                      onTap: () async {
-                        File image = await _getImageFromCamera();
-                        imageForm.setValue(image);
-                        imageForm.setState((){});
-                      },
-                      child: _getCameraContainer(imageForm),
-                    ),
-                    Text('Capture Image',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 16
-                      )
+                    Column(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            File image = await _getImageFromCamera();
+                            imageForm.setValue(image);
+                            imageForm.setState((){});
+                          },
+                          child: _getCameraContainer(imageForm),
+                        ),
+                        Text('Capture',
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16
+                          )
+                        ),
+                      ],
                     ),
                     _getErrorWidget(imageForm.hasError, imageForm.errorText)
                   ],
