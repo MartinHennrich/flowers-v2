@@ -30,7 +30,7 @@ class NoFlowersToWater extends StatelessWidget {
     }
 
     if (hasNoFlowers) {
-      return 'add flowers to start you journey';
+      return 'add flowers\nto start you journey';
     }
 
     return 'no flowers to water';
@@ -64,6 +64,7 @@ class NoFlowersToWater extends StatelessWidget {
             padding: EdgeInsets.only(top: 28),
             child: Text(
               _getText(),
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color.fromRGBO(0, 0, 0, 0.3)
               ),

@@ -20,7 +20,8 @@ class EmptyList extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 28),
             child: Text(
-              'add flowers to start you journey',
+              'add flowers\nto start you journey',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color.fromRGBO(0, 0, 0, 0.3)
               ),
