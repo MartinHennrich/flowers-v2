@@ -7,7 +7,7 @@ import '../../../utils/firebase-redux.dart';
 import '../../../utils/soilMoisture.dart';
 import '../../gradientMaterialButton.dart';
 
-class ActionButtons extends StatelessWidget {
+class ActionButtons extends StatefulWidget {
   final bool isLoading;
   final Flower flower;
   final Function onPress;
@@ -21,6 +21,20 @@ class ActionButtons extends StatelessWidget {
     this.soilMoisture,
     this.waterAmount
   });
+
+  @override
+    State<StatefulWidget> createState() {
+      return ActionButtonsState();
+    }
+}
+
+enum ButtonAction {
+  Water,
+  Postpone
+}
+
+class ActionButtonsState extends State<ActionButtons> {
+  ButtonAction buttonAction;
 
   Widget _getSubtitleWidget(String subtitle) {
     if (subtitle == null) {
@@ -37,13 +51,13 @@ class ActionButtons extends StatelessWidget {
   }
 
   String _getWaterSubtitleString() {
-    if (soilMoisture == SoilMoisture.Soil75 || soilMoisture == SoilMoisture.Soil100) {
+    if (widget.soilMoisture == SoilMoisture.Soil75 || widget.soilMoisture == SoilMoisture.Soil100) {
 
-      if (waterAmount == WaterAmount.Lots) {
+      if (widget.waterAmount == WaterAmount.Lots) {
         return 'really sure?';
       }
 
-      if (waterAmount == WaterAmount.Small) {
+      if (widget.waterAmount == WaterAmount.Small) {
         return 'okey';
       }
 
@@ -54,7 +68,7 @@ class ActionButtons extends StatelessWidget {
   }
 
   String _getPostponeSubtitle() {
-    int days = postponeSoilMoistureToDays(soilMoisture);
+    int days = postponeSoilMoistureToDays(widget.soilMoisture);
 
     if (days <= 0) {
       return null;
@@ -68,7 +82,7 @@ class ActionButtons extends StatelessWidget {
   }
 
   Widget getPostponeButtonChild() {
-    if (!isLoading) {
+    if (buttonAction != ButtonAction.Postpone) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -89,7 +103,7 @@ class ActionButtons extends StatelessWidget {
   }
 
   Widget getWaterButtonChild() {
-    if (!isLoading) {
+    if (buttonAction != ButtonAction.Water) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -120,10 +134,13 @@ class ActionButtons extends StatelessWidget {
           GradientButton(
             height: 80,
             width: 120,
-            gradient: YellowGradient,
-            onPressed: isLoading ? null : () {
-              onPress();
-              postponeWatering(flower, soilMoisture)
+            gradient: buttonAction == ButtonAction.Water ? GreyGradient : YellowGradient,
+            onPressed: widget.isLoading ? null : () {
+              setState(() {
+                buttonAction = ButtonAction.Postpone;
+              });
+              widget.onPress();
+              postponeWatering(widget.flower, widget.soilMoisture)
                 .then((_) {
                   Navigator.of(context).pop();
                 });
@@ -133,10 +150,13 @@ class ActionButtons extends StatelessWidget {
           Expanded(
             child: GradientButton(
               height: 80,
-              gradient: BlueGradient,
-              onPressed: isLoading ? null : () {
-                onPress();
-                waterFlower(flower, waterAmount, soilMoisture)
+              gradient: buttonAction == ButtonAction.Postpone ? GreyGradient : BlueGradient,
+              onPressed: widget.isLoading ? null : () {
+                setState(() {
+                  buttonAction = ButtonAction.Water;
+                });
+                widget.onPress();
+                waterFlower(widget.flower, widget.waterAmount, widget.soilMoisture)
                   .then((_) {
                     Navigator.of(context).pop();
                   });
