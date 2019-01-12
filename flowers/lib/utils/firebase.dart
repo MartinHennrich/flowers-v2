@@ -126,6 +126,16 @@ class Database {
       'key': flowerPush.key
     };
   }
+
+  Future<DataSnapshot> getFlowerWaterTimes(String key) async {
+    return await FirebaseDatabase
+      .instance
+      .reference()
+      .child('waterTimes')
+      .child(currentUser.uid)
+      .child(key)
+      .once();
+  }
 }
 
 Database database = Database();
