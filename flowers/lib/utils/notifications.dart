@@ -18,7 +18,7 @@ NotificationDetails platformChannelSpecifics = NotificationDetails(
 );
 
 void initNotifications() {
-  var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initializationSettingsAndroid = AndroidInitializationSettings('ic_stat_app_icon');
   var initializationSettings = InitializationSettings(
     initializationSettingsAndroid, null
   );
