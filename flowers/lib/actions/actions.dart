@@ -1,5 +1,4 @@
 import '../flower.dart';
-import '../constants/enums.dart';
 
 class AddFlowerAction {
   Flower flower;
