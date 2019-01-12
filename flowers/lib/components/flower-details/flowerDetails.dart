@@ -237,7 +237,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
   Widget _getGraphContainer(String title, Widget widget) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
+      padding: EdgeInsets.fromLTRB(32, 32, 16, 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
