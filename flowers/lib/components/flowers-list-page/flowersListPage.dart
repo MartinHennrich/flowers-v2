@@ -8,6 +8,7 @@ import '../page-title.dart';
 import '../../constants/colors.dart';
 import '../flowersList.dart';
 import './emptyList.dart';
+import '../flower-details/flowerDetails.dart';
 
 class FlowersListPage extends StatelessWidget {
 
@@ -43,8 +44,14 @@ class FlowersListPage extends StatelessWidget {
           PageTitle(title: 'Flowers'),
           FlowersList(
             flowers: sorted,
+            withHero: true,
             onPress: (Flower flower) {
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FlowerDetails(flower: flower),
+                ),
+              );
             },
           ),
           vm.flowers.length == 0
