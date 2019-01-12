@@ -46,17 +46,17 @@ class _CreateFlowerState extends State<CreateFlower> {
       minWidth: 400
     );
 
+    DateTime nextWaterTime = flowerFormData
+      .lastWaterTime
+      .add(Duration(days: flowerFormData.waterIntervall));
+
     var response = await database.createFlower(
       result,
       flowerFormData.flowerName,
       flowerFormData.lastWaterTime,
-      flowerFormData.lastWaterTime,
+      nextWaterTime,
       flowerFormData.waterIntervall,
     );
-
-    DateTime nextWaterTime = flowerFormData
-      .lastWaterTime
-      .add(Duration(days: flowerFormData.waterIntervall));
 
     Flower flower = Flower(
       key: response['key'],
