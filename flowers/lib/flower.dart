@@ -37,7 +37,9 @@ class Flower {
 
   void addWaterTime(WaterTime waterTime) {
     var tmp = this.waterTimes;
-    tmp.add(waterTime);
-    this.waterTimes = tmp;
+    if (tmp.length > 0) {
+      tmp.add(waterTime);
+      this.waterTimes = tmp;
+    }
   }
 }
