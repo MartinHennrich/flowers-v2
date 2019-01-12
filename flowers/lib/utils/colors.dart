@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+
 import '../constants/colors.dart';
+import './dateHelpers.dart';
 
 LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
-  DateTime today = DateTime.now();
-  Duration difference = time.difference(today);
+  DateTime today = preSetTimeFrame(DateTime.now());
+  DateTime _time = preSetTimeFrame(time);
+  DateTime _lastTime = preSetTimeFrame(lastTime);
+
+  Duration difference = _time.difference(today);
   int days = difference.inDays;
 
-  if (today.day == lastTime.day && lastTime.month == today.month) {
+  if (today.day == _lastTime.day && _lastTime.month == today.month) {
     return BlueGradient;
   }
 
@@ -22,11 +27,13 @@ LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
 }
 
 Color getColorBasedOnTime2(DateTime time, DateTime lastTime) {
-  DateTime today = DateTime.now();
-  Duration difference = time.difference(today);
+  DateTime today = preSetTimeFrame(DateTime.now());
+  DateTime _time = preSetTimeFrame(time);
+  DateTime _lastTime = preSetTimeFrame(lastTime);
+  Duration difference = _time.difference(today);
   int days = difference.inDays;
 
-  if (today.day == lastTime.day && lastTime.month == today.month) {
+  if (today.day == _lastTime.day && _lastTime.month == today.month) {
     return BlueMain;
   }
 
