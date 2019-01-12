@@ -45,7 +45,7 @@ class App extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => MainPagesTabBar(),
-          '/create-flower': (context) => CreateFlower()
+          '/create-flower': (context) => CreateFlower(),
         },
       ),
     );
