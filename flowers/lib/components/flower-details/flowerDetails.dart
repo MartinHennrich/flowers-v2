@@ -211,6 +211,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
       colorFn: (_, __) => charts.Color(
         r: colorOfTime.red, g: colorOfTime.green, b: colorOfTime.blue, a: colorOfTime.alpha),
       domainFn: (TimeSeriesValue data, _) => data.time,
+      strokeWidthPxFn: (TimeSeriesValue data, _) => 6,
       measureFn: (TimeSeriesValue data, _) => data.value,
       data: data
     )];
@@ -227,8 +228,9 @@ class FlowerDetailsState extends State<FlowerDetails> {
       id: 'waterAmount',
       colorFn: (_, __) => charts.Color(
         r: colorOfTime.red, g: colorOfTime.green, b: colorOfTime.blue, a: colorOfTime.alpha),
-      domainFn: (TimeSeriesValue soil, _) => soil.time,
-      measureFn: (TimeSeriesValue soil, _) => soil.value,
+      domainFn: (TimeSeriesValue data, _) => data.time,
+      strokeWidthPxFn: (TimeSeriesValue data, _) => 6,
+      measureFn: (TimeSeriesValue data, _) => data.value,
       data: data
     )];
   }
@@ -263,7 +265,8 @@ class FlowerDetailsState extends State<FlowerDetails> {
     return _getGraphContainer(
       'SOIL MOISTURE',
       TimeSeriesGraph(
-        _getTimeSeriesSoil()
+        _getTimeSeriesSoil(),
+        type: TimeGraphType.SoilM
       ),
     );
   }
@@ -272,7 +275,8 @@ class FlowerDetailsState extends State<FlowerDetails> {
     return _getGraphContainer(
       'WATER AMOUNT',
       TimeSeriesGraph(
-        _getTimeSeriesWaterAmount()
+        _getTimeSeriesWaterAmount(),
+        type: TimeGraphType.WaterAmount
       ),
     );
   }
