@@ -53,14 +53,14 @@ Future<void> scheduleNotification(String key, String name, DateTime time) async 
   Future.wait([
     flutterLocalNotificationsPlugin.schedule(
       notisKey,
-      'Flower water reminder', '$name wants water',
+      'Water reminder', '$name wants water',
       notificationTime,
       platformChannelSpecifics,
       payload: key
     ),
     flutterLocalNotificationsPlugin.schedule(
       reminderKey,
-      'Flower water reminder', 'Reminder: $name nees water now!',
+      'Water reminder', 'Reminder: $name nees water now!',
       reminderTime,
       platformChannelSpecifics,
       payload: key
