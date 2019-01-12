@@ -9,15 +9,10 @@ import '../utils/firebase.dart';
 import '../utils/waterAmount.dart';
 import '../utils/soilMoisture.dart';
 
-// TODO: use this in flower overview page
 List<WaterTime> snapshotToWaterTime(dynamic waterTimesSnapshot) {
   List<WaterTime> waterTimes = [];
+  var waterTimesMap = Map.from(waterTimesSnapshot.value);
 
-  if (waterTimesSnapshot == null) {
-    return waterTimes;
-  }
-
-  var waterTimesMap = Map.from(waterTimesSnapshot);
 
   waterTimesMap.forEach((k, value){
     DateTime wateredTime = DateTime.parse(value['time']);
