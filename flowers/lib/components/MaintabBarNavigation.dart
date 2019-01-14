@@ -45,13 +45,13 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
   Widget _getBottomNavigationBar() {
     return FABBottomAppBar(
-      centerItemText: 'Add flower',
+      centerItemText: 'Add plant',
       color: Colors.grey,
       selectedColor: BlueMain,
       onTabSelected: _onItemTapped,
       items: [
         FABBottomAppBarItem(iconData: Icons.local_florist, text: 'Today'),
-        FABBottomAppBarItem(iconData: Icons.list, text: 'Flowers')
+        FABBottomAppBarItem(iconData: Icons.list, text: 'Garden')
       ],
     );
   }

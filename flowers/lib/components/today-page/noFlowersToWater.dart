@@ -30,10 +30,10 @@ class NoFlowersToWater extends StatelessWidget {
     }
 
     if (hasNoFlowers) {
-      return 'add flowers\nto start you journey';
+      return 'add plants\nto start you journey';
     }
 
-    return 'no flowers to water';
+    return 'no flowers need water';
   }
 
   Color _getColor() {
@@ -75,3 +75,4 @@ class NoFlowersToWater extends StatelessWidget {
     );
   }
 }
+

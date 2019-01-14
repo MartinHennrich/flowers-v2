@@ -85,7 +85,7 @@ class _CreateFlowerState extends State<CreateFlower> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: Text('ADD FLOWER'),
+        title: Text('ADD PLANT'),
       ),
       body: ListView(
         children: [
@@ -156,7 +156,7 @@ class _CreateFlowerState extends State<CreateFlower> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Add flower',
+                          Text('Add plant',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white

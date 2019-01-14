@@ -14,7 +14,7 @@ class FlowersListPage extends StatelessWidget {
 
   List<Widget> _getLoadingScreen() {
     return [
-      PageTitle(title: 'Flowers'),
+      PageTitle(title: 'Garden'),
       Container(
         height: 300,
         child: Center(
@@ -41,7 +41,7 @@ class FlowersListPage extends StatelessWidget {
         List<Flower> sorted = _sortFlowersAlphabetically(vm.flowers);
 
         List<Widget> children = [
-          PageTitle(title: 'Flowers'),
+          PageTitle(title: 'Garden'),
           FlowersList(
             flowers: sorted,
             withHero: true,
