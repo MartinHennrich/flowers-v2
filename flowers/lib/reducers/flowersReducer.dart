@@ -22,6 +22,12 @@ List<Flower> flowersReducer(List<Flower> state, dynamic action) {
     }).toList();
   }
 
+  if (action is DeleteFlowerAction) {
+    return state.where((Flower flower) {
+      return flower.key != action.flower.key;
+    }).toList();
+  }
+
   return state;
 }
 

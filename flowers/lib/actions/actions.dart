@@ -16,6 +16,12 @@ class UpdateFlowerAction {
   UpdateFlowerAction(this.flower);
 }
 
+class DeleteFlowerAction {
+  Flower flower;
+
+  DeleteFlowerAction(this.flower);
+}
+
 enum FetchingData {
   Completed,
   Fetching

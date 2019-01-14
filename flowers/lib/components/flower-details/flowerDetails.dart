@@ -328,6 +328,12 @@ class FlowerDetailsState extends State<FlowerDetails> {
     );
   }
 
+  void _select(Choice choice) {
+    database.deleteFlower(widget.flower.key);
+    Navigator.pop(context);
+    AppStore.dispatch(DeleteFlowerAction(widget.flower));
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -335,6 +341,19 @@ class FlowerDetailsState extends State<FlowerDetails> {
       appBar: AppBar(
         elevation: 0,
         title: Text(widget.flower.name),
+        actions: [
+          PopupMenuButton<Choice>(
+            onSelected: _select,
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<Choice>(
+                  value: choices,
+                  child: Text(choices.title),
+                )
+              ];
+            },
+          ),
+        ]
       ),
 
       backgroundColor: Colors.white,
@@ -362,3 +381,12 @@ class FlowerDetailsState extends State<FlowerDetails> {
     );
   }
 }
+
+class Choice {
+  const Choice({this.title, this.icon});
+
+  final String title;
+  final IconData icon;
+}
+
+const Choice choices = Choice(title: 'Delete', icon: Icons.directions_car);

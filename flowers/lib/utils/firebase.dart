@@ -136,6 +136,13 @@ class Database {
       .child(key)
       .once();
   }
+
+  Future<void> deleteFlower(String key) async {
+    return userDatabaseReference
+      .child('flowers')
+      .child(key)
+      .remove();
+  }
 }
 
 Database database = Database();
