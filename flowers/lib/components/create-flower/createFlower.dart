@@ -1,8 +1,10 @@
+import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../constants/colors.dart';
 import '../../utils/firebase.dart';
@@ -34,7 +36,7 @@ class _CreateFlowerState extends State<CreateFlower> {
 
   Future<void> _onCreateFlower() async {
     File image = flowerFormData.image;
-    var dir = Directory.systemTemp;
+    var dir = await getTemporaryDirectory();
     var targetPath = dir.absolute.path + "/temp.jpg";
 
     var result = await FlutterImageCompress.compressAndGetFile(
@@ -76,7 +78,7 @@ class _CreateFlowerState extends State<CreateFlower> {
       flower.nextWaterTime
     );
 
-    dir.delete();
+    await result.delete();
   }
 
   @override
