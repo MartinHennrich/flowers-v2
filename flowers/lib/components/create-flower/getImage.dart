@@ -92,7 +92,7 @@ class GetImageState extends State<GetImage> {
         widget.onSave(file);
       },
       validator: (value) {
-        return value == null ? 'Select or take new image' : null;
+        return value == null ? 'Select or capture image' : null;
       },
       builder: (imageForm) {
         return Row(
