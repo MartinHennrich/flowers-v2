@@ -68,8 +68,6 @@ Flower postponeWatering(Flower flower, SoilMoisture soilMoisture) {
   int nextWaterDays = postponeSoilMoistureToDays(soilMoisture);
   if (nextWaterDays <= 0) {
     nextWaterDays = 1;
-  } else {
-    nextWaterDays += flower.waterInterval;
   }
 
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
