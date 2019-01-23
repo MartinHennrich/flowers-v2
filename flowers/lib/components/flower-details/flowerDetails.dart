@@ -14,6 +14,7 @@ import '../../utils/firebase-redux.dart';
 import '../../actions/actions.dart';
 import '../../store.dart';
 import './timeGraph.dart';
+import './deleteDialog.dart';
 
 class FlowerDetails extends StatefulWidget {
   final Flower flower;
@@ -114,20 +115,36 @@ class FlowerDetailsState extends State<FlowerDetails> {
   }
 
   String _getDayToWaterName() {
+    DateTime today = preSetTimeFrame(DateTime.now());
+    DateTime tomorrow = today.add(Duration(days: 1));
+    DateTime nextTime = preSetTimeFrame(widget.flower.nextWaterTime);
+
+    if (tomorrow.day == nextTime.day && tomorrow.month == nextTime.month) {
+      return 'tomorrow';
+    }
+
+    if (nextTime.day < today.day && today.month == nextTime.month) {
+      return 'today!!';
+    }
+
+    if (today.day == nextTime.day && today.month == today.month) {
+      return 'today';
+    }
+
     return '${widget.flower.nextWaterTime.month} / ${widget.flower.nextWaterTime.day}';
   }
 
   String _getLastWaterTimeName() {
     DateTime today = preSetTimeFrame(DateTime.now());
     DateTime lastWateredTime = preSetTimeFrame(widget.flower.lastTimeWatered);
-    Duration diff = lastWateredTime.difference(today);
+    DateTime yesterday = today.subtract(Duration(days: 1));
 
     if (today.day == lastWateredTime.day && today.month == lastWateredTime.month) {
-      return 'Today';
+      return 'today';
     }
 
-    if (diff.inHours >= 12 && diff.inHours <= 23) {
-      return 'Yesterday';
+    if (yesterday.day == lastWateredTime.day && yesterday.month == today.month) {
+      return 'yesterday';
     }
 
     return '${lastWateredTime.month} / ${lastWateredTime.day}';
@@ -329,9 +346,16 @@ class FlowerDetailsState extends State<FlowerDetails> {
   }
 
   void _select(Choice choice) {
-    database.deleteFlower(widget.flower.key);
-    Navigator.pop(context);
-    AppStore.dispatch(DeleteFlowerAction(widget.flower));
+    if (choice.type == 'delete') {
+      openDialog();
+    }
+  }
+
+  void openDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => DeleteDialog(flower: widget.flower)
+    );
   }
 
   @override
@@ -383,10 +407,11 @@ class FlowerDetailsState extends State<FlowerDetails> {
 }
 
 class Choice {
-  const Choice({this.title, this.icon});
-
   final String title;
   final IconData icon;
+  final String type;
+
+  const Choice({this.title, this.icon, this.type});
 }
 
-const Choice choices = Choice(title: 'Delete', icon: Icons.directions_car);
+const Choice choices = Choice(title: 'Delete', icon: Icons.directions_car, type: 'delete');
