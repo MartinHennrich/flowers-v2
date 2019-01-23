@@ -104,26 +104,30 @@ class _CreateFlowerState extends State<CreateFlower> {
                     },
                   ),
 
-                  TextFormField(
-                    onSaved: (form) {
-                      flowerFormData.flowerName = form;
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Batman?',
-                      labelText: 'Name',
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 34),
+                    child: TextFormField(
+                      onSaved: (form) {
+                        flowerFormData.flowerName = form;
+                      },
+                      maxLength: 12,
+                      decoration: InputDecoration(
+                        hintText: 'Batman?',
+                        labelText: 'Name',
+                      ),
+                      validator: (String value) {
+                        if (value.length < 2) {
+                          return 'Minimun of 2 chars';
+                        }
+
+                        if (value.length > 12) {
+                          return 'Max of 12 chars';
+                        }
+
+                        return null;
+                      },
+                    )
                     ),
-                    validator: (String value) {
-                      if (value.length < 2) {
-                        return 'Minimun of 2 chars';
-                      }
-
-                      if (value.length > 12) {
-                        return 'Max of 12 chars';
-                      }
-
-                      return null;
-                    },
-                  ),
 
                   LastWaterTime(
                     onSave: (DateTime lastWaterTime) {
@@ -138,7 +142,7 @@ class _CreateFlowerState extends State<CreateFlower> {
                   ),
 
                   Container(
-                    margin: EdgeInsets.only(top: 78),
+                    margin: EdgeInsets.only(top: 54),
                     child: GradientButton(
                       gradient: BlueGradient,
                       increaseHeightBy: 30,
