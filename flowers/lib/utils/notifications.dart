@@ -6,7 +6,7 @@ import '../constants/colors.dart';
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
   'com.plant.reminders', 'flowers', 'Reminder to water your flowers',
-  color: BlueMain,
+  color: GreenMain,
   groupKey: 'water-time',
   importance: Importance.Low,
   priority: Priority.Low
