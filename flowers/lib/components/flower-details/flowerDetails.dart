@@ -40,8 +40,8 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
     setState(() {
       colorOfTime = getColorBasedOnTime2(
-        widget.flower.nextWaterTime,
-        widget.flower.lastTimeWatered
+        widget.flower.reminders.water.nextTime,
+        widget.flower.reminders.water.lastTime
       );
     });
     _fetchFlowerData();
@@ -76,7 +76,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
   Widget _getDaysLeft() {
     DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime nextWatertime = preSetTimeFrame(widget.flower.nextWaterTime);
+    DateTime nextWatertime = preSetTimeFrame(widget.flower.reminders.water.nextTime);
     Duration diff = nextWatertime.difference(today);
     int daysLeft = 0;
 
@@ -117,7 +117,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
   String _getDayToWaterName() {
     DateTime today = preSetTimeFrame(DateTime.now());
     DateTime tomorrow = today.add(Duration(days: 1));
-    DateTime nextTime = preSetTimeFrame(widget.flower.nextWaterTime);
+    DateTime nextTime = preSetTimeFrame(widget.flower.reminders.water.nextTime);
 
     if (tomorrow.day == nextTime.day && tomorrow.month == nextTime.month) {
       return 'tomorrow';
@@ -131,12 +131,12 @@ class FlowerDetailsState extends State<FlowerDetails> {
       return 'today';
     }
 
-    return '${widget.flower.nextWaterTime.month} / ${widget.flower.nextWaterTime.day}';
+    return '${widget.flower.reminders.water.nextTime.month} / ${widget.flower.reminders.water.nextTime.day}';
   }
 
   String _getLastWaterTimeName() {
     DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime lastWateredTime = preSetTimeFrame(widget.flower.lastTimeWatered);
+    DateTime lastWateredTime = preSetTimeFrame(widget.flower.reminders.water.lastTime);
     DateTime yesterday = today.subtract(Duration(days: 1));
 
     if (today.day == lastWateredTime.day && today.month == lastWateredTime.month) {

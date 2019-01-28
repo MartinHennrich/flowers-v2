@@ -13,22 +13,53 @@ class WaterTime {
   });
 }
 
+class Reminder {
+  String key;
+  int interval;
+  DateTime lastTime;
+  DateTime nextTime;
+
+  Reminder({
+    this.key,
+    this.interval,
+    this.lastTime,
+    this.nextTime,
+  });
+}
+
+class Reminders {
+  Reminder water;
+
+  Reminders({
+    this.water,
+  });
+
+  Map<String, dynamic> toFirebaseObject() {
+    Map<String, dynamic> obj = {};
+    if (water != null) {
+      obj['water'] = {
+        'interval': water.interval,
+        'lastTime': water.lastTime.toIso8601String(),
+        'nextTime': water.nextTime.toIso8601String(),
+      };
+    }
+
+    return obj;
+  }
+}
+
 class Flower {
   String name;
   String imageUrl;
   String key;
-  int waterInterval;
-  DateTime lastTimeWatered;
-  DateTime nextWaterTime;
+  Reminders reminders;
   List<WaterTime> waterTimes = [];
 
   Flower({
     this.name,
-    this.lastTimeWatered,
-    this.nextWaterTime,
     this.imageUrl,
     this.key,
-    this.waterInterval,
+    this.reminders
   });
 
   void setWaterTimes(List<WaterTime> waterTimes) {

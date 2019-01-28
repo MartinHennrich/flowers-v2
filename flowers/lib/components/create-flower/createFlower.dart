@@ -15,7 +15,7 @@ import '../../utils/notifications.dart';
 
 import './getImage.dart';
 import './lastWaterTime.dart';
-import './waterIntervall.dart';
+import './intervall.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -52,21 +52,37 @@ class _CreateFlowerState extends State<CreateFlower> {
       .lastWaterTime
       .add(Duration(days: flowerFormData.waterIntervall));
 
+    Flower _flower = Flower(
+      key: '',
+      name: flowerFormData.flowerName,
+      imageUrl: '',
+      reminders: Reminders(
+        water: Reminder(
+          interval: flowerFormData.waterIntervall,
+          lastTime: flowerFormData.lastWaterTime,
+          nextTime: nextWaterTime,
+          key: 'water'
+        )
+      ),
+    );
+
     var response = await database.createFlower(
       result,
-      flowerFormData.flowerName,
-      flowerFormData.lastWaterTime,
-      nextWaterTime,
-      flowerFormData.waterIntervall,
+      _flower
     );
 
     Flower flower = Flower(
       key: response['key'],
       name: flowerFormData.flowerName,
       imageUrl:  response['imageUrl'],
-      lastTimeWatered: flowerFormData.lastWaterTime,
-      nextWaterTime: nextWaterTime,
-      waterInterval: flowerFormData.waterIntervall
+      reminders: Reminders(
+        water: Reminder(
+          interval: flowerFormData.waterIntervall,
+          lastTime: flowerFormData.lastWaterTime,
+          nextTime: nextWaterTime,
+          key: 'water'
+        )
+      ),
     );
 
     AppStore.dispatch(AddFlowerAction(flower));
@@ -75,7 +91,7 @@ class _CreateFlowerState extends State<CreateFlower> {
     scheduleNotification(
       flower.key,
       flower.name,
-      flower.nextWaterTime
+      flower.reminders.water.nextTime
     );
 
     await result.delete();
@@ -135,7 +151,7 @@ class _CreateFlowerState extends State<CreateFlower> {
                     },
                   ),
 
-                  WaterIntervall(
+                  Intervall(
                     onSave: (int waterIntervall) {
                       flowerFormData.waterIntervall = waterIntervall;
                     },

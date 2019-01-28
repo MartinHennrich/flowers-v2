@@ -40,8 +40,6 @@ class Database {
           '__none__': {
             'name': '',
             'image': '',
-            'lastTimeWatered': '',
-            'nextWaterTime': ''
           }
         },
         'created_at': DateTime.now().toIso8601String()
@@ -81,16 +79,14 @@ class Database {
     return userDatabaseReference
       .child('flowers')
       .child(flower.key)
-      .update({
-        'nextWaterTime': flower.nextWaterTime.toIso8601String(),
-        'lastTimeWatered': flower.lastTimeWatered.toIso8601String()
-      });
+      .child('reminders')
+      .update(flower.reminders.toFirebaseObject());
   }
 
   Future<void> postponeWatering(Flower flower) async {
     return userDatabaseReference.child('flowers').child(flower.key)
       .update({
-        'nextWaterTime': flower.nextWaterTime.toIso8601String(),
+        'nextWaterTime': flower.reminders.water.nextTime.toIso8601String(),
       });
   }
 
@@ -106,7 +102,7 @@ class Database {
     return await _storage.uploadImageFile(file);
   }
 
-  Future<dynamic> createFlower(File file, String name, DateTime lastWaterTime, DateTime nextWaterTime, int intervall) async {
+  Future<dynamic> createFlower(File file, Flower flower) async {
     String fileUrl = await _uploadImageFile(file);
 
     DatabaseReference flowerPush = userDatabaseReference
@@ -114,11 +110,9 @@ class Database {
       .push();
 
      await flowerPush.set({
-        'name': name,
+        'name': flower.name,
         'image': fileUrl,
-        'lastTimeWatered': lastWaterTime.toIso8601String(),
-        'nextWaterTime': nextWaterTime.toIso8601String(),
-        'waterInterval': intervall,
+        'reminders': flower.reminders.toFirebaseObject()
       });
 
     return {

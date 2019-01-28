@@ -27,7 +27,7 @@ class FlowerCard extends StatelessWidget {
       return BlueGradient;
     }
 
-    return getColorBasedOnTime(flower.nextWaterTime, flower.lastTimeWatered);
+    return getColorBasedOnTime(flower.reminders.water.nextTime, flower.reminders.water.lastTime);
   }
 
   Widget _withHero(Widget widget) {
@@ -76,7 +76,7 @@ class FlowerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color timeBasedColor = getColorBasedOnTime2(flower.nextWaterTime, flower.lastTimeWatered);
+    Color timeBasedColor = getColorBasedOnTime2(flower.reminders.water.nextTime, flower.reminders.water.lastTime);
 
 
     return _withHero(

@@ -31,6 +31,30 @@ List<WaterTime> snapshotToWaterTime(dynamic waterTimesSnapshot) {
   return waterTimes;
 }
 
+Reminders snapshotToReminders(dynamic remindersSnapshot) {
+  Reminder waterReminder;
+  var remindersMap = Map.from(remindersSnapshot);
+
+  remindersMap.forEach((key, value) {
+
+    switch (key) {
+      case 'water':
+        waterReminder = Reminder(
+          lastTime: DateTime.parse(value['lastTime']),
+          nextTime: DateTime.parse(value['nextTime']),
+          interval: value['interval'],
+          key: key,
+        );
+      break;
+      default:
+    }
+  });
+
+  return Reminders(
+    water: waterReminder,
+  );
+}
+
 List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
   var databaseFlowers = snapshot.value['flowers'];
   var flowersMap = Map.from(databaseFlowers);
@@ -43,18 +67,17 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
 
     String name = value['name'];
     String imageUrl = value['image'];
-    DateTime lastTimeWatered = DateTime.parse(value['lastTimeWatered']);
+    Reminders reminders = snapshotToReminders(value['reminders']);
+    /* DateTime lastTimeWatered = DateTime.parse(value['lastTimeWatered']);
     DateTime nextWaterTime = DateTime.parse(value['nextWaterTime']);
-    int waterInterval = value['waterInterval'];
+    int waterInterval = value['waterInterval']; */
 
     flowers.add(
       Flower(
         name: name,
         imageUrl: imageUrl,
-        lastTimeWatered: lastTimeWatered,
-        nextWaterTime: nextWaterTime,
+        reminders: reminders,
         key: k,
-        waterInterval: waterInterval,
       )
     );
   });

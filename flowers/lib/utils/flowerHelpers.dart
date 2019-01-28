@@ -10,8 +10,8 @@ List<Flower> getFlowersThatHasBeenWatered(List<Flower> flowers) {
   DateTime dateTime = DateTime.now();
   List<Flower> flowersThatHasBeenWaterd = [];
   flowers.forEach((flower){
-    int lastWaterDay = flower.lastTimeWatered.day;
-    int lastWaterMonth = flower.lastTimeWatered.month;
+    int lastWaterDay = flower.reminders.water.lastTime.day;
+    int lastWaterMonth = flower.reminders.water.lastTime.month;
 
     if (lastWaterDay == dateTime.day && lastWaterMonth == dateTime.month) {
       flowersThatHasBeenWaterd.add(flower);
@@ -25,15 +25,15 @@ List<Flower> getFlowersThatNeedWater(List<Flower> flowers) {
   DateTime dateTime = DateTime.now();
   List<Flower> flowersThatNeedWater = [];
   flowers.forEach((flower){
-    int lastWaterDay = flower.lastTimeWatered.day;
-    int lastWaterMonth = flower.lastTimeWatered.month;
+    int lastWaterDay = flower.reminders.water.lastTime.day;
+    int lastWaterMonth = flower.reminders.water.lastTime.month;
 
     if (lastWaterDay == dateTime.day && lastWaterMonth == dateTime.month) {
       return;
     }
 
-    int waterDay = flower.nextWaterTime.day;
-    int waterMonth = flower.nextWaterTime.month;
+    int waterDay = flower.reminders.water.nextTime.day;
+    int waterMonth = flower.reminders.water.nextTime.month;
 
     if (waterDay <= dateTime.day && waterMonth == dateTime.month) {
       flowersThatNeedWater.add(flower);
@@ -42,8 +42,8 @@ List<Flower> getFlowersThatNeedWater(List<Flower> flowers) {
 
   DateTime today = DateTime.now();
   flowersThatNeedWater.sort((a, b) {
-    int aDiffDays = a.nextWaterTime.difference(today).inDays;
-    int bDiffDays = b.nextWaterTime.difference(today).inDays;
+    int aDiffDays = a.reminders.water.nextTime.difference(today).inDays;
+    int bDiffDays = b.reminders.water.nextTime.difference(today).inDays;
     return aDiffDays.compareTo(bDiffDays);
   });
 
@@ -71,12 +71,12 @@ Flower postponeWatering(Flower flower, SoilMoisture soilMoisture) {
   }
 
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
-  flower.nextWaterTime = nextWaterTime;
+  flower.reminders.water.nextTime = nextWaterTime;
 
   rescheduleNotification(
     flower.key,
     flower.name,
-    flower.nextWaterTime
+    flower.reminders.water.nextTime
   );
 
   return flower;
@@ -106,19 +106,19 @@ WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture s
   if (nextWaterDays < 0) {
     nextWaterDays = 1;
   } else {
-    nextWaterDays += flower.waterInterval;
+    nextWaterDays += flower.reminders.water.interval;
   }
 
-  flower.lastTimeWatered = wateredTime;
+  flower.reminders.water.lastTime = wateredTime;
   flower.addWaterTime(waterTime);
 
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
-  flower.nextWaterTime = nextWaterTime;
+  flower.reminders.water.nextTime = nextWaterTime;
 
   scheduleNotification(
     flower.key,
     flower.name,
-    flower.nextWaterTime
+    flower.reminders.water.nextTime
   );
 
   return WateredFlower(
