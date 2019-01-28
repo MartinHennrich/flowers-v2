@@ -114,6 +114,11 @@ class FlowerDetailsState extends State<FlowerDetails> {
     );
   }
 
+  String _getNotificationTime() {
+    DateTime time = widget.flower.reminders.water.timeOfDayForNotification;
+    return ' ${time.hour < 10 ? '0' + time.hour.toString() : time.hour}:${time.minute < 10 ? '0' + time.minute.toString() : time.minute}';
+  }
+
   String _getDayToWaterName() {
     DateTime today = preSetTimeFrame(DateTime.now());
     DateTime tomorrow = today.add(Duration(days: 1));
@@ -192,11 +197,23 @@ class FlowerDetailsState extends State<FlowerDetails> {
                   )),
                 Padding(
                   padding: EdgeInsets.only(top: 6),
-                  child: Text(
-                    _getDayToWaterName(),
-                    style: TextStyle(
-                      fontSize: 28
-                    )
+                  child: RichText(
+                    text: TextSpan(
+                      text: _getDayToWaterName(),
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Colors.black
+                      ),
+                      children: [
+                        TextSpan(
+                          text: _getNotificationTime(),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54
+                          ),
+                        )
+                      ]
+                    ),
                   )
                 ),
               ],
