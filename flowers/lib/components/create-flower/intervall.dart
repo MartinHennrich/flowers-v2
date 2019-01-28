@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
 
-class WaterIntervall extends StatelessWidget {
+class Intervall extends StatelessWidget {
   final Function(int) onSave;
 
-  WaterIntervall({
+  Intervall({
     @required this.onSave
   });
 
@@ -16,7 +16,7 @@ class WaterIntervall extends StatelessWidget {
       onSaved: (int form) {
         onSave(form);
       },
-      builder: (waterintervallFrom) {
+      builder: (intervallFrom) {
         return Center(
           child: Container(
             margin: EdgeInsets.only(top: 16),
@@ -37,9 +37,9 @@ class WaterIntervall extends StatelessWidget {
                       iconSize: 44,
                       color: Colors.black26,
                       onPressed: () {
-                        if (waterintervallFrom.value - 1 >= 1) {
-                          waterintervallFrom.setValue(waterintervallFrom.value - 1);
-                          waterintervallFrom.setState((){});
+                        if (intervallFrom.value - 1 >= 1) {
+                          intervallFrom.setValue(intervallFrom.value - 1);
+                          intervallFrom.setState((){});
                         }
                       },
                       icon: Icon(
@@ -49,7 +49,7 @@ class WaterIntervall extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                       child: Text(
-                        waterintervallFrom.value.toString(),
+                        intervallFrom.value.toString(),
                         style: TextStyle(
                           fontSize: 40,
                           color: BlueMain
@@ -61,8 +61,8 @@ class WaterIntervall extends StatelessWidget {
                       iconSize: 44,
                       color: Colors.black26,
                       onPressed: () {
-                        waterintervallFrom.setValue(waterintervallFrom.value + 1);
-                        waterintervallFrom.setState((){});
+                        intervallFrom.setValue(intervallFrom.value + 1);
+                        intervallFrom.setState((){});
                       },
                       icon: Icon(
                         Icons.keyboard_arrow_right,
