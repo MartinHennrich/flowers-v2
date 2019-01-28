@@ -16,6 +16,7 @@ import '../../utils/notifications.dart';
 import './getImage.dart';
 import './lastWaterTime.dart';
 import './intervall.dart';
+import './pickTime.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -26,6 +27,7 @@ class FlowerFormData {
   File image;
   String flowerName = '';
   DateTime lastWaterTime = DateTime.now();
+  DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
   int waterIntervall = 5;
 }
 
@@ -61,6 +63,7 @@ class _CreateFlowerState extends State<CreateFlower> {
           interval: flowerFormData.waterIntervall,
           lastTime: flowerFormData.lastWaterTime,
           nextTime: nextWaterTime,
+          timeOfDayForNotification: flowerFormData.notificationTime,
           key: 'water'
         )
       ),
@@ -80,6 +83,7 @@ class _CreateFlowerState extends State<CreateFlower> {
           interval: flowerFormData.waterIntervall,
           lastTime: flowerFormData.lastWaterTime,
           nextTime: nextWaterTime,
+          timeOfDayForNotification: flowerFormData.notificationTime,
           key: 'water'
         )
       ),
@@ -91,7 +95,8 @@ class _CreateFlowerState extends State<CreateFlower> {
     scheduleNotification(
       flower.key,
       flower.name,
-      flower.reminders.water.nextTime
+      flower.reminders.water.nextTime,
+      flower.reminders.water.timeOfDayForNotification
     );
 
     await result.delete();
@@ -157,8 +162,14 @@ class _CreateFlowerState extends State<CreateFlower> {
                     },
                   ),
 
+                  PickTime(
+                    onSave: (DateTime time) {
+                      flowerFormData.notificationTime = time;
+                    },
+                  ),
+
                   Container(
-                    margin: EdgeInsets.only(top: 54),
+                    margin: EdgeInsets.fromLTRB(0, 24, 0, 24),
                     child: GradientButton(
                       gradient: BlueGradient,
                       increaseHeightBy: 30,

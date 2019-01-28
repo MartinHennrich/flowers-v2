@@ -43,6 +43,7 @@ Reminders snapshotToReminders(dynamic remindersSnapshot) {
           lastTime: DateTime.parse(value['lastTime']),
           nextTime: DateTime.parse(value['nextTime']),
           interval: value['interval'],
+          timeOfDayForNotification: DateTime.parse(value['timeOfDayForNotification']),
           key: key,
         );
       break;
@@ -68,9 +69,6 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
     String name = value['name'];
     String imageUrl = value['image'];
     Reminders reminders = snapshotToReminders(value['reminders']);
-    /* DateTime lastTimeWatered = DateTime.parse(value['lastTimeWatered']);
-    DateTime nextWaterTime = DateTime.parse(value['nextWaterTime']);
-    int waterInterval = value['waterInterval']; */
 
     flowers.add(
       Flower(

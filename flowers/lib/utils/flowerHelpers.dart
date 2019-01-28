@@ -76,7 +76,8 @@ Flower postponeWatering(Flower flower, SoilMoisture soilMoisture) {
   rescheduleNotification(
     flower.key,
     flower.name,
-    flower.reminders.water.nextTime
+    flower.reminders.water.nextTime,
+    flower.reminders.water.timeOfDayForNotification
   );
 
   return flower;
@@ -118,7 +119,8 @@ WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture s
   scheduleNotification(
     flower.key,
     flower.name,
-    flower.reminders.water.nextTime
+    flower.reminders.water.nextTime,
+    flower.reminders.water.timeOfDayForNotification
   );
 
   return WateredFlower(

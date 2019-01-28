@@ -40,11 +40,14 @@ Future<void> saveNotificationKeys(String key, List<int> keys SharedPreferences p
   await prefs.setStringList('$key-notifications', keys.map((v) => v.toString()).toList());
 }
 
-Future<void> scheduleNotification(String key, String name, DateTime time) async {
+Future<void> scheduleNotification(String key, String name, DateTime time, DateTime timeOfDayForNotification) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   cancelOldNotification(key, prefs);
 
-  DateTime notificationTime = DateTime(time.year, time.month, time.day, 8);
+  DateTime notificationTime = DateTime(time.year, time.month, time.day,
+    timeOfDayForNotification.hour,
+    timeOfDayForNotification.minute
+  );
   DateTime reminderTime = notificationTime.add(Duration(days: 1));
 
   int notisKey = key.hashCode;
@@ -70,6 +73,6 @@ Future<void> scheduleNotification(String key, String name, DateTime time) async 
   saveNotificationKeys(key, [notisKey, reminderKey], prefs);
 }
 
-Future<void> rescheduleNotification(String key, name, DateTime time) async {
-  scheduleNotification(key, name, time);
+Future<void> rescheduleNotification(String key, name, DateTime time, DateTime timeOfDayForNotification) async {
+  scheduleNotification(key, name, time, timeOfDayForNotification);
 }

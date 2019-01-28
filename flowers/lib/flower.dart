@@ -1,4 +1,3 @@
-
 import './constants/enums.dart';
 
 class WaterTime {
@@ -18,12 +17,14 @@ class Reminder {
   int interval;
   DateTime lastTime;
   DateTime nextTime;
+  DateTime timeOfDayForNotification = DateTime(2019, 1, 1, 8, 0);
 
   Reminder({
     this.key,
     this.interval,
     this.lastTime,
     this.nextTime,
+    this.timeOfDayForNotification,
   });
 }
 
@@ -41,6 +42,7 @@ class Reminders {
         'interval': water.interval,
         'lastTime': water.lastTime.toIso8601String(),
         'nextTime': water.nextTime.toIso8601String(),
+        'timeOfDayForNotification': water.timeOfDayForNotification.toIso8601String()
       };
     }
 
