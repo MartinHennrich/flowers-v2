@@ -329,7 +329,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
     if (widget.flower.waterTimes.length < 2) {
       return Center(child: Container(
-        height: 200,
+        height: 300,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
