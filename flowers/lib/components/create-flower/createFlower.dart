@@ -17,6 +17,7 @@ import './getImage.dart';
 import './lastWaterTime.dart';
 import './intervall.dart';
 import './pickTime.dart';
+import './name.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -125,30 +126,11 @@ class _CreateFlowerState extends State<CreateFlower> {
                     },
                   ),
 
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 34),
-                    child: TextFormField(
-                      onSaved: (form) {
-                        flowerFormData.flowerName = form;
-                      },
-                      maxLength: 12,
-                      decoration: InputDecoration(
-                        hintText: 'Batman?',
-                        labelText: 'Name',
-                      ),
-                      validator: (String value) {
-                        if (value.length < 2) {
-                          return 'Minimun of 2 chars';
-                        }
-
-                        if (value.length > 12) {
-                          return 'Max of 12 chars';
-                        }
-
-                        return null;
-                      },
-                    )
-                    ),
+                  Name(
+                    onSave: (name) {
+                      flowerFormData.flowerName = name;
+                    },
+                  ),
 
                   LastWaterTime(
                     onSave: (DateTime lastWaterTime) {
