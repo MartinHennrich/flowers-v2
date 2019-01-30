@@ -10,13 +10,22 @@ class Storage {
     userRef = storage.ref().child(userId);
   }
 
-  uploadImageFile(File file) async {
+  Future<Map<String, String>> uploadImageFile(File file) async {
     String id = Uuid().v4();
 
     StorageReference fileRef = userRef.child('images/$id.png');
     StorageUploadTask uploadTask = fileRef.putFile(file);
     StorageTaskSnapshot snapshot = await uploadTask.onComplete;
-    return await snapshot.ref.getDownloadURL();
+    String url = await snapshot.ref.getDownloadURL();
+
+    return {
+      'url': url,
+      'id': id
+    };
+  }
+
+  removeImage(String id) async {
+    return userRef.child('images/$id.png').delete();
   }
 }
 
