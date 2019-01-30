@@ -15,6 +15,7 @@ import '../../actions/actions.dart';
 import '../../store.dart';
 import './timeGraph.dart';
 import './deleteDialog.dart';
+import './edit.dart';
 
 class FlowerDetails extends StatefulWidget {
   final Flower flower;
@@ -365,6 +366,13 @@ class FlowerDetailsState extends State<FlowerDetails> {
   void _select(Choice choice) {
     if (choice.type == 'delete') {
       openDialog();
+    } else if (choice.type == 'edit') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditFlower(flower: widget.flower),
+        ),
+      );
     }
   }
 
@@ -388,8 +396,12 @@ class FlowerDetailsState extends State<FlowerDetails> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<Choice>(
-                  value: choices,
-                  child: Text(choices.title),
+                  value: choices[0],
+                  child: Text(choices[0].title),
+                ),
+                PopupMenuItem<Choice>(
+                  value: choices[1],
+                  child: Text(choices[1].title),
                 )
               ];
             },
@@ -431,4 +443,7 @@ class Choice {
   const Choice({this.title, this.icon, this.type});
 }
 
-const Choice choices = Choice(title: 'Delete', icon: Icons.directions_car, type: 'delete');
+const List<Choice> choices = [
+  Choice(title: 'Edit', icon: Icons.directions_car, type: 'edit'),
+  Choice(title: 'Delete', icon: Icons.directions_car, type: 'delete'),
+];
