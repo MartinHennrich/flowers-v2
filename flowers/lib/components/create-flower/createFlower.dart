@@ -1,10 +1,7 @@
-import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:gradient_widgets/gradient_widgets.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../constants/colors.dart';
 import '../../utils/firebase.dart';
@@ -12,6 +9,7 @@ import '../../flower.dart';
 import '../../store.dart';
 import '../../actions/actions.dart';
 import '../../utils/notifications.dart';
+import '../../utils/image.dart';
 
 import './getImage.dart';
 import './lastWaterTime.dart';
@@ -39,17 +37,7 @@ class _CreateFlowerState extends State<CreateFlower> {
 
   Future<void> _onCreateFlower() async {
     File image = flowerFormData.image;
-    var dir = await getTemporaryDirectory();
-    var targetPath = dir.absolute.path + "/temp.jpg";
-
-    var result = await FlutterImageCompress.compressAndGetFile(
-      image.absolute.path,
-      targetPath,
-      quality: 50,
-      rotate: 90,
-      minHeight: 400,
-      minWidth: 400
-    );
+    var result = await compressImageFile(image);
 
     DateTime nextWaterTime = flowerFormData
       .lastWaterTime
@@ -79,6 +67,7 @@ class _CreateFlowerState extends State<CreateFlower> {
       key: response['key'],
       name: flowerFormData.flowerName,
       imageUrl:  response['imageUrl'],
+      imageId: response['imageId'],
       reminders: Reminders(
         water: Reminder(
           interval: flowerFormData.waterIntervall,
