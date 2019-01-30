@@ -4,15 +4,17 @@ import '../../constants/colors.dart';
 
 class Intervall extends StatelessWidget {
   final Function(int) onSave;
+  final int initialValue;
 
   Intervall({
-    @required this.onSave
+    @required this.onSave,
+    this.initialValue = 5
   });
 
   @override
   Widget build(BuildContext context) {
     return FormField(
-      initialValue: 5,
+      initialValue: initialValue,
       onSaved: (int form) {
         onSave(form);
       },

@@ -8,11 +8,28 @@ enum PickTimes {
   Custom
 }
 
+PickTimes dateTimPickTimes(DateTime time) {
+  if (time.hour == 8 && time.minute == 0) {
+    return PickTimes.Morning;
+  }
+
+  if (time.hour == 18 && time.minute == 0) {
+    return PickTimes.Evening;
+  }
+
+  return PickTimes.Custom;
+}
+
 class PickTime extends StatelessWidget {
   final Function(DateTime) onSave;
+  final Map<String, dynamic> intialValue;
 
   PickTime({
-    @required this.onSave
+    this.onSave,
+    this.intialValue = const {
+      'enum': PickTimes.Morning,
+      'time': TimeOfDay(hour: 8, minute: 0)
+    }
   });
 
   Widget _getGenericButton(Function onPressed, String text, PickTimes activeValue, PickTimes PickTime, {
@@ -37,7 +54,7 @@ class PickTime extends StatelessWidget {
       () {
         pickTimeForm.setValue({
           'enum': PickTimes.Evening,
-          'time': TimeOfDay.fromDateTime(DateTime(2019, 1, 1, 18, 0))
+          'time': TimeOfDay(hour: 18, minute: 0)
         });
         pickTimeForm.setState(() {});
       },
@@ -53,7 +70,7 @@ class PickTime extends StatelessWidget {
       () {
         pickTimeForm.setValue({
           'enum': PickTimes.Morning,
-          'time': TimeOfDay.fromDateTime(DateTime(2019, 1, 1, 8, 0))
+          'time': TimeOfDay(hour: 8, minute: 0)
         });
         pickTimeForm.setState(() {});
       },
@@ -70,7 +87,7 @@ class PickTime extends StatelessWidget {
 
         TimeOfDay pickedTime = await showTimePicker(
           context: context,
-          initialTime: TimeOfDay.fromDateTime(DateTime(2019, 1, 1, 8, 0))
+          initialTime: TimeOfDay(hour: 8, minute: 0)
         );
 
         if (pickedTime != null) {
@@ -92,10 +109,7 @@ class PickTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormField(
-      initialValue: {
-        'enum': PickTimes.Morning,
-        'time': TimeOfDay.fromDateTime(DateTime(2019, 1, 1, 8, 0))
-      },
+      initialValue: intialValue,
       onSaved: (form) {
         TimeOfDay time = form['time'];
         DateTime pickedTime = DateTime(2019, 1, 1, time.hour, time.minute);
