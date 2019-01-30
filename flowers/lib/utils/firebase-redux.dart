@@ -68,12 +68,14 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
 
     String name = value['name'];
     String imageUrl = value['image'];
+    String imageId = value['imageId'];
     Reminders reminders = snapshotToReminders(value['reminders']);
 
     flowers.add(
       Flower(
         name: name,
         imageUrl: imageUrl,
+        imageId: imageId,
         reminders: reminders,
         key: k,
       )
