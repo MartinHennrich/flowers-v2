@@ -53,6 +53,7 @@ class Reminders {
 class Flower {
   String name;
   String imageUrl;
+  String imageId;
   String key;
   Reminders reminders;
   List<WaterTime> waterTimes = [];
@@ -60,6 +61,7 @@ class Flower {
   Flower({
     this.name,
     this.imageUrl,
+    this.imageId,
     this.key,
     this.reminders
   });
