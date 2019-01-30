@@ -84,9 +84,13 @@ class Database {
   }
 
   Future<void> postponeWatering(Flower flower) async {
-    return userDatabaseReference.child('flowers').child(flower.key)
+    return userDatabaseReference
+      .child('flowers')
+      .child(flower.key)
+      .child('reminders')
+      .child('water')
       .update({
-        'nextWaterTime': flower.reminders.water.nextTime.toIso8601String(),
+        'nextTime': flower.reminders.water.nextTime.toIso8601String(),
       });
   }
 
@@ -94,7 +98,7 @@ class Database {
     _storage = Storage(currentUser.uid);
   }
 
-  Future<String> _uploadImageFile(File file) async {
+  Future<Map<String, String>> _uploadImageFile(File file) async {
     if (_storage == null) {
       _initialStorage();
     }
@@ -102,21 +106,64 @@ class Database {
     return await _storage.uploadImageFile(file);
   }
 
+  Future<dynamic> updateflower(Flower flower, {File file}) async {
+    var flowerRef = userDatabaseReference
+      .child('flowers')
+      .child(flower.key);
+
+    if (file != null) {
+      await _storage.removeImage(flower.imageId);
+      Map<String, String> map = await _uploadImageFile(file);
+      String fileUrl = map['url'];
+      String fileId = map['id'];
+
+      await flowerRef
+        .update({
+          'name': flower.name,
+          'image': fileUrl,
+          'imageId': fileId,
+          'reminders': flower.reminders.toFirebaseObject(),
+        });
+
+      return {
+        'imageUrl': fileUrl,
+        'imageId': fileId,
+      };
+    }
+
+    userDatabaseReference
+      .child('flowers')
+      .child(flower.key)
+      .update({
+        'name': flower.name,
+        'reminders': flower.reminders.toFirebaseObject(),
+      });
+
+    return {
+      'imageUrl': flower.imageUrl,
+      'imageId': flower.imageId,
+    };
+  }
+
   Future<dynamic> createFlower(File file, Flower flower) async {
-    String fileUrl = await _uploadImageFile(file);
+    Map<String, String> map = await _uploadImageFile(file);
+    String fileUrl = map['url'];
+    String fileId = map['id'];
 
     DatabaseReference flowerPush = userDatabaseReference
       .child('flowers')
       .push();
 
-     await flowerPush.set({
-        'name': flower.name,
-        'image': fileUrl,
-        'reminders': flower.reminders.toFirebaseObject()
-      });
+    await flowerPush.set({
+      'name': flower.name,
+      'image': fileUrl,
+      'imageId': fileId,
+      'reminders': flower.reminders.toFirebaseObject()
+    });
 
     return {
       'imageUrl': fileUrl,
+      'imageId': fileId,
       'key': flowerPush.key
     };
   }
