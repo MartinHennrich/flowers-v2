@@ -1,6 +1,53 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
+String getRandomName() {
+  final Random random = Random();
+  List<String> names = [
+    'Batman',
+    'Catwoman',
+    'Cactus',
+    'Trump? haha kidding maybe jon',
+    'Barney',
+    'Baymax',
+    'Bigfoot',
+    'Buzz lightyear',
+    'Sparrow',
+    'Sunflower',
+    'Tomato 🍅',
+    'Cucumber 🥒',
+    'Chilli 🌶',
+    'Hercules',
+    'Hulk',
+    'Iron Man',
+    'That thing',
+    '<3',
+    '😍',
+    '😎',
+    '😬',
+    '💩',
+    '🥦',
+    '🍆',
+    '🥑',
+    '🥕',
+    '🍋',
+    'Chandler',
+    'Chanandler',
+    'Rachel green',
+    'DeVito',
+    'Vader',
+    'Mad',
+    'Dr',
+    'Poppins',
+    'Gump',
+    'Kong',
+    'James Bond',
+    'Jenny',
+  ];
+
+  return names[random.nextInt(names.length)] + '?';
+}
 
 class Name extends StatelessWidget {
   final Function(String) onSave;
@@ -19,10 +66,10 @@ class Name extends StatelessWidget {
         onSaved: (form) {
           onSave(form);
         },
-        maxLength: 12,
+        maxLength: 14,
         initialValue: prefilled,
         decoration: InputDecoration(
-          hintText: 'Batman?',
+          hintText: getRandomName(),
           labelText: 'Name',
         ),
         validator: (String value) {
@@ -30,8 +77,8 @@ class Name extends StatelessWidget {
             return 'Minimun of 2 chars';
           }
 
-          if (value.length > 12) {
-            return 'Max of 12 chars';
+          if (value.length > 14) {
+            return 'Max of 14 chars';
           }
 
           return null;
