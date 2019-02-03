@@ -18,7 +18,7 @@ class NoFlowersToWater extends StatelessWidget {
     }
 
     if (hasNoFlowers) {
-      return CustomIcons.emo_displeased;
+      return CustomIcons.emo_sunglasses;
     }
 
     return CustomIcons.emo_grin;
