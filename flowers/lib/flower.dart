@@ -12,8 +12,15 @@ class WaterTime {
   });
 }
 
+enum ReminderType {
+  Water,
+  Rotate,
+  Fertilize,
+}
+
 class Reminder {
   String key;
+  ReminderType type;
   int interval;
   DateTime lastTime;
   DateTime nextTime;
@@ -25,20 +32,41 @@ class Reminder {
     this.lastTime,
     this.nextTime,
     this.timeOfDayForNotification,
+    this.type,
   });
 }
 
 class Reminders {
   Reminder water;
+  Reminder fertilize;
+  Reminder rotate;
 
   Reminders({
     this.water,
+    this.fertilize,
+    this.rotate
   });
 
   Map<String, dynamic> toFirebaseObject() {
     Map<String, dynamic> obj = {};
     if (water != null) {
       obj['water'] = {
+        'interval': water.interval,
+        'lastTime': water.lastTime.toIso8601String(),
+        'nextTime': water.nextTime.toIso8601String(),
+        'timeOfDayForNotification': water.timeOfDayForNotification.toIso8601String()
+      };
+    }
+    if (fertilize != null) {
+      obj['fertilize'] = {
+        'interval': water.interval,
+        'lastTime': water.lastTime.toIso8601String(),
+        'nextTime': water.nextTime.toIso8601String(),
+        'timeOfDayForNotification': water.timeOfDayForNotification.toIso8601String()
+      };
+    }
+    if (rotate != null) {
+      obj['rotate'] = {
         'interval': water.interval,
         'lastTime': water.lastTime.toIso8601String(),
         'nextTime': water.nextTime.toIso8601String(),

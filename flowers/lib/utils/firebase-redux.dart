@@ -33,6 +33,9 @@ List<WaterTime> snapshotToWaterTime(dynamic waterTimesSnapshot) {
 
 Reminders snapshotToReminders(dynamic remindersSnapshot) {
   Reminder waterReminder;
+  Reminder fertilizeReminder;
+  Reminder rotateReminder;
+
   var remindersMap = Map.from(remindersSnapshot);
 
   remindersMap.forEach((key, value) {
@@ -45,14 +48,37 @@ Reminders snapshotToReminders(dynamic remindersSnapshot) {
           interval: value['interval'],
           timeOfDayForNotification: DateTime.parse(value['timeOfDayForNotification']),
           key: key,
+          type: ReminderType.Water
         );
-      break;
+        break;
+      case 'fertilize':
+        fertilizeReminder = Reminder(
+          lastTime: DateTime.parse(value['lastTime']),
+          nextTime: DateTime.parse(value['nextTime']),
+          interval: value['interval'],
+          timeOfDayForNotification: DateTime.parse(value['timeOfDayForNotification']),
+          key: key,
+          type: ReminderType.Water
+        );
+        break;
+      case 'rotate':
+        rotateReminder = Reminder(
+          lastTime: DateTime.parse(value['lastTime']),
+          nextTime: DateTime.parse(value['nextTime']),
+          interval: value['interval'],
+          timeOfDayForNotification: DateTime.parse(value['timeOfDayForNotification']),
+          key: key,
+          type: ReminderType.Water
+        );
+        break;
       default:
     }
   });
 
   return Reminders(
     water: waterReminder,
+    fertilize: fertilizeReminder,
+    rotate: rotateReminder,
   );
 }
 
