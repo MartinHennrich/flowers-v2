@@ -190,7 +190,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('WATER ON',
+                Text('NEXT WATERING',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black38,

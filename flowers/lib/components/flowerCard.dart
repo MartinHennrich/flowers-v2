@@ -52,7 +52,7 @@ class FlowerCard extends StatelessWidget {
           Container(
             height: 50,
             alignment: Alignment(-1.0, 0.0),
-            padding: EdgeInsets.only(left: 16),
+            padding: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
               gradient: _getColor(flower),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(8.0)),
@@ -77,7 +77,6 @@ class FlowerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color timeBasedColor = getColorBasedOnTime2(flower.reminders.water.nextTime, flower.reminders.water.lastTime);
-
 
     return _withHero(
       GestureDetector(
