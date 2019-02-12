@@ -59,18 +59,18 @@ class Reminders {
     }
     if (fertilize != null) {
       obj['fertilize'] = {
-        'interval': water.interval,
-        'lastTime': water.lastTime.toIso8601String(),
-        'nextTime': water.nextTime.toIso8601String(),
-        'timeOfDayForNotification': water.timeOfDayForNotification.toIso8601String()
+        'interval': fertilize.interval,
+        'lastTime': fertilize.lastTime.toIso8601String(),
+        'nextTime': fertilize.nextTime.toIso8601String(),
+        'timeOfDayForNotification': fertilize.timeOfDayForNotification.toIso8601String()
       };
     }
     if (rotate != null) {
       obj['rotate'] = {
-        'interval': water.interval,
-        'lastTime': water.lastTime.toIso8601String(),
-        'nextTime': water.nextTime.toIso8601String(),
-        'timeOfDayForNotification': water.timeOfDayForNotification.toIso8601String()
+        'interval': rotate.interval,
+        'lastTime': rotate.lastTime.toIso8601String(),
+        'nextTime': rotate.nextTime.toIso8601String(),
+        'timeOfDayForNotification': rotate.timeOfDayForNotification.toIso8601String()
       };
     }
 
