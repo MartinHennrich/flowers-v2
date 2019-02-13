@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
 import './dateHelpers.dart';
+import '../flower.dart';
 
 LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
   DateTime today = preSetTimeFrame(DateTime.now());
@@ -47,3 +48,20 @@ Color getColorBasedOnTime2(DateTime time, DateTime lastTime) {
 
   return RedMain;
 }
+
+ Color getReminderColor(ReminderType type) {
+    print(type);
+    if (type == ReminderType.Water) {
+      return ReminderBlueSecond;
+    }
+
+    if (type == ReminderType.Fertilize) {
+      return BrownMain;
+    }
+
+    if (type == ReminderType.Rotate) {
+      return YellowMain;
+    }
+
+    return RedMain;
+  }
