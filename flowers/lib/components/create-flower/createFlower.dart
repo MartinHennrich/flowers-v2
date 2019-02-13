@@ -74,7 +74,8 @@ class _CreateFlowerState extends State<CreateFlower> {
           lastTime: flowerFormData.lastWaterTime,
           nextTime: nextWaterTime,
           timeOfDayForNotification: flowerFormData.notificationTime,
-          key: 'water'
+          key: 'water',
+          type: ReminderType.Water
         )
       ),
     );
@@ -131,9 +132,10 @@ class _CreateFlowerState extends State<CreateFlower> {
                     onSave: (int waterIntervall) {
                       flowerFormData.waterIntervall = waterIntervall;
                     },
+                    type: 'Water',
                   ),
 
-                  PickTime(
+                  PickTimeForm(
                     onSave: (DateTime time) {
                       flowerFormData.notificationTime = time;
                     },
