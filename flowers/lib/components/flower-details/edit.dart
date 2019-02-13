@@ -27,9 +27,6 @@ class EditFlower extends StatefulWidget {
 class FlowerFormData {
   File image;
   String flowerName = '';
-  DateTime lastWaterTime = DateTime.now();
-  DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
-  int waterIntervall = 5;
 }
 
 class _EditFlowerState extends State<EditFlower> {
@@ -37,15 +34,12 @@ class _EditFlowerState extends State<EditFlower> {
   final _formKey = GlobalKey<FormState>();
   FlowerFormData flowerFormData = FlowerFormData();
 
-
   Future<void> _onEditFlower() async {
     Flower flower = widget.flower;
     if (flowerFormData.flowerName.length >= 3) {
       flower.name = flowerFormData.flowerName;
     }
 
-    flower.reminders.water.interval = flowerFormData.waterIntervall;
-    flower.reminders.water.timeOfDayForNotification = flowerFormData.notificationTime;
     File image;
 
     if (flowerFormData.image != null) {
@@ -61,11 +55,6 @@ class _EditFlowerState extends State<EditFlower> {
       flower.imageId = result['imageId'];
       flower.imageUrl = result['imageUrl'];
 
-      DateTime nextTime = flowerFormData
-        .lastWaterTime
-        .add(Duration(days: flowerFormData.waterIntervall));
-
-      flower.reminders.water.nextTime = nextTime;
       AppStore.dispatch(UpdateFlowerAction(flower));
       Navigator.pop(context);
 
@@ -90,7 +79,6 @@ class _EditFlowerState extends State<EditFlower> {
         actions: <Widget>[
           FlatButton(
             onPressed: _isCreatingFlower ? null : () async {
-              _onEditFlower();
               _formKey.currentState.save();
               _onEditFlower();
             },
@@ -117,23 +105,6 @@ class _EditFlowerState extends State<EditFlower> {
                     prefilled: widget.flower.name,
                     onSave: (name) {
                       flowerFormData.flowerName = name;
-                    },
-                  ),
-
-                  Intervall(
-                    initialValue: widget.flower.reminders.water.interval,
-                    onSave: (int waterIntervall) {
-                      flowerFormData.waterIntervall = waterIntervall;
-                    },
-                  ),
-
-                  PickTime(
-                    intialValue: {
-                      'enum': dateTimPickTimes(widget.flower.reminders.water.timeOfDayForNotification),
-                      'time': TimeOfDay.fromDateTime(widget.flower.reminders.water.timeOfDayForNotification)
-                    },
-                    onSave: (DateTime time) {
-                      flowerFormData.notificationTime = time;
                     },
                   ),
                 ],
