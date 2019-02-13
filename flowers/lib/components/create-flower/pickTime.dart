@@ -21,15 +21,12 @@ PickTimes dateTimPickTimes(DateTime time) {
 }
 
 class PickTime extends StatelessWidget {
-  final Function(DateTime) onSave;
-  final Map<String, dynamic> intialValue;
+  final Function(Map<String, dynamic> value) onChange;
+  final dynamic value;
 
   PickTime({
-    this.onSave,
-    this.intialValue = const {
-      'enum': PickTimes.Morning,
-      'time': TimeOfDay(hour: 8, minute: 0)
-    }
+    this.onChange,
+    this.value,
   });
 
   Widget _getGenericButton(Function onPressed, String text, PickTimes activeValue, PickTimes PickTime, {
@@ -49,39 +46,37 @@ class PickTime extends StatelessWidget {
     );
   }
 
-  Widget _getEvening(FormFieldState<dynamic> pickTimeForm) {
+  Widget _getEvening() {
     return _getGenericButton(
       () {
-        pickTimeForm.setValue({
+        onChange({
           'enum': PickTimes.Evening,
           'time': TimeOfDay(hour: 18, minute: 0)
         });
-        pickTimeForm.setState(() {});
       },
       'Evening 18:00',
-      pickTimeForm.value['enum'],
+      value['enum'],
       PickTimes.Evening,
-      /* shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(20))) */
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
     );
   }
 
-  Widget _getMorning(FormFieldState<dynamic> pickTimeForm) {
+  Widget _getMorning() {
     return _getGenericButton(
       () {
-        pickTimeForm.setValue({
+        onChange({
           'enum': PickTimes.Morning,
           'time': TimeOfDay(hour: 8, minute: 0)
         });
-        pickTimeForm.setState(() {});
       },
       'Morning 8:00',
-      pickTimeForm.value['enum'],
+      value['enum'],
       PickTimes.Morning,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(20)))
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
     );
   }
 
-  Widget _getCustom(FormFieldState<dynamic> pickTimeForm, BuildContext context) {
+  Widget _getCustom(BuildContext context) {
     return FlatButton(
       onPressed: () async {
 
@@ -91,20 +86,66 @@ class PickTime extends StatelessWidget {
         );
 
         if (pickedTime != null) {
-          pickTimeForm.setValue({
+          onChange({
             'enum': PickTimes.Custom,
             'time': pickedTime,
           });
-          pickTimeForm.setState(() {});
         }
       },
-      color: pickTimeForm.value['enum'] == PickTimes.Custom ? BlueMain : Colors.black12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(20))),
-      child: pickTimeForm.value['enum'] == PickTimes.Custom
-        ? Text('${pickTimeForm.value['time'].hour}:${pickTimeForm.value['time'].minute}', style: TextStyle(color: Colors.white))
+      color: value['enum'] == PickTimes.Custom ? BlueMain : Colors.black12,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: value['enum'] == PickTimes.Custom
+        ? Text('${value['time'].hour}:${value['time'].minute}', style: TextStyle(color: Colors.white))
         : Text('Pick a time..', style: TextStyle(color: Colors.black45)),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment(0, 0),
+      padding: EdgeInsets.only(top: 24),
+      child: Column(
+        children: <Widget>[
+          Text('Notification time?',
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 16
+            )
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _getMorning(),
+              Container(
+                width: 4,
+              ),
+              _getEvening(),
+              Container(
+                width: 4,
+              ),
+              _getCustom(context),
+            ],
+          ),
+        ],
+      )
+    );
+  }
+}
+
+class PickTimeForm extends StatelessWidget {
+  final Function(DateTime) onSave;
+  final Function(Map<String, dynamic>) onChange;
+  final Map<String, dynamic> intialValue;
+
+  PickTimeForm({
+    this.onSave,
+    this.intialValue = const {
+      'enum': PickTimes.Morning,
+      'time': TimeOfDay(hour: 8, minute: 0)
+    },
+    this.onChange
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -116,32 +157,15 @@ class PickTime extends StatelessWidget {
         onSave(pickedTime);
       },
       builder: (pickTimeForm) {
-        return Container(
-          padding: EdgeInsets.only(top: 24),
-          child: Column(
-            children: <Widget>[
-              Text('Notification time?',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16
-                )
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _getMorning(pickTimeForm),
-                  Container(
-                    width: 4,
-                  ),
-                  _getEvening(pickTimeForm),
-                  Container(
-                    width: 4,
-                  ),
-                  _getCustom(pickTimeForm, context),
-                ],
-              ),
-            ],
-          )
+        return PickTime(
+          value: pickTimeForm.value,
+          onChange: (Map<String, dynamic> value) {
+            if (onChange != null) {
+              onChange(value);
+            }
+            pickTimeForm.setValue(value);
+            pickTimeForm.setState(() {});
+          },
         );
       },
     );
