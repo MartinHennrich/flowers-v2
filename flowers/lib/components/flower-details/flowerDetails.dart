@@ -16,6 +16,9 @@ import '../../store.dart';
 import './timeGraph.dart';
 import './deleteDialog.dart';
 import './edit.dart';
+import './activeReminders.dart';
+import './daysLeft.dart';
+import './reminderInfoPanel.dart';
 
 class FlowerDetails extends StatefulWidget {
   final Flower flower;
@@ -75,154 +78,9 @@ class FlowerDetailsState extends State<FlowerDetails> {
     }
   }
 
-  Widget _getDaysLeft() {
-    DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime nextWatertime = preSetTimeFrame(widget.flower.reminders.water.nextTime);
-    Duration diff = nextWatertime.difference(today);
-    int daysLeft = 0;
-
-    if (diff.inDays <= 0) {
-      if (diff.inHours >= 1) {
-        daysLeft = 1;
-      } else {
-        daysLeft = 0;
-      }
-    } else {
-      daysLeft = diff.inDays;
-    }
-
-
-    return Container(
-      height: 200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('$daysLeft', style: TextStyle(
-            fontSize: 80,
-            color: colorOfTime,
-          )),
-          Container(
-            child: Text('${daysLeft == 1 ? 'day' : 'days'}\nremaining',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black38
-              )
-            )
-          ),
-        ],
-      )
-    );
-  }
-
   String _getNotificationTime() {
     DateTime time = widget.flower.reminders.water.timeOfDayForNotification;
     return ' ${time.hour < 10 ? '0' + time.hour.toString() : time.hour}:${time.minute < 10 ? '0' + time.minute.toString() : time.minute}';
-  }
-
-  String _getDayToWaterName() {
-    DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime tomorrow = today.add(Duration(days: 1));
-    DateTime nextTime = preSetTimeFrame(widget.flower.reminders.water.nextTime);
-
-    if (tomorrow.day == nextTime.day && tomorrow.month == nextTime.month) {
-      return 'tomorrow';
-    }
-
-    if (nextTime.day < today.day && today.month == nextTime.month) {
-      return 'today!!';
-    }
-
-    if (today.day == nextTime.day && today.month == today.month) {
-      return 'today';
-    }
-
-    return '${widget.flower.reminders.water.nextTime.month} / ${widget.flower.reminders.water.nextTime.day}';
-  }
-
-  String _getLastWaterTimeName() {
-    DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime lastWateredTime = preSetTimeFrame(widget.flower.reminders.water.lastTime);
-    DateTime yesterday = today.subtract(Duration(days: 1));
-
-    if (today.day == lastWateredTime.day && today.month == lastWateredTime.month) {
-      return 'today';
-    }
-
-    if (yesterday.day == lastWateredTime.day && yesterday.month == today.month) {
-      return 'yesterday';
-    }
-
-    return '${lastWateredTime.month} / ${lastWateredTime.day}';
-  }
-
-  Widget _nextWaterTime() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(16, 32, 16, 6),
-      child: Row(
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 16),
-            padding: EdgeInsets.only(left: 16),
-            width: 144,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('LAST WATERED',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black38,
-                    fontSize: 12
-                  )),
-                Padding(
-                  padding: EdgeInsets.only(top: 6),
-                  child: Text(
-                    _getLastWaterTimeName(),
-                    style: TextStyle(
-                      fontSize: 28
-                    )
-                  )
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text('NEXT WATERING',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black38,
-                    fontSize: 12
-                  )),
-                Padding(
-                  padding: EdgeInsets.only(top: 6),
-                  child: RichText(
-                    text: TextSpan(
-                      text: _getDayToWaterName(),
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Colors.black
-                      ),
-                      children: [
-                        TextSpan(
-                          text: _getNotificationTime(),
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black54
-                          ),
-                        )
-                      ]
-                    ),
-                  )
-                ),
-              ],
-            ),
-          )
-        ]
-      )
-    );
   }
 
   List<TimeSeriesValue> _sortOnTime(List<TimeSeriesValue> list) {
@@ -423,11 +281,15 @@ class FlowerDetailsState extends State<FlowerDetails> {
                   withHero: true,
                 ),
 
-                Expanded(child:_getDaysLeft())
+                Expanded(child: DaysLeft(
+                  reminder: widget.flower.reminders.water,
+                  color: colorOfTime
+                ))
               ],
             )
           ),
-          _nextWaterTime(),
+          ReminderInfoPanel(reminder: widget.flower.reminders.water,),
+          ActiveReminders(flower: widget.flower, reminders: widget.flower.reminders,),
           getGraphs()
         ]
       )
