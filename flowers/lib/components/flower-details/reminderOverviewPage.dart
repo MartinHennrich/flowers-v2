@@ -11,6 +11,7 @@ import '../../utils/colors.dart';
 import '../../utils/notifications.dart';
 import './daysLeft.dart';
 import './reminderInfoPanel.dart';
+import '../../presentation/custom_icons_icons.dart';
 
 class ReminderOverviewPage extends StatefulWidget {
   final Reminder reminder;
@@ -53,7 +54,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     currentInterval = widget.reminder.interval;
     initialInterval = widget.reminder.interval;
 
-    mainColor = getReminderColor(widget.reminder.type);
+    mainColor = getReminderColor(widget.reminder.type, true);
     notificationTime = {
       'enum': dateTimPickTimes(widget.reminder.timeOfDayForNotification),
       'time': TimeOfDay.fromDateTime(widget.reminder.timeOfDayForNotification)
@@ -71,6 +72,30 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
         isEdited = true;
       }
     });
+  }
+
+  Icon _getIcon() {
+    IconData icon;
+
+    switch (widget.reminder.type) {
+      case ReminderType.Water:
+        icon = CustomIcons.water_amount_small;
+        break;
+      case ReminderType.Fertilize:
+        icon = Icons.flash_on;
+        break;
+      case ReminderType.Rotate:
+        icon = Icons.rotate_left;
+        break;
+      default:
+        icon = Icons.warning;
+    }
+
+    return Icon(
+      icon,
+      size: 128,
+      color: mainColor
+    );
   }
 
   Future<void> _onEditFlower() async {
@@ -110,14 +135,13 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: Text('REMINDER',),
+        title: Text('${widget.reminder.key.toUpperCase()} REMINDER',),
         actions: <Widget>[
           FlatButton(
             onPressed: isEdited ? () {
               _formKey.currentState.save();
               _onEditFlower();
 
-              Navigator.of(context).pop();
             } : null,
             child: Text(
               'SAVE',
@@ -129,6 +153,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
         ],
       ),
       body: ListView(
+        padding: EdgeInsets.only(bottom: 44),
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -136,17 +161,11 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    alignment: Alignment(0, 0),
-                    child: Text(
-                      widget.reminder.key.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 24
-                      )
-                    )
-                  ),
+                Container(
+                  width: 160,
+                  height: 200,
+                  alignment: Alignment(0, 0),
+                  child: _getIcon()
                 ),
                 Expanded(child:DaysLeft(
                   reminder: widget.reminder,
