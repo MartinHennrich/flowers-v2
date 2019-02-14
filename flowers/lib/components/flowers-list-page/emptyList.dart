@@ -13,7 +13,7 @@ class EmptyList extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
-            CustomIcons.emo_squint,
+            CustomIcons.emo_sunglasses,
             color: YellowMain,
             size: 70,
           ),
