@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../flower.dart';
-import '../../flower.dart';
 import '../../utils/dateHelpers.dart';
 
 class DaysLeft extends StatelessWidget {
@@ -30,7 +29,6 @@ class DaysLeft extends StatelessWidget {
     } else {
       daysLeft = diff.inDays;
     }
-
 
     return Container(
       height: 200,
