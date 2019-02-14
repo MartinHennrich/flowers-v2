@@ -49,8 +49,11 @@ Color getColorBasedOnTime2(DateTime time, DateTime lastTime) {
   return RedMain;
 }
 
- Color getReminderColor(ReminderType type) {
-    print(type);
+ Color getReminderColor(ReminderType type, bool isActive) {
+    if (!isActive) {
+      return Colors.black;
+    }
+
     if (type == ReminderType.Water) {
       return ReminderBlueSecond;
     }
