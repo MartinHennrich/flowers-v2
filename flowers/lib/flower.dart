@@ -49,7 +49,7 @@ class Reminders {
     this.rotate
   });
 
-  List<Reminder> getRemindersAsList() {
+  List<Reminder> getRemindersAsList({bool sortActive = false}) {
     List<Reminder> list = [];
 
     if (water != null) {
@@ -64,7 +64,14 @@ class Reminders {
       list.add(rotate);
     }
 
-    return list.expand((i) => [i]).toList();
+    Iterable<Reminder> items = list.expand((i) => [i]);
+
+    if (sortActive) {
+      return items
+        .where((item) => item.isActive)
+        .toList();
+    }
+    return items.toList();
   }
 
   void updateReminder(Reminder reminder) {
@@ -81,6 +88,38 @@ class Reminders {
       default:
       break;
     }
+  }
+
+  // TODO: store all dates with notification time on them
+  int _compare(Reminder a, Reminder b, DateTime time) {
+    Duration aDiffDays = a.nextTime.difference(time);
+    Duration bDiffDays = b.nextTime.difference(time);
+
+    int diff = aDiffDays.compareTo(bDiffDays);
+
+    if (diff < 0) {
+      return -1;
+    }
+
+    if (diff > 0) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  Reminder getClosestDate(DateTime time) {
+    List<Reminder> reminders = getRemindersAsList(sortActive: true);
+
+    if (reminders.length == 1) {
+      return reminders[0];
+    } else if (reminders.length == 0) {
+      return null;
+    }
+
+    reminders.sort((a, b) => _compare(a, b, time));
+
+    return reminders[0];
   }
 
   Map<String, dynamic> toFirebaseObject() {
