@@ -77,6 +77,18 @@ class PickTime extends StatelessWidget {
   }
 
   Widget _getCustom(BuildContext context) {
+    String hour = '${
+      value['time'].hour < 10
+        ? '0${value['time'].hour}'
+        : value['time'].hour
+    }';
+
+    String minute = '${
+      value['time'].minute < 10
+        ? '0${value['time'].minute}'
+        : value['time'].minute
+    }';
+
     return FlatButton(
       onPressed: () async {
 
@@ -95,7 +107,7 @@ class PickTime extends StatelessWidget {
       color: value['enum'] == PickTimes.Custom ? BlueMain : Colors.black12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       child: value['enum'] == PickTimes.Custom
-        ? Text('${value['time'].hour}:${value['time'].minute}', style: TextStyle(color: Colors.white))
+        ? Text('$hour:$minute', style: TextStyle(color: Colors.white))
         : Text('Pick a time..', style: TextStyle(color: Colors.black45)),
     );
   }
@@ -107,10 +119,13 @@ class PickTime extends StatelessWidget {
       padding: EdgeInsets.only(top: 24),
       child: Column(
         children: <Widget>[
-          Text('Notification time?',
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16
+          Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text('Notification time?',
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 16
+              )
             )
           ),
           Column(
