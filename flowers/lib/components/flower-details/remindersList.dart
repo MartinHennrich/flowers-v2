@@ -6,11 +6,11 @@ import '../../utils/dateHelpers.dart';
 import '../../utils/colors.dart';
 import './reminderOverviewPage.dart';
 
-class ActiveReminders extends StatelessWidget {
+class RemindersList extends StatelessWidget {
   final Reminders reminders;
   final Flower flower;
 
-  ActiveReminders({
+  RemindersList({
     this.reminders,
     this.flower
   });
@@ -58,7 +58,7 @@ class ActiveReminders extends StatelessWidget {
   }
 
   Widget _getReminderCard(Reminder reminder, BuildContext context) {
-    Color color = getReminderColor(reminder.type);
+    Color color = getReminderColor(reminder.type, reminder.isActive);
     Color _kKeyUmbraOpacity = color.withAlpha(51);
     Color _kKeyPenumbraOpacity = color.withAlpha(36);
     Color _kAmbientShadowOpacity = color.withAlpha(31);
@@ -86,65 +86,107 @@ class ActiveReminders extends StatelessWidget {
               ),
             );
           },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
-                alignment: Alignment(0, 0),
-                width: 70,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(_getDaysLeft(reminder).toString(),
-                      style: TextStyle(
-                        fontSize: 44,
-                        color: color,
-                      )
-                    ),
-                    Text(
-                      '${_getDaysLeft(reminder) == 1 ? 'day' : 'days'}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black38
-                      ),
-                    )
-                  ],
-                )
-
-              ),
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(right: 12),
-                    alignment: Alignment(0, 0),
-                    child: Text(
-                      reminder.key.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black
-                      )
-                    )
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(right: 12),
-                    alignment: Alignment(0, 0),
-                    child: Text(
-                      'every ${reminder.interval}${reminder.interval != 1 ? 'th' : ''} day',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black38
-                      )
-                    )
-                  )
-                ],
-              ))
-            ],
-          )
+          child: reminder.isActive
+            ? _getActiveReminderCard(reminder, color, context)
+            : _getUnactiveReminderCard(reminder, color, context)
         )
       ),
+    );
+  }
+
+  Widget _getUnactiveReminderCard(Reminder reminder, Color color, BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(right: 12),
+              alignment: Alignment(0, 0),
+              child: Text(
+                reminder.key.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black
+                )
+              )
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 12),
+              alignment: Alignment(0, 0),
+              child: Text(
+                'disabled',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black38
+                )
+              )
+            )
+          ],
+        ))
+      ],
+    );
+  }
+
+  Widget _getActiveReminderCard(Reminder reminder, Color color, BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(
+          alignment: Alignment(0, 0),
+          width: 70,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(_getDaysLeft(reminder).toString(),
+                style: TextStyle(
+                  fontSize: 44,
+                  color: color,
+                )
+              ),
+              Text(
+                '${_getDaysLeft(reminder) == 1 ? 'day' : 'days'}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black38
+                ),
+              )
+            ],
+          )
+
+        ),
+        Expanded(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(right: 12),
+              alignment: Alignment(0, 0),
+              child: Text(
+                reminder.key.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black
+                )
+              )
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 12),
+              alignment: Alignment(0, 0),
+              child: Text(
+                'every ${reminder.interval}${reminder.interval != 1 ? 'th' : ''} day',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black38
+                )
+              )
+            )
+          ],
+        ))
+      ],
     );
   }
 
