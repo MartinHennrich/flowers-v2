@@ -16,7 +16,7 @@ import '../../store.dart';
 import './timeGraph.dart';
 import './deleteDialog.dart';
 import './edit.dart';
-import './activeReminders.dart';
+import './remindersList.dart';
 import './daysLeft.dart';
 import './reminderInfoPanel.dart';
 
@@ -37,6 +37,7 @@ class FlowerDetails extends StatefulWidget {
 class FlowerDetailsState extends State<FlowerDetails> {
   bool isLoading = true;
   Color colorOfTime = Colors.black;
+  Reminder closestReminder;
 
   @override
   void initState() {
@@ -49,7 +50,13 @@ class FlowerDetailsState extends State<FlowerDetails> {
       );
     });
     _fetchFlowerData();
+    closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
+  }
 
+  @override
+  void didUpdateWidget(FlowerDetails oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
   }
 
   void _fetchFlowerData() async {
@@ -281,15 +288,17 @@ class FlowerDetailsState extends State<FlowerDetails> {
                   withHero: true,
                 ),
 
-                Expanded(child: DaysLeft(
-                  reminder: widget.flower.reminders.water,
-                  color: colorOfTime
-                ))
+                closestReminder != null
+                  ? Expanded(child: DaysLeft(
+                      reminder: closestReminder,
+                      color: colorOfTime
+                    ))
+                  : Expanded(child: Container())
               ],
             )
           ),
           ReminderInfoPanel(reminder: widget.flower.reminders.water,),
-          ActiveReminders(flower: widget.flower, reminders: widget.flower.reminders,),
+          RemindersList(flower: widget.flower, reminders: widget.flower.reminders,),
           getGraphs()
         ]
       )
