@@ -68,7 +68,7 @@ class IntervallPure extends StatelessWidget {
                 )
               ],
             ),
-            Text('days',
+            Text('${value == 1 ? 'day' : 'days'}',
               style: TextStyle(
                   color: Colors.black54,
                   fontSize: 16
