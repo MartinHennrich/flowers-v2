@@ -236,7 +236,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
   void _select(Choice choice) {
     if (choice.type == 'delete') {
-      openDialog();
+      openDeleteDialog();
     } else if (choice.type == 'edit') {
       Navigator.push(
         context,
@@ -247,7 +247,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
     }
   }
 
-  void openDialog() {
+  void openDeleteDialog() {
     showDialog(
       context: context,
       builder: (_) => DeleteDialog(flower: widget.flower)
@@ -303,7 +303,6 @@ class FlowerDetailsState extends State<FlowerDetails> {
               ],
             )
           ),
-          /* ReminderInfoPanel(reminder: widget.flower.reminders.water,), */
           ReminderInfoPanelCarousel(reminders: widget.flower.reminders.getRemindersAsList(sortActive: true)),
           RemindersList(flower: widget.flower, reminders: widget.flower.reminders,),
           getGraphs()
