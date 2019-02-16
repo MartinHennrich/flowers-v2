@@ -5,10 +5,38 @@ import '../../utils/dateHelpers.dart';
 
 class ReminderInfoPanel extends StatelessWidget {
   final Reminder reminder;
+  final double sidePadding;
 
   ReminderInfoPanel({
     this.reminder,
+    this.sidePadding = 0
   });
+
+  String _getLastName() {
+    switch (reminder.type) {
+      case ReminderType.Water:
+        return 'WATERED';
+      case ReminderType.Fertilize:
+        return 'FERTILIZED';
+      case ReminderType.Rotate:
+        return 'ROTATED';
+      default:
+        return '';
+    }
+  }
+
+  String _getNextName() {
+    switch (reminder.type) {
+      case ReminderType.Water:
+        return 'WATERING';
+      case ReminderType.Fertilize:
+        return 'FERTILIZE';
+      case ReminderType.Rotate:
+        return 'ROTATE';
+      default:
+        return '';
+    }
+  }
 
   String _getNotificationTime() {
     DateTime time = reminder.timeOfDayForNotification;
@@ -54,7 +82,8 @@ class ReminderInfoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16, 32, 16, 6),
+      padding: EdgeInsets.fromLTRB(sidePadding, 32, sidePadding, 6),
+
       child: Row(
         children: [
           Container(
@@ -64,7 +93,7 @@ class ReminderInfoPanel extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('LAST WATERED',
+                Text('LAST ${_getLastName()}',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black38,
@@ -86,7 +115,7 @@ class ReminderInfoPanel extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('NEXT WATERING',
+                Text('NEXT ${_getNextName()}',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black38,
