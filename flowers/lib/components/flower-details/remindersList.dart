@@ -148,7 +148,7 @@ class RemindersList extends StatelessWidget {
                 )
               ),
               Text(
-                '${_getDaysLeft(reminder) == 1 ? 'day' : 'days'}',
+                '${_getDaysLeft(reminder) == 1 ? 'day' : 'days'} left',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.black38
