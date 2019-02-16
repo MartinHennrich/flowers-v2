@@ -16,6 +16,9 @@ import './lastWaterTime.dart';
 import './intervall.dart';
 import './pickTime.dart';
 import './name.dart';
+import '../../constants/reminders.dart';
+import './avaiableReminderCard.dart';
+import './addReminders.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -28,6 +31,8 @@ class FlowerFormData {
   DateTime lastWaterTime = DateTime.now();
   DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
   int waterIntervall = 5;
+
+  Reminders reminders;
 }
 
 class _CreateFlowerState extends State<CreateFlower> {
@@ -39,24 +44,11 @@ class _CreateFlowerState extends State<CreateFlower> {
     File image = flowerFormData.image;
     var result = await compressImageFile(image);
 
-    DateTime nextWaterTime = flowerFormData
-      .lastWaterTime
-      .add(Duration(days: flowerFormData.waterIntervall));
-
     Flower _flower = Flower(
       key: '',
       name: flowerFormData.flowerName,
       imageUrl: '',
-      reminders: Reminders(
-        water: Reminder(
-          interval: flowerFormData.waterIntervall,
-          lastTime: flowerFormData.lastWaterTime,
-          nextTime: nextWaterTime,
-          timeOfDayForNotification: flowerFormData.notificationTime,
-          key: 'water',
-          isActive: true
-        )
-      ),
+      reminders: flowerFormData.reminders
     );
 
     var response = await database.createFlower(
@@ -69,16 +61,7 @@ class _CreateFlowerState extends State<CreateFlower> {
       name: flowerFormData.flowerName,
       imageUrl:  response['imageUrl'],
       imageId: response['imageId'],
-      reminders: Reminders(
-        water: Reminder(
-          interval: flowerFormData.waterIntervall,
-          lastTime: flowerFormData.lastWaterTime,
-          nextTime: nextWaterTime,
-          timeOfDayForNotification: flowerFormData.notificationTime,
-          key: 'water',
-          type: ReminderType.Water
-        )
-      ),
+      reminders: flowerFormData.reminders
     );
 
     AppStore.dispatch(AddFlowerAction(flower));
@@ -123,23 +106,10 @@ class _CreateFlowerState extends State<CreateFlower> {
                     },
                   ),
 
-                  LastWaterTime(
-                    onSave: (DateTime lastWaterTime) {
-                      flowerFormData.lastWaterTime = lastWaterTime;
-                    },
-                  ),
-
-                  Intervall(
-                    onSave: (int waterIntervall) {
-                      flowerFormData.waterIntervall = waterIntervall;
-                    },
-                    type: 'Water',
-                  ),
-
-                  PickTimeForm(
-                    onSave: (DateTime time) {
-                      flowerFormData.notificationTime = time;
-                    },
+                  AddReminders(
+                    onSave: (Reminders reminders) {
+                      flowerFormData.reminders = reminders;
+                    }
                   ),
 
                   Container(
