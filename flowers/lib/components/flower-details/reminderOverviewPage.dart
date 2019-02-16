@@ -174,7 +174,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
               ],
             )
           ),
-          ReminderInfoPanel(reminder: widget.reminder),
+          ReminderInfoPanel(reminder: widget.reminder, sidePadding: 16,),
 
           Form(
             key: _formKey,
