@@ -74,6 +74,7 @@ class Reminders {
     return items.toList();
   }
 
+
   Reminders removeReminderByType(ReminderType type) {
     switch (type) {
       case ReminderType.Water:
