@@ -53,7 +53,8 @@ class _CreateFlowerState extends State<CreateFlower> {
           lastTime: flowerFormData.lastWaterTime,
           nextTime: nextWaterTime,
           timeOfDayForNotification: flowerFormData.notificationTime,
-          key: 'water'
+          key: 'water',
+          isActive: true
         )
       ),
     );
