@@ -74,7 +74,7 @@ class Reminders {
     return items.toList();
   }
 
-  void updateReminder(Reminder reminder) {
+  Reminders updateReminder(Reminder reminder) {
     switch (reminder.type) {
       case ReminderType.Water:
         water = reminder;
@@ -88,6 +88,12 @@ class Reminders {
       default:
       break;
     }
+
+    return Reminders(
+      water: water,
+      fertilize: fertilize,
+      rotate: rotate
+    );
   }
 
   // TODO: store all dates with notification time on them
