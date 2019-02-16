@@ -26,8 +26,11 @@ class FlowerCard extends StatelessWidget {
     if (disabled) {
       return BlueGradient;
     }
-
-    return getColorBasedOnTime(flower.reminders.water.nextTime, flower.reminders.water.lastTime);
+    Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
+    if (clostToDate == null) {
+      return GreenGradient;
+    }
+    return getColorBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
   }
 
   Widget _withHero(Widget widget) {
@@ -42,7 +45,7 @@ class FlowerCard extends StatelessWidget {
   Widget _getStatusBar(Color timeBasedColor) {
     Color _kKeyUmbraOpacity = timeBasedColor.withAlpha(51);
     Color _kKeyPenumbraOpacity = timeBasedColor.withAlpha(36);
-    Color _kAmbientShadowOpacity =timeBasedColor.withAlpha(31);
+    Color _kAmbientShadowOpacity = timeBasedColor.withAlpha(31);
     if (!statusBar) {
       return Container();
     }
