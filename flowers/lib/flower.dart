@@ -74,6 +74,28 @@ class Reminders {
     return items.toList();
   }
 
+  Reminders removeReminderByType(ReminderType type) {
+    switch (type) {
+      case ReminderType.Water:
+        water = null;
+      break;
+      case ReminderType.Fertilize:
+        fertilize = null;
+      break;
+      case ReminderType.Rotate:
+        rotate = null;
+      break;
+      default:
+      break;
+    }
+
+    return Reminders(
+      water: water,
+      fertilize: fertilize,
+      rotate: rotate
+    );
+  }
+
   Reminders updateReminder(Reminder reminder) {
     switch (reminder.type) {
       case ReminderType.Water:

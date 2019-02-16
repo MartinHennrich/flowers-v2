@@ -95,6 +95,9 @@ class AddRemindersState extends State<AddReminders> {
                     return AvaiableReminderCard(
                       avaiableReminder,
                       (Reminder reminder) {
+                        var r = remindersForm.value.removeReminderByType(reminder.type);
+                        remindersForm.setValue(r);
+                        remindersForm.setState((){});
                         _removeReminder(reminder);
                       },
                       remove: true
