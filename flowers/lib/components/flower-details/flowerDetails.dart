@@ -8,6 +8,7 @@ import '../../utils/soilMoisture.dart';
 import '../../utils/waterAmount.dart';
 import '../flowerCard.dart';
 import '../../utils/colors.dart';
+import '../../constants/colors.dart';
 import '../../utils/dateHelpers.dart';
 import '../../utils/firebase.dart';
 import '../../utils/firebase-redux.dart';
@@ -19,6 +20,7 @@ import './edit.dart';
 import './remindersList.dart';
 import './daysLeft.dart';
 import './reminderInfoPanel.dart';
+import './reminderInfoPanelCarousel.dart';
 
 class FlowerDetails extends StatefulWidget {
   final Flower flower;
@@ -38,25 +40,35 @@ class FlowerDetailsState extends State<FlowerDetails> {
   bool isLoading = true;
   Color colorOfTime = Colors.black;
   Reminder closestReminder;
+  bool isAnyRemindersActive = true;
 
   @override
   void initState() {
     super.initState();
 
     setState(() {
-      colorOfTime = getColorBasedOnTime2(
-        widget.flower.reminders.water.nextTime,
-        widget.flower.reminders.water.lastTime
-      );
+      closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
+
+      if (closestReminder == null) {
+        isAnyRemindersActive = false;
+        colorOfTime = GreenMain;
+      } else {
+        isAnyRemindersActive = true;
+        colorOfTime = getColorBasedOnTime2(
+          closestReminder.nextTime,
+          closestReminder.lastTime
+        );
+      }
     });
+
     _fetchFlowerData();
-    closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
   }
 
   @override
   void didUpdateWidget(FlowerDetails oldWidget) {
     super.didUpdateWidget(oldWidget);
     closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
+    isAnyRemindersActive = closestReminder != null;
   }
 
   void _fetchFlowerData() async {
@@ -85,11 +97,6 @@ class FlowerDetailsState extends State<FlowerDetails> {
     }
   }
 
-  String _getNotificationTime() {
-    DateTime time = widget.flower.reminders.water.timeOfDayForNotification;
-    return ' ${time.hour < 10 ? '0' + time.hour.toString() : time.hour}:${time.minute < 10 ? '0' + time.minute.toString() : time.minute}';
-  }
-
   List<TimeSeriesValue> _sortOnTime(List<TimeSeriesValue> list) {
     list.sort((TimeSeriesValue a, TimeSeriesValue b) {
      return a.time.compareTo(b.time);
@@ -100,7 +107,6 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
   List<charts.Series<TimeSeriesValue, DateTime>> _getTimeSeriesSoil() {
     var data = _sortOnTime(widget.flower.waterTimes.map((WaterTime waterTime) {
-      print(waterTime.wateredTime);
       return TimeSeriesValue(
         waterTime.wateredTime,
         soilMoistureToInt(waterTime.soilMoisture));
@@ -297,7 +303,8 @@ class FlowerDetailsState extends State<FlowerDetails> {
               ],
             )
           ),
-          ReminderInfoPanel(reminder: widget.flower.reminders.water,),
+          /* ReminderInfoPanel(reminder: widget.flower.reminders.water,), */
+          ReminderInfoPanelCarousel(reminders: widget.flower.reminders.getRemindersAsList(sortActive: true)),
           RemindersList(flower: widget.flower, reminders: widget.flower.reminders,),
           getGraphs()
         ]
