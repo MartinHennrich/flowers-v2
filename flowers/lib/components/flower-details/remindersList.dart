@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../flower.dart';
-import '../../constants/colors.dart';
 import '../../utils/dateHelpers.dart';
 import '../../utils/colors.dart';
 import './reminderOverviewPage.dart';
+import '../../constants/reminders.dart';
 
 class RemindersList extends StatelessWidget {
   final Reminders reminders;
@@ -36,6 +36,11 @@ class RemindersList extends StatelessWidget {
 
   Widget _addReminderCard() {
     Color color = Colors.black12;
+    List<Reminder> reminderList = reminders.getRemindersAsList();
+
+    if (reminderList.length == avaiableReminders.length) {
+      return Container();
+    }
 
     return Container(
       width: 180,
@@ -143,7 +148,7 @@ class RemindersList extends StatelessWidget {
             children: <Widget>[
               Text(_getDaysLeft(reminder).toString(),
                 style: TextStyle(
-                  fontSize: 44,
+                  fontSize: _getDaysLeft(reminder) >= 100 ? 32 : 44,
                   color: color,
                 )
               ),
