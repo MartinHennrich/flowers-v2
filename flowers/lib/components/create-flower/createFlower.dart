@@ -32,7 +32,7 @@ class FlowerFormData {
   DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
   int waterIntervall = 5;
 
-  Reminders reminders;
+  Reminders reminders = Reminders();
 }
 
 class _CreateFlowerState extends State<CreateFlower> {
@@ -67,12 +67,7 @@ class _CreateFlowerState extends State<CreateFlower> {
     AppStore.dispatch(AddFlowerAction(flower));
     AppStore.dispatch(CreatingFlower.Available);
 
-    scheduleNotification(
-      flower.key,
-      flower.name,
-      flower.reminders.water.nextTime,
-      flower.reminders.water.timeOfDayForNotification
-    );
+    scheduleNotificationsForReminders(flower.name, flower.reminders);
 
     await result.delete();
   }
