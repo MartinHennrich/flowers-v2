@@ -9,7 +9,6 @@ import '../../utils/waterAmount.dart';
 import '../flowerCard.dart';
 import '../../utils/colors.dart';
 import '../../constants/colors.dart';
-import '../../utils/dateHelpers.dart';
 import '../../utils/firebase.dart';
 import '../../utils/firebase-redux.dart';
 import '../../actions/actions.dart';
@@ -19,7 +18,6 @@ import './deleteDialog.dart';
 import './edit.dart';
 import './remindersList.dart';
 import './daysLeft.dart';
-import './reminderInfoPanel.dart';
 import './reminderInfoPanelCarousel.dart';
 
 class FlowerDetails extends StatefulWidget {
@@ -250,7 +248,15 @@ class FlowerDetailsState extends State<FlowerDetails> {
   void openDeleteDialog() {
     showDialog(
       context: context,
-      builder: (_) => DeleteDialog(flower: widget.flower)
+      builder: (_) => DeleteDialog(
+        name: widget.flower.name,
+        onRemove: (context) {
+          database.deleteFlower(widget.flower.key);
+          Navigator.pop(context);
+          AppStore.dispatch(DeleteFlowerAction(widget.flower));
+          Navigator.of(context).pop();
+        },
+      )
     );
   }
 
