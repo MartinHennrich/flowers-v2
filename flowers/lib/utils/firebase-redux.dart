@@ -63,7 +63,7 @@ Reminders snapshotToReminders(dynamic remindersSnapshot) {
           interval: value['interval'],
           timeOfDayForNotification: DateTime.parse(value['timeOfDayForNotification']),
           key: key,
-          type: ReminderType.Water,
+          type: ReminderType.Fertilize,
           isActive: value['isActive']
         );
         break;
@@ -74,7 +74,7 @@ Reminders snapshotToReminders(dynamic remindersSnapshot) {
           interval: value['interval'],
           timeOfDayForNotification: DateTime.parse(value['timeOfDayForNotification']),
           key: key,
-          type: ReminderType.Water,
+          type: ReminderType.Rotate,
           isActive: value['isActive']
         );
         break;
