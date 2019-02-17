@@ -121,7 +121,10 @@ class Reminders {
       return false;
     }).toList();
 
-    if (actionableReminders == null || completedReminders == null) {
+    if (actionableReminders == null || completedReminders == null ||
+      actionableReminders.length == 0 ||
+      completedReminders.length == 0
+    ) {
       return false;
     }
 
