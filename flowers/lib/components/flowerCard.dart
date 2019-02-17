@@ -24,13 +24,24 @@ class FlowerCard extends StatelessWidget {
   LinearGradient _getColor(Flower flower) {
 
     if (disabled) {
-      return BlueGradient;
+      return GreenGradient;
     }
     Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
     if (clostToDate == null) {
       return GreenGradient;
     }
     return getColorBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
+  }
+
+  Color _getColor2(Flower flower) {
+    if (disabled) {
+      return GreenMain;
+    }
+    Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
+    if (clostToDate == null) {
+      return GreenMain;
+    }
+    return getColorBasedOnTime2(clostToDate.nextTime, clostToDate.lastTime);
   }
 
   Widget _withHero(Widget widget) {
@@ -79,7 +90,7 @@ class FlowerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color timeBasedColor = getColorBasedOnTime2(flower.reminders.water.nextTime, flower.reminders.water.lastTime);
+    Color timeBasedColor = _getColor2(flower);
 
     return _withHero(
       GestureDetector(
