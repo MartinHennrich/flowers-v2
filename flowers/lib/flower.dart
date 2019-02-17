@@ -74,6 +74,51 @@ class Reminders {
     return items.toList();
   }
 
+  List<Reminder> getRemindersThatNeedAction(DateTime time) {
+    List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
+
+    if (activeReminders.length == 0) {
+      return [];
+    }
+
+    return activeReminders.where((reminder) {
+      if (reminder.lastTime.day == time.day && reminder.lastTime.month == time.month) {
+        return false;
+      }
+
+      if (reminder.nextTime.day <= time.day && reminder.nextTime.month <= time.month) {
+        return true;
+      }
+      return false;
+    }).toList();
+  }
+
+  List<Reminder> getCompletedReminders(DateTime time) {
+    List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
+
+    if (activeReminders.length == 0) {
+      return [];
+    }
+
+    return activeReminders.where((reminder) {
+      if (reminder.lastTime.day == time.day && reminder.lastTime.month == time.month) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+  }
+
+  bool isAllRemindersCompleted(DateTime time) {
+    List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
+    List<Reminder> completedReminders = getCompletedReminders(time);
+
+    if (activeReminders == null || completedReminders == null) {
+      return false;
+    }
+
+    return activeReminders.length == completedReminders.length;
+  }
 
   Reminders removeReminderByType(ReminderType type) {
     switch (type) {
