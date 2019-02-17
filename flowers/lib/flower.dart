@@ -151,6 +151,14 @@ class Reminders {
     return reminders[0];
   }
 
+  Reminders clone() {
+    return Reminders(
+      rotate: rotate,
+      fertilize: fertilize,
+      water: water
+    );
+  }
+
   Map<String, dynamic> toFirebaseObject() {
     Map<String, dynamic> obj = {};
     if (water != null && water.isActive) {
