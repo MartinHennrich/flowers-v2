@@ -49,7 +49,7 @@ class FlowerList extends StatelessWidget {
     return StoreConnector(
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
-        List<Flower> flowersToWater = getFlowersThatNeedWater(vm.flowers);
+        List<Flower> flowersToWater = getFlowersThatNeedAction(vm.flowers);
         var flowersToWaterWidget = FlowersList(
           flowers: flowersToWater,
           onPress: (Flower flower) {
@@ -57,7 +57,7 @@ class FlowerList extends StatelessWidget {
           },
         );
 
-        List<Flower> flowersBeenWatered = getFlowersThatHasBeenWatered(vm.flowers);
+        List<Flower> flowersBeenWatered = getFlowersThatHasBeenCompleted(vm.flowers);
         var flowersBeenWateredWidget = FlowersList(
           flowers: flowersBeenWatered,
           disabled: true,
@@ -79,7 +79,7 @@ class FlowerList extends StatelessWidget {
         ..add(
           flowersBeenWatered.length > 0
             ? PageTitle(
-                title: 'Watered',
+                title: 'Completed',
                 fontSize: 40,
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 16)
               )
