@@ -73,7 +73,7 @@ Flower postponeWatering(Flower flower, SoilMoisture soilMoisture) {
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
   flower.reminders.water.nextTime = nextWaterTime;
 
-  rescheduleNotification(
+  scheduleWaterNotification(
     flower.key,
     flower.name,
     flower.reminders.water.nextTime,
@@ -116,7 +116,7 @@ WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture s
   DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
   flower.reminders.water.nextTime = nextWaterTime;
 
-  scheduleNotification(
+  scheduleWaterNotification(
     flower.key,
     flower.name,
     flower.reminders.water.nextTime,

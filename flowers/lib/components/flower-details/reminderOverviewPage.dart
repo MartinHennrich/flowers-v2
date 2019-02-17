@@ -118,12 +118,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
       AppStore.dispatch(UpdateFlowerAction(flower));
       Navigator.pop(context);
 
-      rescheduleNotification(
-        flower.key,
-        flower.name,
-        flower.reminders.water.nextTime,
-        flower.reminders.water.timeOfDayForNotification
-      );
+      scheduleNotificationsForReminders(flower.name, flower.reminders);
     } catch (e) {
       Navigator.pop(context);
     }
