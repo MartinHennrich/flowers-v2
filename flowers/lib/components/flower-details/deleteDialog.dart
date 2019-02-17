@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-
-import '../../utils/firebase.dart';
-import '../../actions/actions.dart';
-import '../../flower.dart';
-import '../../store.dart';
 import '../../constants/colors.dart';
 
-
 class DeleteDialog extends StatelessWidget {
-  final Flower flower;
+  final Function(BuildContext context) onRemove;
+  final String name;
 
   DeleteDialog({
-    this.flower
+    this.onRemove,
+    this.name
   });
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
       contentPadding: EdgeInsets.all(0),
-      title: Text('Do you want to delete ${flower.name}?',),
+      title: Text('Do you want to delete $name?',),
       children: <Widget>[
         ButtonBar(
           children: <Widget>[
@@ -31,10 +27,7 @@ class DeleteDialog extends StatelessWidget {
             FlatButton(
               color: RedMain,
               onPressed: () {
-                database.deleteFlower(flower.key);
-                Navigator.pop(context);
-                AppStore.dispatch(DeleteFlowerAction(flower));
-                Navigator.of(context).pop();
+                onRemove(context);
               },
               child: Text(
                 'YES DELETE',
