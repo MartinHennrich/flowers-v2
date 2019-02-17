@@ -36,6 +36,10 @@ Reminders snapshotToReminders(dynamic remindersSnapshot) {
   Reminder fertilizeReminder;
   Reminder rotateReminder;
 
+  if (remindersSnapshot == null) {
+    return Reminders();
+  }
+
   var remindersMap = Map.from(remindersSnapshot);
 
   remindersMap.forEach((key, value) {
