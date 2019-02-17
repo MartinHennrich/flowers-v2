@@ -24,7 +24,7 @@ class FlowerCard extends StatelessWidget {
   LinearGradient _getColor(Flower flower) {
 
     if (disabled) {
-      return GreenGradient;
+      return BlueGradient;
     }
     Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
     if (clostToDate == null) {
@@ -35,7 +35,7 @@ class FlowerCard extends StatelessWidget {
 
   Color _getColor2(Flower flower) {
     if (disabled) {
-      return GreenMain;
+      return BlueMain;
     }
     Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
     if (clostToDate == null) {
