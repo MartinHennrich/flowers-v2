@@ -36,7 +36,7 @@ class RemindersList extends StatelessWidget {
   }
 
   Widget _addReminderCard(BuildContext context) {
-    Color color = Colors.black12;
+    Color color = Colors.black12.withAlpha(50);
     List<Reminder> reminderList = reminders.getRemindersAsList();
 
     if (reminderList.length == avaiableReminders.length) {
