@@ -207,7 +207,6 @@ class RemindersList extends StatelessWidget {
     List<Reminder> reminderList = reminders.getRemindersAsList();
 
     return reminderList.map((reminder) {
-      print(reminder.key);
       return _getReminderCard(
         reminder,
         context
