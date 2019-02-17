@@ -6,44 +6,35 @@ import '../utils/soilMoisture.dart';
 import '../utils/waterAmount.dart';
 import '../utils/notifications.dart';
 
-List<Flower> getFlowersThatHasBeenWatered(List<Flower> flowers) {
-  DateTime dateTime = DateTime.now();
-  List<Flower> flowersThatHasBeenWaterd = [];
+List<Flower> getFlowersThatHasBeenCompleted(List<Flower> flowers) {
+  DateTime timeNow = DateTime.now();
+  List<Flower> flowersThatHasBeenCompleted = [];
   flowers.forEach((flower){
-    int lastWaterDay = flower.reminders.water.lastTime.day;
-    int lastWaterMonth = flower.reminders.water.lastTime.month;
-
-    if (lastWaterDay == dateTime.day && lastWaterMonth == dateTime.month) {
-      flowersThatHasBeenWaterd.add(flower);
+    if (flower.reminders.isAllRemindersCompleted(timeNow)) {
+      flowersThatHasBeenCompleted.add(flower);
     }
   });
 
-  return flowersThatHasBeenWaterd;
+  return flowersThatHasBeenCompleted;
 }
 
-List<Flower> getFlowersThatNeedWater(List<Flower> flowers) {
-  DateTime dateTime = DateTime.now();
+List<Flower> getFlowersThatNeedAction(List<Flower> flowers) {
+  DateTime timeNow = DateTime.now();
   List<Flower> flowersThatNeedWater = [];
-  flowers.forEach((flower){
-    int lastWaterDay = flower.reminders.water.lastTime.day;
-    int lastWaterMonth = flower.reminders.water.lastTime.month;
-
-    if (lastWaterDay == dateTime.day && lastWaterMonth == dateTime.month) {
-      return;
-    }
-
-    int waterDay = flower.reminders.water.nextTime.day;
-    int waterMonth = flower.reminders.water.nextTime.month;
-
-    if (waterDay <= dateTime.day && waterMonth == dateTime.month) {
+  flowers.forEach((flower) {
+    if (flower.reminders.getRemindersThatNeedAction(timeNow).length > 0) {
       flowersThatNeedWater.add(flower);
     }
   });
 
   DateTime today = DateTime.now();
   flowersThatNeedWater.sort((a, b) {
-    int aDiffDays = a.reminders.water.nextTime.difference(today).inDays;
-    int bDiffDays = b.reminders.water.nextTime.difference(today).inDays;
+    var aClosest = a.reminders.getClosestDate(today);
+    var bClosest = b.reminders.getClosestDate(today);
+
+    int aDiffDays = aClosest.nextTime.difference(today).inDays;
+    int bDiffDays = bClosest.nextTime.difference(today).inDays;
+
     return aDiffDays.compareTo(bDiffDays);
   });
 
