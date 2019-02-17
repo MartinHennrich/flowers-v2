@@ -2,6 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart';
+import '../flower.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -40,7 +41,7 @@ Future<void> saveNotificationKeys(String key, List<int> keys SharedPreferences p
   await prefs.setStringList('$key-notifications', keys.map((v) => v.toString()).toList());
 }
 
-Future<void> scheduleNotification(String key, String name, DateTime time, DateTime timeOfDayForNotification) async {
+Future<void> scheduleWaterNotification(String key, String name, DateTime time, DateTime timeOfDayForNotification) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   cancelOldNotification(key, prefs);
 
@@ -73,6 +74,71 @@ Future<void> scheduleNotification(String key, String name, DateTime time, DateTi
   saveNotificationKeys(key, [notisKey, reminderKey], prefs);
 }
 
-Future<void> rescheduleNotification(String key, name, DateTime time, DateTime timeOfDayForNotification) async {
-  scheduleNotification(key, name, time, timeOfDayForNotification);
+String getTitleTexts(ReminderType type) {
+  switch (type) {
+    case ReminderType.Water:
+      return 'Water';
+    case ReminderType.Fertilize:
+      return 'Fertilize';
+    case ReminderType.Rotate:
+      return 'Rotate';
+    default:
+      return '';
+  }
+}
+
+List<String> getBodyTexts(ReminderType type, String name) {
+  switch (type) {
+    case ReminderType.Water:
+      return ['$name wants water', 'Reminder: $name needs water now!'];
+    case ReminderType.Fertilize:
+      return ['Fertilize $name', 'Reminder: $name wants energy'];
+    case ReminderType.Rotate:
+      return ['Rotate $name', 'Reminder: $name should be rotated'];
+    default:
+      return ['', ''];
+  }
+}
+
+Future<void> _scheduleNotification(SharedPreferences prefs, String name, Reminder reminder) async {
+  String key = reminder.key;
+  cancelOldNotification(key, prefs);
+
+  DateTime notificationTime = DateTime(reminder.nextTime.year, reminder.nextTime.month, reminder.nextTime.day,
+    reminder.timeOfDayForNotification.hour,
+    reminder.timeOfDayForNotification.minute
+  );
+  DateTime reminderTime = notificationTime.add(Duration(days: 1));
+
+  int notisKey = key.hashCode;
+  int reminderKey = key.hashCode+1;
+
+  List<String> bodyTexts = getBodyTexts(reminder.type, name);
+  Future.wait([
+    flutterLocalNotificationsPlugin.schedule(
+      notisKey,
+      '${getTitleTexts(reminder.type)} time', bodyTexts[0],
+      notificationTime,
+      platformChannelSpecifics,
+      payload: key
+    ),
+    flutterLocalNotificationsPlugin.schedule(
+      reminderKey,
+      '${getTitleTexts(reminder.type)} reminder', bodyTexts[1],
+      reminderTime,
+      platformChannelSpecifics,
+      payload: key
+    )
+  ]);
+
+  saveNotificationKeys(key, [notisKey, reminderKey], prefs);
+}
+
+Future<void> scheduleNotificationsForReminders(String name, Reminders reminders) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<Reminder> activeReminders = reminders.getRemindersAsList(sortActive: true);
+
+  activeReminders.forEach((r) {
+    _scheduleNotification(prefs, name, r);
+  });
 }
