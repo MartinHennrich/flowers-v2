@@ -6,9 +6,13 @@ import '../../flower.dart';
 
 class AddReminders extends StatefulWidget {
   final Function(Reminders) onSave;
+  final List<AvaiableReminder> defaultCreatedReminders;
+  final Reminders defaultReminders;
 
   AddReminders({
-    this.onSave
+    this.onSave,
+    this.defaultCreatedReminders,
+    this.defaultReminders
   });
 
   @override
@@ -20,6 +24,25 @@ class AddReminders extends StatefulWidget {
 class AddRemindersState extends State<AddReminders> {
   List<AvaiableReminder> _avaiableReminders = avaiableReminders;
   List<AvaiableReminder> _createdReminders = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.defaultCreatedReminders != null) {
+      _createdReminders = widget.defaultCreatedReminders;
+      _avaiableReminders = avaiableReminders
+        .where((AvaiableReminder a) {
+          var includesItem = _createdReminders
+            .firstWhere((AvaiableReminder b) {
+              if (b.reminderType == a.reminderType) {
+                return true;
+              }
+              return false;
+            }, orElse: () => null);
+          return includesItem == null;
+        }).toList();
+    }
+  }
 
   void _setReminders(Reminder reminder) {
 
@@ -60,7 +83,7 @@ class AddRemindersState extends State<AddReminders> {
   @override
   Widget build(BuildContext context) {
     return FormField(
-      initialValue: Reminders(),
+      initialValue: widget.defaultReminders != null ? widget.defaultReminders : Reminders(),
       onSaved: (Reminders reminders) {
         widget.onSave(reminders);
       },
