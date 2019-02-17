@@ -124,8 +124,8 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     }
   }
 
-  void _select(Choice choice) {
-    if (choice.type == 'delete') {
+  void _select(_MenuChoice _Menuchoice) {
+    if (_Menuchoice.type == 'delete') {
       openDeleteDialog();
     }
   }
@@ -172,13 +172,13 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
               )
             ),
           ),
-          PopupMenuButton<Choice>(
+          PopupMenuButton<_MenuChoice>(
             onSelected: _select,
             itemBuilder: (BuildContext context) {
               return [
-                PopupMenuItem<Choice>(
-                  value: choices[0],
-                  child: Text(choices[0].title),
+                PopupMenuItem<_MenuChoice>(
+                  value: _menuChoice[0],
+                  child: Text(_menuChoice[0].title),
                 ),
               ];
             },
@@ -276,13 +276,13 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
   }
 }
 
-class Choice {
+class _MenuChoice {
   final String title;
   final String type;
 
-  const Choice({this.title, this.type});
+  const _MenuChoice({this.title, this.type});
 }
 
-const List<Choice> choices = [
-  Choice(title: 'Delete', type: 'delete'),
+const List<_MenuChoice> _menuChoice = [
+  _MenuChoice(title: 'Delete', type: 'delete'),
 ];

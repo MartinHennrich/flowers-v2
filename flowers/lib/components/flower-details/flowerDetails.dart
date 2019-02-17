@@ -232,10 +232,10 @@ class FlowerDetailsState extends State<FlowerDetails> {
     );
   }
 
-  void _select(Choice choice) {
-    if (choice.type == 'delete') {
+  void _select(_MenuChoice _Menuchoice) {
+    if (_Menuchoice.type == 'delete') {
       openDeleteDialog();
-    } else if (choice.type == 'edit') {
+    } else if (_Menuchoice.type == 'edit') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -268,17 +268,17 @@ class FlowerDetailsState extends State<FlowerDetails> {
         elevation: 0,
         title: Text(widget.flower.name),
         actions: [
-          PopupMenuButton<Choice>(
+          PopupMenuButton<_MenuChoice>(
             onSelected: _select,
             itemBuilder: (BuildContext context) {
               return [
-                PopupMenuItem<Choice>(
-                  value: choices[0],
-                  child: Text(choices[0].title),
+                PopupMenuItem<_MenuChoice>(
+                  value: _menuChoices[0],
+                  child: Text(_menuChoices[0].title),
                 ),
-                PopupMenuItem<Choice>(
-                  value: choices[1],
-                  child: Text(choices[1].title),
+                PopupMenuItem<_MenuChoice>(
+                  value: _menuChoices[1],
+                  child: Text(_menuChoices[1].title),
                 )
               ];
             },
@@ -318,14 +318,14 @@ class FlowerDetailsState extends State<FlowerDetails> {
   }
 }
 
-class Choice {
+class _MenuChoice {
   final String title;
   final String type;
 
-  const Choice({this.title, this.type});
+  const _MenuChoice({this.title, this.type});
 }
 
-const List<Choice> choices = [
-  Choice(title: 'Edit', type: 'edit'),
-  Choice(title: 'Delete', type: 'delete'),
+const List<_MenuChoice> _menuChoices = [
+  _MenuChoice(title: 'Edit', type: 'edit'),
+  _MenuChoice(title: 'Delete', type: 'delete'),
 ];
