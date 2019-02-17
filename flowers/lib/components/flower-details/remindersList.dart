@@ -5,6 +5,7 @@ import '../../utils/dateHelpers.dart';
 import '../../utils/colors.dart';
 import './reminderOverviewPage.dart';
 import '../../constants/reminders.dart';
+import './add-reminders/addRemindersPage.dart';
 
 class RemindersList extends StatelessWidget {
   final Reminders reminders;
@@ -34,7 +35,7 @@ class RemindersList extends StatelessWidget {
     return daysLeft;
   }
 
-  Widget _addReminderCard() {
+  Widget _addReminderCard(BuildContext context) {
     Color color = Colors.black12;
     List<Reminder> reminderList = reminders.getRemindersAsList();
 
@@ -53,7 +54,14 @@ class RemindersList extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddRemindersPage(flower: flower, reminders: reminders,),
+              ),
+            );
+          },
           child: Container(
             child: Icon(Icons.add, color: color, size: 44,),
           ),
@@ -210,7 +218,7 @@ class RemindersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var children = _getReminderCards(context);
-    children.add(_addReminderCard());
+    children.add(_addReminderCard(context));
 
     return Container(
       height: 150,
