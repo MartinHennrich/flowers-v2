@@ -85,26 +85,16 @@ class WateredFlower {
 
 WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture soilMoisture) {
   DateTime wateredTime = DateTime.now();
-
-  int nextWaterDaysFromSoil = soilMoistureToNextWaterDays(soilMoisture);
-  int nextWaterDaysFromAmount = waterAmountToNextWaterDays(waterAmount);
-  int nextWaterDays = nextWaterDaysFromSoil + nextWaterDaysFromAmount;
   WaterTime waterTime = WaterTime(
     waterAmount: waterAmount,
     soilMoisture: soilMoisture,
     wateredTime: wateredTime
   );
 
-  if (nextWaterDays < 0) {
-    nextWaterDays = 1;
-  } else {
-    nextWaterDays += flower.reminders.water.interval;
-  }
-
   flower.reminders.water.lastTime = wateredTime;
   flower.addWaterTime(waterTime);
 
-  DateTime nextWaterTime = DateTime.now().add(Duration(days: nextWaterDays));
+  DateTime nextWaterTime = DateTime.now().add(Duration(days: flower.reminders.water.interval));
   flower.reminders.water.nextTime = nextWaterTime;
 
   scheduleWaterNotification(
