@@ -320,13 +320,12 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
 class Choice {
   final String title;
-  final IconData icon;
   final String type;
 
-  const Choice({this.title, this.icon, this.type});
+  const Choice({this.title, this.type});
 }
 
 const List<Choice> choices = [
-  Choice(title: 'Edit', icon: Icons.directions_car, type: 'edit'),
-  Choice(title: 'Delete', icon: Icons.directions_car, type: 'delete'),
+  Choice(title: 'Edit', type: 'edit'),
+  Choice(title: 'Delete', type: 'delete'),
 ];
