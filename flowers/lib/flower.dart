@@ -113,11 +113,19 @@ class Reminders {
     List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
     List<Reminder> completedReminders = getCompletedReminders(time);
 
-    if (activeReminders == null || completedReminders == null) {
+    List<Reminder> actionableReminders = activeReminders.where((reminder) {
+      if (reminder.lastTime.day == time.day && reminder.lastTime.month == time.month) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+
+    if (actionableReminders == null || completedReminders == null) {
       return false;
     }
 
-    return activeReminders.length == completedReminders.length;
+    return actionableReminders.length == completedReminders.length;
   }
 
   Reminders removeReminderByType(ReminderType type) {
