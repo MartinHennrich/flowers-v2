@@ -6,12 +6,12 @@ import '../create-flower/intervall.dart';
 import '../create-flower/pickTime.dart';
 import '../../flower.dart';
 import '../../store.dart';
-import '../../constants/colors.dart';
 import '../../utils/colors.dart';
 import '../../utils/notifications.dart';
 import './daysLeft.dart';
 import './reminderInfoPanel.dart';
 import '../../presentation/custom_icons_icons.dart';
+import './deleteDialog.dart';
 
 class ReminderOverviewPage extends StatefulWidget {
   final Reminder reminder;
@@ -124,6 +124,33 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     }
   }
 
+  void _select(Choice choice) {
+    if (choice.type == 'delete') {
+      openDeleteDialog();
+    }
+  }
+
+  void openDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => DeleteDialog(
+        name: '${widget.reminder.key} reminder',
+        onRemove: (context) async {
+          Flower flower = widget.flower;
+          flower.reminders.removeReminderByType(widget.reminder.type);
+          try {
+            await database.updateflower(flower);
+            AppStore.dispatch(UpdateFlowerAction(flower));
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          } catch (e) {
+            Navigator.of(context).pop();
+          }
+        },
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,7 +171,18 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
                 color: isEdited ? mainColor : Colors.black
               )
             ),
-          )
+          ),
+          PopupMenuButton<Choice>(
+            onSelected: _select,
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<Choice>(
+                  value: choices[0],
+                  child: Text(choices[0].title),
+                ),
+              ];
+            },
+          ),
         ],
       ),
       body: ListView(
@@ -237,3 +275,14 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     );
   }
 }
+
+class Choice {
+  final String title;
+  final String type;
+
+  const Choice({this.title, this.type});
+}
+
+const List<Choice> choices = [
+  Choice(title: 'Delete', type: 'delete'),
+];
