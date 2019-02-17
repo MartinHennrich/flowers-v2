@@ -81,7 +81,7 @@ class AddRemindersPageState extends State<AddRemindersPage> {
                 onSave: (Reminders reminders) {
                   remindersFormData = reminders;
                 },
-                defaultReminders: widget.reminders,
+                defaultReminders: widget.reminders.clone(),
                 defaultCreatedReminders: getAvaiableReminderFromReminders(widget.reminders),
               ),
             ]
