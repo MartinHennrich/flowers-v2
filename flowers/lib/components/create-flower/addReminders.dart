@@ -133,7 +133,7 @@ class AddRemindersState extends State<AddReminders> {
             _avaiableReminders.length > 0
               ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Text('AVAIABLE REMINDERS',
+                child: Text('AVAILABLE REMINDERS',
                   style: TextStyle(
                     color: Colors.black45,
                     fontSize: 16
