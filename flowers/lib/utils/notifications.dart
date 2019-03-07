@@ -37,7 +37,7 @@ void cancelOldNotification(String key, SharedPreferences prefs) {
   });
 }
 
-Future<void> saveNotificationKeys(String key, List<int> keys SharedPreferences prefs) async {
+Future<void> saveNotificationKeys(String key, List<int> keys, SharedPreferences prefs) async {
   await prefs.setStringList('$key-notifications', keys.map((v) => v.toString()).toList());
 }
 
