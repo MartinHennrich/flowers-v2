@@ -73,13 +73,13 @@ class CreateReminderState extends State<CreateReminder> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              widget.reminderType == ReminderType.Water
-                ? LastWaterTime(
-                  onSave: (DateTime lastTime) {
-                    reminderFormData.lastTime = lastTime;
-                  },
-                )
-                : Container(),
+              LastWaterTime(
+                onSave: (DateTime lastTime) {
+                  reminderFormData.lastTime = lastTime;
+                },
+                type: _getName()
+              ),
+
 
               Intervall(
                 onSave: (int interval) {
