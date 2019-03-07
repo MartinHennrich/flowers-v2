@@ -192,16 +192,32 @@ class Reminders {
     return 0;
   }
 
-  Reminder getClosestDate(DateTime time) {
-    List<Reminder> reminders = getRemindersAsList(sortActive: true);
+  List<Reminder> getSortedRemindersByTime(DateTime time, { List<Reminder> myReminders }) {
+    List<Reminder> reminders = [];
+    if (myReminders != null) {
+      reminders = myReminders;
+    } else {
+      reminders = getRemindersAsList(sortActive: true);
+    }
+
 
     if (reminders.length == 1) {
-      return reminders[0];
+      return reminders;
     } else if (reminders.length == 0) {
-      return null;
+      return [];
     }
 
     reminders.sort((a, b) => _compare(a, b, time));
+
+    return reminders;
+  }
+
+  Reminder getClosestDate(DateTime time) {
+    List<Reminder> reminders = getSortedRemindersByTime(time);
+
+    if (reminders.length == 0) {
+      return null;
+    }
 
     return reminders[0];
   }
