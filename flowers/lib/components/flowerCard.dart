@@ -3,7 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../flower.dart';
 import '../constants/colors.dart';
-import '../presentation/custom_icons_icons.dart';
+import '../utils/reminderHelpers.dart';
+import '../utils/flowerHelpers.dart';
 import '../utils/colors.dart';
 
 class FlowerCard extends StatelessWidget {
@@ -11,6 +12,7 @@ class FlowerCard extends StatelessWidget {
   final bool disabled;
   final bool withHero;
   final bool statusBar;
+  final bool withReminderBar;
   final Function(Flower flower) onPress;
 
   FlowerCard({
@@ -19,6 +21,7 @@ class FlowerCard extends StatelessWidget {
     this.disabled = false,
     this.withHero = false,
     this.statusBar = true,
+    this.withReminderBar = false,
   });
 
   LinearGradient _getColor(Flower flower) {
@@ -88,6 +91,71 @@ class FlowerCard extends StatelessWidget {
       );
   }
 
+  int _getIconSize(ReminderType type) {
+    switch (type) {
+      case ReminderType.Water:
+
+      case ReminderType.Fertilize:
+      case ReminderType.Rotate:
+      default:
+    }
+  }
+
+  Widget _getReminderIcon() {
+    List<Reminder> reminders = flower.reminders.getSortedRemindersByTime(
+      DateTime.now(),
+      myReminders: flower.reminders.getRemindersThatNeedAction(DateTime.now())
+    );
+    if (reminders.length == 0) {
+      return Container();
+    }
+
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: reminders.map((reminder) {
+          return Container(
+            margin: EdgeInsets.only(right: 6),
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[400],
+                  offset: Offset(0.0, 1.5),
+                  blurRadius: 1.5,
+                ),
+              ]
+            ),
+            child: Center(child: Icon(
+              getReminderIcon(reminder),
+              size: 20,
+              color: Colors.black.withAlpha(100)
+            ))
+          );
+        }).toList()
+      )
+    );
+  }
+
+  Widget _withReminderBar(Widget widget) {
+    return withReminderBar
+      ? Stack(
+          children: <Widget>[
+            widget,
+            Positioned(
+              left: 6,
+              top: 20,
+              child: _getReminderIcon(),
+            ),
+          ],
+        )
+      : widget;
+  }
+
   @override
   Widget build(BuildContext context) {
     Color timeBasedColor = _getColor2(flower);
@@ -97,7 +165,7 @@ class FlowerCard extends StatelessWidget {
         onTap: disabled ? null : () {
           onPress(flower);
         },
-        child: Container(
+        child: _withReminderBar(Container(
           width: 144,
           height: 170,
           margin: EdgeInsets.fromLTRB(0, 16, 16, 0),
@@ -110,7 +178,7 @@ class FlowerCard extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
           child: _getStatusBar(timeBasedColor)
-        )
+        ))
       ));
   }
 }
