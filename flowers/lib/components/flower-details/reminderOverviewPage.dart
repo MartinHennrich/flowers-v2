@@ -10,7 +10,7 @@ import '../../utils/colors.dart';
 import '../../utils/notifications.dart';
 import './daysLeft.dart';
 import './reminderInfoPanel.dart';
-import '../../presentation/custom_icons_icons.dart';
+import '../../utils/reminderHelpers.dart';
 import './deleteDialog.dart';
 
 class ReminderOverviewPage extends StatefulWidget {
@@ -72,30 +72,6 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
         isEdited = true;
       }
     });
-  }
-
-  Icon _getIcon() {
-    IconData icon;
-
-    switch (widget.reminder.type) {
-      case ReminderType.Water:
-        icon = CustomIcons.water_amount_small;
-        break;
-      case ReminderType.Fertilize:
-        icon = Icons.flash_on;
-        break;
-      case ReminderType.Rotate:
-        icon = Icons.rotate_left;
-        break;
-      default:
-        icon = Icons.warning;
-    }
-
-    return Icon(
-      icon,
-      size: 128,
-      color: mainColor
-    );
   }
 
   Future<void> _onEditFlower() async {
@@ -198,7 +174,10 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
                   width: 160,
                   height: 200,
                   alignment: Alignment(0, 0),
-                  child: _getIcon()
+                  child: Icon(getReminderIcon(widget.reminder),
+                    size: 128,
+                    color: mainColor
+                  ),
                 ),
                 Expanded(child:DaysLeft(
                   reminder: widget.reminder,
