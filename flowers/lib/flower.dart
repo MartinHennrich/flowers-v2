@@ -16,6 +16,7 @@ enum ReminderType {
   Water,
   Rotate,
   Fertilize,
+  // GrowLight, // TODO: add later!
 }
 
 class Reminder {
@@ -74,6 +75,7 @@ class Reminders {
     return items.toList();
   }
 
+  // TODO: write tests for this!
   List<Reminder> getRemindersThatNeedAction(DateTime time) {
     List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
 
@@ -86,13 +88,16 @@ class Reminders {
         return false;
       }
 
-      if (reminder.nextTime.day <= time.day && reminder.nextTime.month <= time.month) {
+      // if nextTime is before time
+      if (reminder.nextTime.compareTo(time) < 0) {
         return true;
       }
+
       return false;
     }).toList();
   }
 
+  // TODO: write tests for this!
   List<Reminder> getCompletedReminders(DateTime time) {
     List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
 
@@ -109,26 +114,20 @@ class Reminders {
     }).toList();
   }
 
-  bool isAllRemindersCompleted(DateTime time) {
+  // TODO: write tests for this!
+  bool isAllRemindersCompletedForDate(DateTime time) {
     List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
-    List<Reminder> completedReminders = getCompletedReminders(time);
+    List<Reminder> unCompletedReminders = getRemindersThatNeedAction(time);
 
-    List<Reminder> actionableReminders = activeReminders.where((reminder) {
-      if (reminder.lastTime.day == time.day && reminder.lastTime.month == time.month) {
-        return true;
-      }
-
-      return false;
-    }).toList();
-
-    if (actionableReminders == null || completedReminders == null ||
-      actionableReminders.length == 0 ||
-      completedReminders.length == 0
-    ) {
+    if (activeReminders.length == 0) {
       return false;
     }
 
-    return actionableReminders.length == completedReminders.length;
+    if (unCompletedReminders.length > 0) {
+      return false;
+    }
+
+    return true;
   }
 
   Reminders removeReminderByType(ReminderType type) {

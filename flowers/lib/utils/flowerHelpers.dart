@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../flower.dart';
 import '../constants/enums.dart';
 import '../utils/soilMoisture.dart';
-import '../utils/waterAmount.dart';
 import '../utils/notifications.dart';
 
 List<Flower> getFlowersThatHasBeenCompleted(List<Flower> flowers) {
   DateTime timeNow = DateTime.now();
   List<Flower> flowersThatHasBeenCompleted = [];
   flowers.forEach((flower){
-    if (flower.reminders.isAllRemindersCompleted(timeNow)) {
+    if (flower.reminders.isAllRemindersCompletedForDate(timeNow)) {
       flowersThatHasBeenCompleted.add(flower);
     }
   });
