@@ -10,9 +10,11 @@ enum LastWaterTimes {
 
 class LastWaterTime extends StatelessWidget {
   final Function(DateTime) onSave;
+  final String type;
 
   LastWaterTime({
-    @required this.onSave
+    @required this.onSave,
+    this.type
   });
 
   Widget _getGenericButton(Function onPressed, String text, LastWaterTimes activeValue, LastWaterTimes lastWaterTime, {
@@ -107,7 +109,7 @@ class LastWaterTime extends StatelessWidget {
           padding: EdgeInsets.only(top: 24),
           child: Column(
             children: <Widget>[
-              Text('Last time watered?',
+              Text('Last time ${this.type}?',
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 16
