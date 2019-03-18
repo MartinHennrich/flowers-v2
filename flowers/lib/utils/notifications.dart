@@ -134,6 +134,11 @@ Future<void> _scheduleNotification(SharedPreferences prefs, String name, Reminde
   saveNotificationKeys(key, [notisKey, reminderKey], prefs);
 }
 
+Future<void> scheduleNotificationForReminder(String name, Reminder reminder) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await _scheduleNotification(prefs, name, reminder);
+}
+
 Future<void> scheduleNotificationsForReminders(String name, Reminders reminders) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   List<Reminder> activeReminders = reminders.getRemindersAsList(sortActive: true);
