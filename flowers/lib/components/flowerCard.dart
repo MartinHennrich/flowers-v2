@@ -91,16 +91,6 @@ class FlowerCard extends StatelessWidget {
       );
   }
 
-  int _getIconSize(ReminderType type) {
-    switch (type) {
-      case ReminderType.Water:
-
-      case ReminderType.Fertilize:
-      case ReminderType.Rotate:
-      default:
-    }
-  }
-
   Widget _getReminderIcon() {
     List<Reminder> reminders = flower.reminders.getSortedRemindersByTime(
       DateTime.now(),
