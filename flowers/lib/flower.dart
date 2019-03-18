@@ -19,6 +19,13 @@ enum ReminderType {
   // GrowLight, // TODO: add later!
 }
 
+enum RemindersStatus {
+  AllCompleted,
+  NoneCompleted,
+  NoReminders,
+  AllCompletedButNotFromDate
+}
+
 class Reminder {
   String key;
   bool isActive;
@@ -117,13 +124,17 @@ class Reminders {
   // TODO: write tests for this!
   bool isAllRemindersCompletedForDate(DateTime time) {
     List<Reminder> activeReminders = getRemindersAsList(sortActive: true);
-    List<Reminder> unCompletedReminders = getRemindersThatNeedAction(time);
-
     if (activeReminders.length == 0) {
       return false;
     }
 
+    List<Reminder> unCompletedReminders = getRemindersThatNeedAction(time);
     if (unCompletedReminders.length > 0) {
+      return false;
+    }
+
+    List<Reminder> completedReminders = getCompletedReminders(time);
+    if (completedReminders.length == 0) {
       return false;
     }
 
