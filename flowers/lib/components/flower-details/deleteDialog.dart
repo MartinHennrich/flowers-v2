@@ -14,7 +14,7 @@ class DeleteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return SimpleDialog(
       contentPadding: EdgeInsets.all(0),
-      title: Text('Do you want to delete $name?',),
+      title: Text('Do you want to delete ${name.trim()}?',),
       children: <Widget>[
         ButtonBar(
           children: <Widget>[
@@ -22,7 +22,7 @@ class DeleteDialog extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('NO :)'),
+              child: Text('NO'),
             ),
             FlatButton(
               color: RedMain,
