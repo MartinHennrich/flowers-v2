@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flower.dart';
 import '../constants/enums.dart';
@@ -107,4 +108,37 @@ WateredFlower waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture s
     flower,
     waterTime
   );
+}
+
+Flower runActionOnReminder(Flower flower, Reminder reminder){
+  DateTime rotateTime = DateTime.now();
+
+  reminder.lastTime = rotateTime;
+  DateTime nextTime = DateTime.now().add(Duration(days: reminder.interval));
+  reminder.nextTime = nextTime;
+
+  flower.reminders.updateReminder(reminder);
+  scheduleNotificationForReminder(
+    flower.name,
+    reminder
+  );
+
+  return flower;
+}
+
+Flower postponeReminder(Flower flower, Reminder reminder, int nextDays) {
+  if (nextDays <= 0) {
+    nextDays = 1;
+  }
+
+  DateTime nextTime = DateTime.now().add(Duration(days: nextDays));
+  reminder.nextTime = nextTime;
+
+  flower.reminders.updateReminder(reminder);
+  scheduleNotificationForReminder(
+    flower.name,
+    reminder
+  );
+
+  return flower;
 }
