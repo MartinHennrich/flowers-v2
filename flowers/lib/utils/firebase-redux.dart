@@ -136,3 +136,31 @@ Future<void> waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture so
   AppStore.dispatch(UpdateFlowerAction(wateredFlower.flower));
   return database.waterFlower(wateredFlower.flower, wateredFlower.waterTime);
 }
+
+Future<void> rotateFlower(Flower flower) {
+  Flower rotatedFlower = flowerHelpers.runActionOnReminder(flower, flower.reminders.rotate);
+  AppStore.dispatch(UpdateFlowerAction(rotatedFlower));
+
+  return database.updateAllReminders(rotatedFlower);
+}
+
+Future<void> postponeRotate(Flower flower, int days) {
+  Flower posteponedRotationFlower = flowerHelpers.postponeReminder(flower, flower.reminders.rotate, days);
+  AppStore.dispatch(UpdateFlowerAction(posteponedRotationFlower));
+
+  return database.postpone(flower, flower.reminders.rotate);
+}
+
+Future<void> fertilizeFlower(Flower flower) {
+  Flower fertilizeFlower = flowerHelpers.runActionOnReminder(flower, flower.reminders.fertilize);
+  AppStore.dispatch(UpdateFlowerAction(fertilizeFlower));
+
+  return database.updateAllReminders(fertilizeFlower);
+}
+
+Future<void> postponeFertilize(Flower flower, int days) {
+  Flower posteponedfertilizeFlower = flowerHelpers.postponeReminder(flower, flower.reminders.fertilize, days);
+  AppStore.dispatch(UpdateFlowerAction(posteponedfertilizeFlower));
+
+  return database.postpone(flower, flower.reminders.fertilize);
+}
