@@ -23,7 +23,7 @@ class IntervallPure extends StatelessWidget {
         padding: EdgeInsets.only(top: 16),
         child: Column(
           children: <Widget>[
-            Text('$type every',
+            Text('$type',
               style: TextStyle(
                   color: Colors.black54,
                   fontSize: 16
@@ -119,7 +119,7 @@ class Intervall extends StatelessWidget {
             intervallFrom.setValue(value);
             intervallFrom.setState((){});
           },
-          type: type,
+          type: '$type every',
         );
       },
     );
