@@ -94,6 +94,25 @@ class Database {
       });
   }
 
+  Future<void> updateAllReminders(Flower flower) async {
+    return userDatabaseReference
+      .child('flowers')
+      .child(flower.key)
+      .child('reminders')
+      .update(flower.reminders.toFirebaseObject());
+  }
+
+  Future<void> postpone(Flower flower, Reminder reminder) async {
+    return userDatabaseReference
+      .child('flowers')
+      .child(flower.key)
+      .child('reminders')
+      .child(reminder.key)
+      .update({
+        'nextTime': reminder.nextTime.toIso8601String(),
+      });
+  }
+
   _initialStorage() {
     _storage = Storage(currentUser.uid);
   }
