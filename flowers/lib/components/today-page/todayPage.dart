@@ -10,6 +10,8 @@ import '../flowersList.dart';
 import './noFlowersToWater.dart';
 import '../page-title.dart';
 import './water-dialog/waterDialog.dart';
+import './rotate-dialog/rotateDialog.dart';
+import './fertilize-dialog/fertilizeDialog.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -37,11 +39,40 @@ class FlowerList extends StatelessWidget {
     ];
   }
 
-  void openDialog(BuildContext context, Flower flower) {
+  void openWaterDialog(BuildContext context, Flower flower) {
     showDialog(
       context: context,
       builder: (_) => WaterDialog(flower: flower)
     );
+  }
+
+  void openRotateDialog(BuildContext context, Flower flower) {
+    showDialog(
+      context: context,
+      builder: (_) => RotateDialog(flower: flower)
+    );
+  }
+
+  void openFertilizeDialog(BuildContext context, Flower flower) {
+    showDialog(
+      context: context,
+      builder: (_) => FertilizeDialog(flower: flower)
+    );
+  }
+
+  void _selectDialog(BuildContext context, Reminder reminder, Flower flower) {
+    switch (reminder.type) {
+      case ReminderType.Water:
+        openWaterDialog(context, flower);
+        break;
+      case ReminderType.Fertilize:
+        openFertilizeDialog(context, flower);
+        break;
+      case ReminderType.Rotate:
+        openRotateDialog(context, flower);
+        break;
+      default:
+    }
   }
 
   @override
@@ -49,27 +80,30 @@ class FlowerList extends StatelessWidget {
     return StoreConnector(
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
-        List<Flower> flowersToWater = getFlowersThatNeedAction(vm.flowers);
+        List<Flower> flowersActiveWithReminders = getFlowersThatNeedAction(vm.flowers);
         var flowersToWaterWidget = FlowersList(
-          flowers: flowersToWater,
+          flowers: flowersActiveWithReminders,
+          withReminderBar: true,
           onPress: (Flower flower) {
-            openDialog(context, flower);
+            Reminder closestReminder = flower.reminders.getClosestDate(DateTime.now());
+            _selectDialog(context, closestReminder, flower);
+
           },
         );
 
-        List<Flower> flowersBeenWatered = getFlowersThatHasBeenCompleted(vm.flowers);
+        List<Flower> completedFlowers = getFlowersThatHasBeenCompleted(vm.flowers);
         var flowersBeenWateredWidget = FlowersList(
-          flowers: flowersBeenWatered,
+          flowers: completedFlowers,
           disabled: true,
 
         );
 
         List<Widget> children = [
           PageTitle(title: 'Today'),
-          flowersToWater.length <= 0
+          flowersActiveWithReminders.length <= 0
             ? NoFlowersToWater(
               hasNoFlowers: vm.flowers.length == 0,
-              hasCompleted: flowersBeenWatered.length > 0
+              hasCompleted: completedFlowers.length > 0
             )
             : Container(),
         ]
@@ -77,7 +111,7 @@ class FlowerList extends StatelessWidget {
           flowersToWaterWidget
         )
         ..add(
-          flowersBeenWatered.length > 0
+          completedFlowers.length > 0
             ? PageTitle(
                 title: 'Completed',
                 fontSize: 40,
