@@ -1,4 +1,5 @@
 import './constants/enums.dart';
+import './utils/dateHelpers.dart';
 
 class WaterTime {
   DateTime wateredTime;
@@ -95,8 +96,8 @@ class Reminders {
         return false;
       }
 
-      // if nextTime is before time
-      if (reminder.nextTime.compareTo(time) < 0) {
+      // if nextTime is before or equal to time
+      if (preSetTimeFrame(reminder.nextTime).compareTo(preSetTimeFrame(time)) <= 0) {
         return true;
       }
 
