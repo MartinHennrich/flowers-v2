@@ -27,13 +27,12 @@ List<Flower> getFlowersThatNeedAction(List<Flower> flowers) {
     }
   });
 
-  DateTime today = DateTime.now();
   flowersThatNeedWater.sort((a, b) {
-    var aClosest = a.reminders.getClosestDate(today);
-    var bClosest = b.reminders.getClosestDate(today);
+    var aClosest = a.reminders.getClosestDate(timeNow);
+    var bClosest = b.reminders.getClosestDate(timeNow);
 
-    int aDiffDays = aClosest.nextTime.difference(today).inDays;
-    int bDiffDays = bClosest.nextTime.difference(today).inDays;
+    int aDiffDays = aClosest.nextTime.difference(timeNow).inHours;
+    int bDiffDays = bClosest.nextTime.difference(timeNow).inHours;
 
     return aDiffDays.compareTo(bDiffDays);
   });
