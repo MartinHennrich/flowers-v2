@@ -50,7 +50,6 @@ class AddRemindersState extends State<AddReminders> {
 
     isRemindersUnlocked()
       .then((bool isUnlocked) {
-        print('is unlocked $isUnlocked');
         setState(() {
           this.isUnlocked = isUnlocked;
         });
