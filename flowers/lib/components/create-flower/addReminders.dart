@@ -1,8 +1,12 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/reminders.dart';
 import './avaiableReminderCard.dart';
 import '../../flower.dart';
+import '../../utils/rewardAdHelpers.dart';
+import '../../ad.dart';
+import '../../store.dart';
 
 class AddReminders extends StatefulWidget {
   final Function(Reminders) onSave;
@@ -24,6 +28,7 @@ class AddReminders extends StatefulWidget {
 class AddRemindersState extends State<AddReminders> {
   List<AvaiableReminder> _avaiableReminders = avaiableReminders;
   List<AvaiableReminder> _createdReminders = [];
+  bool isUnlocked = false;
 
   @override
   void initState() {
@@ -42,6 +47,22 @@ class AddRemindersState extends State<AddReminders> {
           return includesItem == null;
         }).toList();
     }
+
+    isRemindersUnlocked()
+      .then((bool isUnlocked) {
+        print('is unlocked $isUnlocked');
+        setState(() {
+          this.isUnlocked = isUnlocked;
+        });
+      });
+    RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+      if (event == RewardedVideoAdEvent.rewarded) {
+        setState(() {
+          this.isUnlocked = true;
+        });
+        setRemindersLockStatus(DateTime.now().toIso8601String());
+      }
+    };
   }
 
   void _setReminders(Reminder reminder) {
@@ -160,7 +181,18 @@ class AddRemindersState extends State<AddReminders> {
                         remindersForm.setValue(r);
                         remindersForm.setState((){});
                         _setReminders(reminder);
-                      }
+                      },
+                      onBeforeCreate: (String key) {
+                        if (!isUnlocked && AppStore.state.flowers.length > 0) {
+                          RewardedVideoAd.instance.load(
+                            adUnitId: RewardedVideoAd.testAdUnitId, // TODO: change test unit id
+                            targetingInfo: targetingInfo
+                          )..then((_) {
+                            RewardedVideoAd.instance..show();
+                          });
+                        }
+                      },
+                      isLocked: !isUnlocked && AppStore.state.flowers.length > 0,
                     );
                   }).toList()
                 )
