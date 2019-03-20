@@ -185,7 +185,7 @@ class AddRemindersState extends State<AddReminders> {
                       onBeforeCreate: (String key) {
                         if (!isUnlocked && AppStore.state.flowers.length > 0) {
                           RewardedVideoAd.instance.load(
-                            adUnitId: RewardedVideoAd.testAdUnitId, // TODO: change test unit id
+                            adUnitId: rewardId,
                             targetingInfo: targetingInfo
                           )..then((_) {
                             RewardedVideoAd.instance..show();
