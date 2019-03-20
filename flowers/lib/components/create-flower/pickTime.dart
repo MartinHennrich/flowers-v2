@@ -23,10 +23,12 @@ PickTimes dateTimPickTimes(DateTime time) {
 class PickTime extends StatelessWidget {
   final Function(Map<String, dynamic> value) onChange;
   final dynamic value;
+  final Color color;
 
   PickTime({
     this.onChange,
     this.value,
+    this.color = BlueMain,
   });
 
   Widget _getGenericButton(Function onPressed, String text, PickTimes activeValue, PickTimes PickTime, {
@@ -36,7 +38,7 @@ class PickTime extends StatelessWidget {
       onPressed: () {
         onPressed();
       },
-      color: activeValue == PickTime ? BlueMain : Colors.black12,
+      color: activeValue == PickTime ? color : Colors.black12,
       shape: shape,
       child: Text(text,
         style: TextStyle(
@@ -104,7 +106,7 @@ class PickTime extends StatelessWidget {
           });
         }
       },
-      color: value['enum'] == PickTimes.Custom ? BlueMain : Colors.black12,
+      color: value['enum'] == PickTimes.Custom ? color : Colors.black12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       child: value['enum'] == PickTimes.Custom
         ? Text('$hour:$minute', style: TextStyle(color: Colors.white))
@@ -152,6 +154,7 @@ class PickTimeForm extends StatelessWidget {
   final Function(DateTime) onSave;
   final Function(Map<String, dynamic>) onChange;
   final Map<String, dynamic> intialValue;
+  final Color color;
 
   PickTimeForm({
     this.onSave,
@@ -159,7 +162,8 @@ class PickTimeForm extends StatelessWidget {
       'enum': PickTimes.Morning,
       'time': TimeOfDay(hour: 8, minute: 0)
     },
-    this.onChange
+    this.onChange,
+    this.color = BlueMain,
   });
 
   @override
@@ -174,6 +178,7 @@ class PickTimeForm extends StatelessWidget {
       builder: (pickTimeForm) {
         return PickTime(
           value: pickTimeForm.value,
+          color: color,
           onChange: (Map<String, dynamic> value) {
             if (onChange != null) {
               onChange(value);

@@ -196,6 +196,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 24),
                     child: Intervall(
+                      color: getReminderColor(widget.reminder.type, true),
                       initialValue: widget.reminder.interval,
                       onSave: (int intervall) {
                         flowerFormData.intervall = intervall;
@@ -212,6 +213,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
 
                   PickTimeForm(
                     intialValue: notificationTime,
+                    color: getReminderColor(widget.reminder.type, true),
                     onChange: (Map<String, dynamic> value) {
                       setState(() {
                         notificationTime = value;
@@ -222,29 +224,6 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
                       flowerFormData.notificationTime = time;
                     },
                   ),
-
-                  /* FormField(
-                    initialValue: widget.reminder.isActive,
-                    onSaved: (bool isActive) {
-                      flowerFormData.isAvtive = isActive;
-                    },
-                    builder: (switchFrom) {
-                      return Container(
-                        child: Column(
-                          children: <Widget>[
-                            Text(switchFrom.value ? 'Deactivate' : 'Activate'),
-                            Switch(
-                              value: switchFrom.value,
-                              onChanged: (bool value) {
-                                switchFrom.setValue(value);
-                                switchFrom.setState((){});
-                              },
-                            )
-                          ],
-                        )
-                      );
-                    },
-                  ) */
                 ],
               )
             )

@@ -7,12 +7,14 @@ class IntervallPure extends StatelessWidget {
   final Function(int) onDecrease;
   final int value;
   final String type;
+  final Color color;
 
   IntervallPure({
     @required this.onIncrease,
     @required this.onDecrease,
     @required this.value,
-    this.type = ''
+    this.type = '',
+    this.color = BlueMain
   });
 
   @override
@@ -51,7 +53,7 @@ class IntervallPure extends StatelessWidget {
                     value.toString(),
                     style: TextStyle(
                       fontSize: 40,
-                      color: BlueMain
+                      color: color
                     ),
                   ),
                 ),
@@ -86,13 +88,15 @@ class Intervall extends StatelessWidget {
   final Function(int) onSave;
   final Function(int) onChange;
   final int initialValue;
+  final Color color;
   String type;
 
   Intervall({
     @required this.onSave,
     this.initialValue = 5,
     this.type,
-    this.onChange
+    this.onChange,
+    this.color = BlueMain
   });
 
   @override
@@ -105,6 +109,7 @@ class Intervall extends StatelessWidget {
       builder: (intervallFrom) {
         return IntervallPure(
           value: intervallFrom.value,
+          color: color,
           onDecrease: (value) {
             if (onChange != null) {
               onChange(value);
