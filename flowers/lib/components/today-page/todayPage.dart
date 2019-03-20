@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -12,6 +13,7 @@ import '../page-title.dart';
 import './water-dialog/waterDialog.dart';
 import './rotate-dialog/rotateDialog.dart';
 import './fertilize-dialog/fertilizeDialog.dart';
+import '../../ad.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -23,7 +25,43 @@ class TodayPage extends StatelessWidget {
   }
 }
 
-class FlowerList extends StatelessWidget {
+class FlowerList extends StatefulWidget {
+  @override
+  _FlowerListState createState() {
+    return _FlowerListState();
+  }
+}
+
+class _FlowerListState extends State<FlowerList> {
+
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevices,
+    keywords: adKeywords,
+    childDirected: true,
+  );
+
+  BannerAd _bannerAd;
+
+  BannerAd createBannerAd() {
+    return BannerAd(
+      adUnitId: bannerId,
+      size: AdSize.banner,
+      targetingInfo: targetingInfo,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAdMob.instance.initialize(appId: appAdId);
+    _bannerAd = createBannerAd()..load();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
 
   List<Widget> _getLoadingScreen() {
     return [
@@ -80,6 +118,12 @@ class FlowerList extends StatelessWidget {
     return StoreConnector(
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
+        if (vm.flowers.length > 0) {
+          _bannerAd..show(
+            anchorOffset: 36,
+            anchorType: AnchorType.top
+          );
+        }
         List<Flower> flowersActiveWithReminders = getFlowersThatNeedAction(vm.flowers);
         var flowersToWaterWidget = FlowersList(
           flowers: flowersActiveWithReminders,
