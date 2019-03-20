@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 
 class GetImage extends StatefulWidget {
-  final Function(File) onSave;
+  final Function(File, ImageSourceType) onSave;
 
   GetImage({
     @required this.onSave
@@ -90,7 +90,7 @@ class GetImageState extends State<GetImage> {
   Widget build(BuildContext context) {
     return FormField(
       onSaved: (File file) {
-        widget.onSave(file);
+        widget.onSave(file, _imageSourceType);
       },
       validator: (value) {
         return value == null ? 'Select or capture image' : null;

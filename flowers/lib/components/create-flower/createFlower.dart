@@ -31,6 +31,7 @@ class FlowerFormData {
   DateTime lastWaterTime = DateTime.now();
   DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
   int waterIntervall = 5;
+  ImageSourceType imageSourceType = ImageSourceType.Camera;
 
   Reminders reminders = Reminders();
 }
@@ -42,7 +43,7 @@ class _CreateFlowerState extends State<CreateFlower> {
 
   Future<void> _onCreateFlower() async {
     File image = flowerFormData.image;
-    var result = await compressImageFile(image);
+    var result = await compressImageFile(image, rotate: flowerFormData.imageSourceType == ImageSourceType.Camera);
 
     Flower _flower = Flower(
       key: '',
@@ -90,8 +91,9 @@ class _CreateFlowerState extends State<CreateFlower> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   GetImage(
-                    onSave: (File image) {
+                    onSave: (File image, imageSourceType) {
                       flowerFormData.image = image;
+                      flowerFormData.imageSourceType = imageSourceType;
                     },
                   ),
 

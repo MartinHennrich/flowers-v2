@@ -27,6 +27,7 @@ class EditFlower extends StatefulWidget {
 class FlowerFormData {
   File image;
   String flowerName = '';
+  ImageSourceType imageSourceType = ImageSourceType.Camera;
 }
 
 class _EditFlowerState extends State<EditFlower> {
@@ -44,7 +45,7 @@ class _EditFlowerState extends State<EditFlower> {
 
     if (flowerFormData.image != null) {
       File imageFile = flowerFormData.image;
-      image = await compressImageFile(imageFile);
+      image = await compressImageFile(imageFile, rotate: flowerFormData.imageSourceType == ImageSourceType.Camera);
     }
 
     try {
@@ -91,8 +92,9 @@ class _EditFlowerState extends State<EditFlower> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   GetImage(
-                    onSave: (File image) {
+                    onSave: (File image, imageSourceType) {
                       flowerFormData.image = image;
+                      flowerFormData.imageSourceType = imageSourceType;
                     },
                   ),
 
