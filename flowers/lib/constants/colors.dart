@@ -61,6 +61,8 @@ const GreyGradient = LinearGradient(
 
 // reminder colors
 
+// fertilize
+
 const BrownMain = Color.fromRGBO(199, 144, 129, 1);
 const BrownSecond = Color.fromRGBO(223, 165, 121, 1);
 
@@ -74,6 +76,8 @@ const BrownGradient = LinearGradient(
   ],
 );
 
+// water
+
 const ReminderBlueMain = Color.fromRGBO(138, 229, 252, 1);
 const ReminderBlueSecond = Color.fromRGBO(85, 181, 249, 1);
 
@@ -82,8 +86,22 @@ const ReminderBlueGradient = LinearGradient(
   end: Alignment.bottomRight,
   stops: [0.1, 1],
   colors: [
-
     ReminderBlueSecond,
     ReminderBlueMain,
+  ],
+);
+
+// rotate
+
+const ReminderPurpleMain = Color.fromRGBO(196, 147, 246, 1);
+const ReminderPurpleSecond = Color.fromRGBO(154, 158, 249, 1);
+
+const ReminderPurpleGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  stops: [0.1, 1],
+  colors: [
+    ReminderPurpleMain,
+    ReminderPurpleSecond,
   ],
 );

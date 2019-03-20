@@ -21,6 +21,6 @@ class AvaiableReminder {
 List<AvaiableReminder> avaiableReminders = [
   AvaiableReminder('water', CustomIcons.water_amount_small, ReminderBlueMain, ReminderType.Water),
   AvaiableReminder('fertilize', Icons.flash_on, BrownMain, ReminderType.Fertilize),
-  AvaiableReminder('rotate', Icons.rotate_left, YellowMain, ReminderType.Rotate)
+  AvaiableReminder('rotate', Icons.rotate_left, ReminderPurpleMain, ReminderType.Rotate)
 ];
 

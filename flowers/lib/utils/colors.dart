@@ -63,7 +63,7 @@ Color getColorBasedOnTime2(DateTime time, DateTime lastTime) {
     }
 
     if (type == ReminderType.Rotate) {
-      return YellowMain;
+      return ReminderPurpleMain;
     }
 
     return RedMain;

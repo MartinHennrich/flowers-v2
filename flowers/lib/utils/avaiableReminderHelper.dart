@@ -15,7 +15,7 @@ List<AvaiableReminder> getAvaiableReminderFromReminders(Reminders reminders) {
       case ReminderType.Fertilize:
         return AvaiableReminder('fertilize', Icons.flash_on, BrownMain, ReminderType.Fertilize);
       case ReminderType.Rotate:
-        return AvaiableReminder('rotate', Icons.rotate_left, YellowMain, ReminderType.Rotate);
+        return AvaiableReminder('rotate', Icons.rotate_left, ReminderPurpleMain, ReminderType.Rotate);
       default:
         return AvaiableReminder('none', Icons.warning, RedMain, ReminderType.Water);
     }
