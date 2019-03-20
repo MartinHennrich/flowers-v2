@@ -8,17 +8,24 @@ import './createReminder.dart';
 class AvaiableReminderCard extends StatelessWidget {
   final AvaiableReminder avaiableReminder;
   final Function(Reminder) onCreate;
+  final Function onBeforeCreate;
   final bool remove;
+  final bool isLocked;
 
   AvaiableReminderCard(
     this.avaiableReminder,
     this.onCreate,
     {
+      this.onBeforeCreate,
       this.remove = false,
+      this.isLocked = false,
     }
   );
 
   void _openDialog(AvaiableReminder reminder, BuildContext context) {
+    if (onBeforeCreate != null) {
+      onBeforeCreate(avaiableReminder.title);
+    }
     showDialog(
       context: context,
       builder: (_) => CreateReminder(
@@ -42,7 +49,7 @@ class AvaiableReminderCard extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('NO :)'),
+                child: Text('NO'),
               ),
               FlatButton(
                 color: RedMain,
@@ -89,34 +96,48 @@ class AvaiableReminderCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            if (this.remove) {
+            if (remove) {
               _openDeleteDialog(reminder, context);
             } else {
               _openDialog(reminder, context);
             }
           },
-          child: Container(
-            alignment: Alignment(0, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  reminder.title.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black
-                  )
+          child: Stack(
+            children: <Widget>[
+              isLocked
+                ? Positioned(
+                top: 8,
+                left: 8,
+                child: Icon(
+                  Icons.videocam,
+                  size: 14,
+                  color: Colors.black26,
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Icon(
-                    reminder.iconData,
-                    color: reminder.color,
-                  )
+              ) : Container(),
+              Container(
+              alignment: Alignment(0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      reminder.title.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black
+                      )
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Icon(
+                        reminder.iconData,
+                        color: reminder.color,
+                      )
+                    )
+                  ]
                 )
-              ]
-            )
+              )
+            ]
           )
         )
       ),
