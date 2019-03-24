@@ -10,8 +10,8 @@ AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotification
   'com.plant.reminders', 'flowers', 'Reminder to water your flowers',
   color: GreenMain,
   groupKey: 'water-time',
-  importance: Importance.Low,
-  priority: Priority.Low
+  importance: Importance.Default,
+  priority: Priority.Default
 );
 
 NotificationDetails platformChannelSpecifics = NotificationDetails(
