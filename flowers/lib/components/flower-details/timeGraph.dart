@@ -41,9 +41,12 @@ class TimeSeriesGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
+    return charts.TimeSeriesChart(
       seriesList,
       animate: animate,
+      defaultRenderer: charts.LineRendererConfig(
+        includePoints: true,
+      ),
       primaryMeasureAxis: charts.NumericAxisSpec(
         tickProviderSpec: charts.StaticNumericTickProviderSpec(_selectSpec()),
         renderSpec: charts.GridlineRendererSpec(
