@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import './dateHelpers.dart';
 
-LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
+LinearGradient getColorGradientBasedOnTime(DateTime time, DateTime lastTime) {
   DateTime today = preSetTimeFrame(DateTime.now());
   DateTime _time = preSetTimeFrame(time);
   DateTime _lastTime = preSetTimeFrame(lastTime);
@@ -26,7 +26,7 @@ LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
   return RedGradient;
 }
 
-Color getColorBasedOnTime2(DateTime time, DateTime lastTime) {
+Color getColorBasedOnTime(DateTime time, DateTime lastTime) {
   DateTime today = preSetTimeFrame(DateTime.now());
   DateTime _time = preSetTimeFrame(time);
   DateTime _lastTime = preSetTimeFrame(lastTime);

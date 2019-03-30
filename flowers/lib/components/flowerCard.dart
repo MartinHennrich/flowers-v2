@@ -33,7 +33,7 @@ class FlowerCard extends StatelessWidget {
     if (clostToDate == null) {
       return GreenGradient;
     }
-    return getColorBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
+    return getColorGradientBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
   }
 
   Color _getColor2(Flower flower) {
@@ -44,7 +44,7 @@ class FlowerCard extends StatelessWidget {
     if (clostToDate == null) {
       return GreenMain;
     }
-    return getColorBasedOnTime2(clostToDate.nextTime, clostToDate.lastTime);
+    return getColorBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
   }
 
   Widget _withHero(Widget widget) {

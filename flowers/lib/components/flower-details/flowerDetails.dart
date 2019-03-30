@@ -53,7 +53,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
         colorOfTime = GreenMain;
       } else {
         isAnyRemindersActive = true;
-        colorOfTime = getColorBasedOnTime2(
+        colorOfTime = getColorBasedOnTime(
           closestReminder.nextTime,
           closestReminder.lastTime
         );
