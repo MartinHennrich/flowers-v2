@@ -33,7 +33,7 @@ class NoFlowersToWater extends StatelessWidget {
       return 'add plants\nto start you journey';
     }
 
-    return 'no plants need water';
+    return 'no plants need care';
   }
 
   Color _getColor() {
