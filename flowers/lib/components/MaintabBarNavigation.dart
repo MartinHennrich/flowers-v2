@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 
-import './fabBottomAppBar.dart';
-import '../constants/colors.dart';
-import './today-page/todayPage.dart';
-import './flowers-list-page/flowersListPage.dart';
 import '../appState.dart';
+import '../constants/colors.dart';
+import './fabBottomAppBar.dart';
+import './flowers-list-page/flowersListPage.dart';
+import './today-page/todayPage.dart';
 
 class MainPagesTabBar extends StatefulWidget {
   @override

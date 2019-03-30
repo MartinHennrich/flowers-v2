@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
-import './lastActionTime.dart';
-import './intervall.dart';
-import './pickTime.dart';
-import '../../reminders.dart';
-import '../../constants/colors.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
+
+import '../../constants/colors.dart';
+import '../../reminders.dart';
+import './intervall.dart';
+import './lastActionTime.dart';
+import './pickTime.dart';
 
 class CreateReminder extends StatefulWidget {
   final Function(Reminder) onCreate;

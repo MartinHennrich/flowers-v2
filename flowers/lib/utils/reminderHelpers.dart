@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import './notifications.dart';
 import '../constants/colors.dart';
+import '../constants/enums.dart';
+import '../flower.dart';
 import '../presentation/custom_icons_icons.dart';
 import '../reminders.dart';
-import '../flower.dart';
-import '../constants/enums.dart';
 import '../utils/notifications.dart';
+import './notifications.dart';
 
 IconData getReminderIcon(Reminder reminder) {
   IconData icon;

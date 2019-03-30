@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/firebase.dart';
 import '../../actions/actions.dart';
-import '../create-flower/intervall.dart';
-import '../create-flower/pickTime.dart';
 import '../../flower.dart';
 import '../../reminders.dart';
 import '../../store.dart';
-import '../../utils/colors.dart';
+import '../../utils/firebase.dart';
 import '../../utils/notifications.dart';
-import './daysLeft.dart';
-import './reminderInfoPanel.dart';
 import '../../utils/reminderHelpers.dart';
+import '../create-flower/intervall.dart';
+import '../create-flower/pickTime.dart';
+import './daysLeft.dart';
 import './deleteDialog.dart';
+import './reminderInfoPanel.dart';
 
 class ReminderOverviewPage extends StatefulWidget {
   final Reminder reminder;

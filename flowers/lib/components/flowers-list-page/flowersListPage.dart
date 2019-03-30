@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 
-import '../../flower.dart';
 import '../../appState.dart';
-import '../page-title.dart';
 import '../../constants/colors.dart';
-import '../flowersList.dart';
-import './emptyList.dart';
+import '../../flower.dart';
 import '../flower-details/flowerDetails.dart';
+import '../flowersList.dart';
+import '../page-title.dart';
+import './emptyList.dart';
 
 class FlowersListPage extends StatelessWidget {
 

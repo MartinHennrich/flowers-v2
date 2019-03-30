@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './colors.dart';
 import '../presentation/custom_icons_icons.dart';
 import '../reminders.dart';
+import './colors.dart';
 
 class AvaiableReminder {
   final String title;

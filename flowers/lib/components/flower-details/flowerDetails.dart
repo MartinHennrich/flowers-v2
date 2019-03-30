@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-import '../../presentation/custom_icons_icons.dart';
+import '../../actions/actions.dart';
+import '../../constants/colors.dart';
 import '../../flower.dart';
+import '../../presentation/custom_icons_icons.dart';
 import '../../reminders.dart';
+import '../../store.dart';
+import '../../utils/colors.dart';
+import '../../utils/firebase-redux.dart';
+import '../../utils/firebase.dart';
 import '../../utils/soilMoisture.dart';
 import '../../utils/waterAmount.dart';
 import '../flowerCard.dart';
-import '../../utils/colors.dart';
-import '../../constants/colors.dart';
-import '../../utils/firebase.dart';
-import '../../utils/firebase-redux.dart';
-import '../../actions/actions.dart';
-import '../../store.dart';
-import './timeGraph.dart';
+import './daysLeft.dart';
 import './deleteDialog.dart';
 import './edit.dart';
-import './remindersList.dart';
-import './daysLeft.dart';
 import './reminderInfoPanelCarousel.dart';
+import './remindersList.dart';
+import './timeGraph.dart';
 
 class FlowerDetails extends StatefulWidget {
   final Flower flower;

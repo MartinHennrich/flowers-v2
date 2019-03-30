@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
 
-import './reducers/appReducer.dart';
 import './appState.dart';
+import './reducers/appReducer.dart';
 
 final AppStore = Store<AppState>(
   appReducer,

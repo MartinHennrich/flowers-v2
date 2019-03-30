@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/availableReminders.dart';
 import '../../flower.dart';
 import '../../reminders.dart';
-import '../../utils/timeHelpers.dart';
 import '../../utils/reminderHelpers.dart';
-import './reminderOverviewPage.dart';
-import '../../constants/availableReminders.dart';
+import '../../utils/timeHelpers.dart';
 import './add-reminders/addRemindersPage.dart';
+import './reminderOverviewPage.dart';
 
 class RemindersList extends StatelessWidget {
   final Reminders reminders;

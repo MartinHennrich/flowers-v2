@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 
+import '../actions/actions.dart';
+import '../constants/enums.dart';
 import '../flower.dart';
 import '../reminders.dart';
 import '../store.dart';
-import '../actions/actions.dart';
-import '../constants/enums.dart';
-import '../utils/reminderHelpers.dart' as reminderHelpers;
 import '../utils/firebase.dart';
-import '../utils/waterAmount.dart';
+import '../utils/reminderHelpers.dart' as reminderHelpers;
 import '../utils/soilMoisture.dart';
+import '../utils/waterAmount.dart';
 
 List<WaterTime> snapshotToWaterTime(dynamic waterTimesSnapshot) {
   List<WaterTime> waterTimes = [];

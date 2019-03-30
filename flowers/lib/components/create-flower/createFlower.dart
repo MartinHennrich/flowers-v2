@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:gradient_widgets/gradient_widgets.dart';
 
+import '../../actions/actions.dart';
 import '../../constants/colors.dart';
-import '../../utils/firebase.dart';
 import '../../flower.dart';
 import '../../reminders.dart';
 import '../../store.dart';
-import '../../actions/actions.dart';
-import '../../utils/notifications.dart';
+import '../../utils/firebase.dart';
 import '../../utils/image.dart';
-
+import '../../utils/notifications.dart';
+import './addReminders.dart';
 import './getImage.dart';
 import './name.dart';
-import './addReminders.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -24,11 +23,7 @@ class CreateFlower extends StatefulWidget {
 class FlowerFormData {
   File image;
   String flowerName = '';
-  DateTime lastWaterTime = DateTime.now();
-  DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
-  int waterIntervall = 5;
   ImageSourceType imageSourceType = ImageSourceType.Camera;
-
   Reminders reminders = Reminders();
 }
 

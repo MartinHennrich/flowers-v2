@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../constants/availableReminders.dart';
 import '../constants/colors.dart';
 import '../presentation/custom_icons_icons.dart';
-import '../constants/availableReminders.dart';
 import '../reminders.dart';
 
 List<AvaiableReminder> getAvaiableReminderFromReminders(Reminders reminders) {

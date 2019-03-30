@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import '../../utils/firebase.dart';
+
+import '../../actions/actions.dart';
 import '../../flower.dart';
 import '../../store.dart';
-import '../../actions/actions.dart';
-import '../../utils/notifications.dart';
+import '../../utils/firebase.dart';
 import '../../utils/image.dart';
-
+import '../../utils/notifications.dart';
 import '../create-flower/getImage.dart';
-import '../create-flower/intervall.dart';
-import '../create-flower/pickTime.dart';
 import '../create-flower/name.dart';
 
 class EditFlower extends StatefulWidget {
