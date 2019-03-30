@@ -42,39 +42,6 @@ Future<void> saveNotificationKeys(String key, List<int> keys, SharedPreferences 
   await prefs.setStringList('$key-notifications', keys.map((v) => v.toString()).toList());
 }
 
-Future<void> scheduleWaterNotification(String key, String name, DateTime time, DateTime timeOfDayForNotification) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  cancelOldNotification(key, prefs);
-
-  DateTime notificationTime = DateTime(time.year, time.month, time.day,
-    timeOfDayForNotification.hour,
-    timeOfDayForNotification.minute
-  );
-  DateTime reminderTime = notificationTime.add(Duration(days: 1));
-
-  int notisKey = key.hashCode;
-  int reminderKey = key.hashCode+1;
-
-  Future.wait([
-    flutterLocalNotificationsPlugin.schedule(
-      notisKey,
-      'Water reminder', '$name wants water',
-      notificationTime,
-      platformChannelSpecifics,
-      payload: key
-    ),
-    flutterLocalNotificationsPlugin.schedule(
-      reminderKey,
-      'Water reminder', 'Reminder: $name nees water now!',
-      reminderTime,
-      platformChannelSpecifics,
-      payload: key
-    )
-  ]);
-
-  saveNotificationKeys(key, [notisKey, reminderKey], prefs);
-}
-
 String getTitleTexts(ReminderType type) {
   switch (type) {
     case ReminderType.Water:

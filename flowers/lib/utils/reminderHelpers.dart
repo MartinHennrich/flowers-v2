@@ -92,26 +92,15 @@ class WateredFlower {
 }
 
 WateredFlower waterActionReminder(Flower flower, WaterAmount waterAmount, SoilMoisture soilMoisture) {
-  DateTime wateredTime = DateTime.now();
+  Flower updatedFlower = runActionOnReminder(flower, flower.reminders.water);
+
   WaterTime waterTime = WaterTime(
     waterAmount: waterAmount,
     soilMoisture: soilMoisture,
-    wateredTime: wateredTime
+    wateredTime: updatedFlower.reminders.water.lastTime
   );
 
-  flower.reminders.water.lastTime = wateredTime;
   flower.addWaterTime(waterTime);
-
-  DateTime nextWaterTime = DateTime.now().add(Duration(days: flower.reminders.water.interval));
-  flower.reminders.water.nextTime = nextWaterTime;
-
-  scheduleWaterNotification(
-    flower.key,
-    flower.name,
-    flower.reminders.water.nextTime,
-    flower.reminders.water.timeOfDayForNotification
-  );
-
   return WateredFlower(
     flower,
     waterTime
