@@ -2,70 +2,70 @@ import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
 
-enum LastWaterTimes {
+enum LastActionTimes {
   Today,
   Yesterday,
   Custom
 }
 
-class LastWaterTime extends StatelessWidget {
+class LastActionTime extends StatelessWidget {
   final Function(DateTime) onSave;
   final String type;
 
-  LastWaterTime({
+  LastActionTime({
     @required this.onSave,
     this.type
   });
 
-  Widget _getGenericButton(Function onPressed, String text, LastWaterTimes activeValue, LastWaterTimes lastWaterTime, {
+  Widget _getGenericButton(Function onPressed, String text, LastActionTimes activeValue, LastActionTimes lastActionTime, {
     ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(0)))
   }) {
     return FlatButton(
       onPressed: () {
         onPressed();
       },
-      color: activeValue == lastWaterTime ? BlueMain : Colors.black12,
+      color: activeValue == lastActionTime ? BlueMain : Colors.black12,
       shape: shape,
       child: Text(text,
         style: TextStyle(
-          color: activeValue == lastWaterTime ? Colors.white : Colors.black45
+          color: activeValue == lastActionTime ? Colors.white : Colors.black45
         )
       ),
     );
   }
 
-  Widget _getYesterDay(FormFieldState<dynamic> lastWaterTimeForm) {
+  Widget _getYesterDay(FormFieldState<dynamic> lastActionTimeForm) {
     return _getGenericButton(
       () {
-        lastWaterTimeForm.setValue({
-          'enum': LastWaterTimes.Yesterday,
+        lastActionTimeForm.setValue({
+          'enum': LastActionTimes.Yesterday,
           'time': DateTime.now().subtract(Duration(days: 1))
         });
-        lastWaterTimeForm.setState(() {});
+        lastActionTimeForm.setState(() {});
       },
       'Yesterday',
-      lastWaterTimeForm.value['enum'],
-      LastWaterTimes.Yesterday,
+      lastActionTimeForm.value['enum'],
+      LastActionTimes.Yesterday,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(20)))
     );
   }
 
-  Widget _getToday(FormFieldState<dynamic> lastWaterTimeForm) {
+  Widget _getToday(FormFieldState<dynamic> lastActionTimeForm) {
     return _getGenericButton(
       () {
-        lastWaterTimeForm.setValue({
-          'enum': LastWaterTimes.Today,
+        lastActionTimeForm.setValue({
+          'enum': LastActionTimes.Today,
           'time': DateTime.now()
         });
-        lastWaterTimeForm.setState(() {});
+        lastActionTimeForm.setState(() {});
       },
       'Today',
-      lastWaterTimeForm.value['enum'],
-      LastWaterTimes.Today,
+      lastActionTimeForm.value['enum'],
+      LastActionTimes.Today,
     );
   }
 
-  Widget _getCustom(FormFieldState<dynamic> lastWaterTimeForm, BuildContext context) {
+  Widget _getCustom(FormFieldState<dynamic> lastActionTimeForm, BuildContext context) {
     return FlatButton(
       onPressed: () async {
         DateTime time = DateTime.now();
@@ -79,17 +79,17 @@ class LastWaterTime extends StatelessWidget {
         );
 
         if (pickedTime != null) {
-          lastWaterTimeForm.setValue({
-            'enum': LastWaterTimes.Custom,
+          lastActionTimeForm.setValue({
+            'enum': LastActionTimes.Custom,
             'time': pickedTime,
           });
-          lastWaterTimeForm.setState(() {});
+          lastActionTimeForm.setState(() {});
         }
       },
-      color: lastWaterTimeForm.value['enum'] == LastWaterTimes.Custom ? BlueMain : Colors.black12,
+      color: lastActionTimeForm.value['enum'] == LastActionTimes.Custom ? BlueMain : Colors.black12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(20))),
-      child: lastWaterTimeForm.value['enum'] == LastWaterTimes.Custom
-        ? Text('${lastWaterTimeForm.value['time'].month} / ${lastWaterTimeForm.value['time'].day}', style: TextStyle(color: Colors.white))
+      child: lastActionTimeForm.value['enum'] == LastActionTimes.Custom
+        ? Text('${lastActionTimeForm.value['time'].month} / ${lastActionTimeForm.value['time'].day}', style: TextStyle(color: Colors.white))
         : Text('Pick a date..', style: TextStyle(color: Colors.black45)),
     );
   }
@@ -98,13 +98,13 @@ class LastWaterTime extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormField(
       initialValue: {
-        'enum': LastWaterTimes.Today,
+        'enum': LastActionTimes.Today,
         'time': DateTime.now()
       },
       onSaved: (form) {
         onSave(form['time']);
       },
-      builder: (lastWaterTimeForm) {
+      builder: (lastActionTimeForm) {
         return Container(
           padding: EdgeInsets.only(top: 24),
           child: Column(
@@ -118,15 +118,15 @@ class LastWaterTime extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _getYesterDay(lastWaterTimeForm),
+                  _getYesterDay(lastActionTimeForm),
                   Container(
                     width: 4,
                   ),
-                  _getToday(lastWaterTimeForm),
+                  _getToday(lastActionTimeForm),
                   Container(
                     width: 4,
                   ),
-                  _getCustom(lastWaterTimeForm, context),
+                  _getCustom(lastActionTimeForm, context),
                 ],
               ),
             ],

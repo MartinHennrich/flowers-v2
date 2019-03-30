@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './lastWaterTime.dart';
+import './lastActionTime.dart';
 import './intervall.dart';
 import './pickTime.dart';
 import '../../reminders.dart';
@@ -73,7 +73,7 @@ class CreateReminderState extends State<CreateReminder> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              LastWaterTime(
+              LastActionTime(
                 onSave: (DateTime lastTime) {
                   reminderFormData.lastTime = lastTime;
                 },
