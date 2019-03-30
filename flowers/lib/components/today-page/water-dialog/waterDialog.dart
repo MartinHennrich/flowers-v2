@@ -42,14 +42,14 @@ class WaterDialogState extends State<WaterDialog> {
       return 'sure?';
     }
 
-    return '';
+    return null;
   }
 
   String _getPostponeSubtitle() {
     int days = postponeSoilMoistureToDays(soilMoisture);
 
     if (days <= 0) {
-      return '';
+      return null;
     }
 
     if (days == 1) {
