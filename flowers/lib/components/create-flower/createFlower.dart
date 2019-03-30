@@ -6,18 +6,14 @@ import 'package:gradient_widgets/gradient_widgets.dart';
 import '../../constants/colors.dart';
 import '../../utils/firebase.dart';
 import '../../flower.dart';
+import '../../reminders.dart';
 import '../../store.dart';
 import '../../actions/actions.dart';
 import '../../utils/notifications.dart';
 import '../../utils/image.dart';
 
 import './getImage.dart';
-import './lastWaterTime.dart';
-import './intervall.dart';
-import './pickTime.dart';
 import './name.dart';
-import '../../constants/reminders.dart';
-import './avaiableReminderCard.dart';
 import './addReminders.dart';
 
 class CreateFlower extends StatefulWidget {

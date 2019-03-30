@@ -4,6 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 import '../../presentation/custom_icons_icons.dart';
 import '../../flower.dart';
+import '../../reminders.dart';
 import '../../utils/soilMoisture.dart';
 import '../../utils/waterAmount.dart';
 import '../flowerCard.dart';

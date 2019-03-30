@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import '../../flower.dart';
+import '../../reminders.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../utils/flowerHelpers.dart';

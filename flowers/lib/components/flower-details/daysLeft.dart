@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../flower.dart';
+import '../../reminders.dart';
 import '../../utils/timeHelpers.dart';
 
 class DaysLeft extends StatelessWidget {

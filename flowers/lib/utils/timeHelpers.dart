@@ -1,5 +1,5 @@
 import './dateHelpers.dart';
-import '../flower.dart';
+import '../reminders.dart';
 
 int getDaysLeft(Reminder reminder) {
   DateTime today = preSetTimeFrame(DateTime.now());

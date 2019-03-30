@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
 import './dateHelpers.dart';
-import '../flower.dart';
+import '../reminders.dart';
 
 LinearGradient getColorBasedOnTime(DateTime time, DateTime lastTime) {
   DateTime today = preSetTimeFrame(DateTime.now());

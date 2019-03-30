@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import './lastWaterTime.dart';
 import './intervall.dart';
 import './pickTime.dart';
-import '../../flower.dart';
+import '../../reminders.dart';
 import '../../constants/colors.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 

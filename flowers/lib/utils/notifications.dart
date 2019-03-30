@@ -3,7 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart';
-import '../flower.dart';
+import '../reminders.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './colors.dart';
 import '../presentation/custom_icons_icons.dart';
-import '../flower.dart';
+import '../reminders.dart';
 
 class AvaiableReminder {
   final String title;

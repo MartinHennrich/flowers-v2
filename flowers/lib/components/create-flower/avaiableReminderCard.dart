@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/reminders.dart';
 import '../../constants/colors.dart';
-import '../../flower.dart';
+import '../../reminders.dart';
 import './createReminder.dart';
 
 class AvaiableReminderCard extends StatelessWidget {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../flower.dart';
+import '../reminders.dart';
 import '../constants/colors.dart';
 import '../utils/reminderHelpers.dart';
-import '../utils/flowerHelpers.dart';
 import '../utils/colors.dart';
 
 class FlowerCard extends StatelessWidget {

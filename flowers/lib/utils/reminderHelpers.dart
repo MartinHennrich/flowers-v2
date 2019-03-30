@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../presentation/custom_icons_icons.dart';
-import '../flower.dart';
+import '../reminders.dart';
 
 IconData getReminderIcon(Reminder reminder) {
   IconData icon;

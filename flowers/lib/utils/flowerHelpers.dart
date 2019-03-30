@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flower.dart';
+import '../reminders.dart';
 import '../constants/enums.dart';
 import '../utils/soilMoisture.dart';
 import '../utils/notifications.dart';

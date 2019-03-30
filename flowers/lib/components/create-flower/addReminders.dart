@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/reminders.dart';
 import './avaiableReminderCard.dart';
-import '../../flower.dart';
+import '../../reminders.dart';
 import '../../utils/rewardAdHelpers.dart';
 import '../../ad.dart';
 import '../../store.dart';

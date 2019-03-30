@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../../flower.dart';
+import '../../reminders.dart';
 import './reminderInfoPanel.dart';
 
 class ReminderInfoPanelCarousel extends StatelessWidget {

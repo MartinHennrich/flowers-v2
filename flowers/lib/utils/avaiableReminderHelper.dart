@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../presentation/custom_icons_icons.dart';
 import '../constants/reminders.dart';
-import '../flower.dart';
+import '../reminders.dart';
 
 List<AvaiableReminder> getAvaiableReminderFromReminders(Reminders reminders) {
   List<Reminder> reminderItems = reminders.getRemindersAsList();
