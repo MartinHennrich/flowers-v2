@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../flower.dart';
-import '../../utils/dateHelpers.dart';
+import '../../utils/timeHelpers.dart';
 
 class DaysLeft extends StatelessWidget {
 
@@ -15,20 +15,7 @@ class DaysLeft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime nextWatertime = preSetTimeFrame(reminder.nextTime);
-    Duration diff = nextWatertime.difference(today);
-    int daysLeft = 0;
-
-    if (diff.inDays <= 0) {
-      if (diff.inHours >= 1) {
-        daysLeft = 1;
-      } else {
-        daysLeft = 0;
-      }
-    } else {
-      daysLeft = diff.inDays;
-    }
+    int daysLeft = getDaysLeft(reminder);
 
     return Container(
       height: 200,

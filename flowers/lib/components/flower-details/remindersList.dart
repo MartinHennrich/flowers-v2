@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../flower.dart';
-import '../../utils/dateHelpers.dart';
+import '../../utils/timeHelpers.dart';
 import '../../utils/colors.dart';
 import './reminderOverviewPage.dart';
 import '../../constants/reminders.dart';
@@ -16,24 +16,7 @@ class RemindersList extends StatelessWidget {
     this.flower
   });
 
-  int _getDaysLeft(Reminder reminder) {
-    DateTime today = preSetTimeFrame(DateTime.now());
-    DateTime nextWatertime = preSetTimeFrame(reminder.nextTime);
-    Duration diff = nextWatertime.difference(today);
-    int daysLeft = 0;
 
-    if (diff.inDays <= 0) {
-      if (diff.inHours >= 1) {
-        daysLeft = 1;
-      } else {
-        daysLeft = 0;
-      }
-    } else {
-      daysLeft = diff.inDays;
-    }
-
-    return daysLeft;
-  }
 
   Widget _addReminderCard(BuildContext context) {
     Color color = Colors.black12.withAlpha(50);
@@ -154,14 +137,14 @@ class RemindersList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(_getDaysLeft(reminder).toString(),
+              Text(getDaysLeft(reminder).toString(),
                 style: TextStyle(
-                  fontSize: _getDaysLeft(reminder) >= 100 ? 32 : 44,
+                  fontSize: getDaysLeft(reminder) >= 100 ? 32 : 44,
                   color: color,
                 )
               ),
               Text(
-                '${_getDaysLeft(reminder) == 1 ? 'day' : 'days'} left',
+                '${getDaysLeft(reminder) == 1 ? 'day' : 'days'} left',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.black38
