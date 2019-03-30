@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../flower.dart';
@@ -5,7 +6,7 @@ import '../reminders.dart';
 import '../store.dart';
 import '../actions/actions.dart';
 import '../constants/enums.dart';
-import '../utils/flowerHelpers.dart' as flowerHelpers;
+import '../utils/reminderHelpers.dart' as reminderHelpers;
 import '../utils/firebase.dart';
 import '../utils/waterAmount.dart';
 import '../utils/soilMoisture.dart';
@@ -125,42 +126,43 @@ void addSnapshotToRedux(DataSnapshot snapshot) {
 }
 
 Future<void> postponeWatering(Flower flower, SoilMoisture soilMoisture) {
-  Flower postponedFlower = flowerHelpers.postponeWatering(flower, soilMoisture);
+  int nextWaterDays = postponeSoilMoistureToDays(soilMoisture);
+  Flower postponedFlower = reminderHelpers.postponeReminder(flower, flower.reminders.water, nextWaterDays);
 
   AppStore.dispatch(UpdateFlowerAction(postponedFlower));
   return database.postponeWatering(postponedFlower);
 }
 
 Future<void> waterFlower(Flower flower, WaterAmount waterAmount, SoilMoisture soilMoisture) {
-  flowerHelpers.WateredFlower wateredFlower = flowerHelpers.waterFlower(flower, waterAmount, soilMoisture);
+  reminderHelpers.WateredFlower wateredFlower = reminderHelpers.waterActionReminder(flower, waterAmount, soilMoisture);
 
   AppStore.dispatch(UpdateFlowerAction(wateredFlower.flower));
   return database.waterFlower(wateredFlower.flower, wateredFlower.waterTime);
 }
 
 Future<void> rotateFlower(Flower flower) {
-  Flower rotatedFlower = flowerHelpers.runActionOnReminder(flower, flower.reminders.rotate);
+  Flower rotatedFlower = reminderHelpers.runActionOnReminder(flower, flower.reminders.rotate);
   AppStore.dispatch(UpdateFlowerAction(rotatedFlower));
 
   return database.updateAllReminders(rotatedFlower);
 }
 
 Future<void> postponeRotate(Flower flower, int days) {
-  Flower posteponedRotationFlower = flowerHelpers.postponeReminder(flower, flower.reminders.rotate, days);
+  Flower posteponedRotationFlower = reminderHelpers.postponeReminder(flower, flower.reminders.rotate, days);
   AppStore.dispatch(UpdateFlowerAction(posteponedRotationFlower));
 
   return database.postpone(flower, flower.reminders.rotate);
 }
 
 Future<void> fertilizeFlower(Flower flower) {
-  Flower fertilizeFlower = flowerHelpers.runActionOnReminder(flower, flower.reminders.fertilize);
+  Flower fertilizeFlower = reminderHelpers.runActionOnReminder(flower, flower.reminders.fertilize);
   AppStore.dispatch(UpdateFlowerAction(fertilizeFlower));
 
   return database.updateAllReminders(fertilizeFlower);
 }
 
 Future<void> postponeFertilize(Flower flower, int days) {
-  Flower posteponedfertilizeFlower = flowerHelpers.postponeReminder(flower, flower.reminders.fertilize, days);
+  Flower posteponedfertilizeFlower = reminderHelpers.postponeReminder(flower, flower.reminders.fertilize, days);
   AppStore.dispatch(UpdateFlowerAction(posteponedfertilizeFlower));
 
   return database.postpone(flower, flower.reminders.fertilize);

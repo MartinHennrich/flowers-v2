@@ -13,7 +13,6 @@ class WaterTime {
   });
 }
 
-
 class Flower {
   String name;
   String imageUrl;
