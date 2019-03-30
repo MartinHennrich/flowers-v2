@@ -1,7 +1,7 @@
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/reminders.dart';
+import '../../constants/availableReminders.dart';
 import './avaiableReminderCard.dart';
 import '../../reminders.dart';
 import '../../utils/rewardAdHelpers.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/reminders.dart';
+import '../../constants/availableReminders.dart';
 import '../../constants/colors.dart';
 import '../../reminders.dart';
 import './createReminder.dart';

@@ -5,7 +5,7 @@ import '../../reminders.dart';
 import '../../utils/timeHelpers.dart';
 import '../../utils/reminderHelpers.dart';
 import './reminderOverviewPage.dart';
-import '../../constants/reminders.dart';
+import '../../constants/availableReminders.dart';
 import './add-reminders/addRemindersPage.dart';
 
 class RemindersList extends StatelessWidget {
