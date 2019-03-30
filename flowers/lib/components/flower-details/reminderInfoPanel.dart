@@ -60,7 +60,7 @@ class ReminderInfoPanel extends StatelessWidget {
       return 'today';
     }
 
-    return '${reminder.nextTime.month} / ${reminder.nextTime.day}';
+    return '${reminder.nextTime.day} / ${reminder.nextTime.month}';
   }
 
   String _getLastWaterTimeName() {
@@ -76,7 +76,7 @@ class ReminderInfoPanel extends StatelessWidget {
       return 'yesterday';
     }
 
-    return '${lastWateredTime.month} / ${lastWateredTime.day}';
+    return '${lastWateredTime.day} / ${lastWateredTime.month}';
   }
 
   @override
