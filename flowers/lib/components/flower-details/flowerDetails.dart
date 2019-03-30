@@ -115,7 +115,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
       colorFn: (_, __) => charts.Color(
         r: colorOfTime.red, g: colorOfTime.green, b: colorOfTime.blue, a: colorOfTime.alpha),
       domainFn: (TimeSeriesValue data, _) => data.time,
-      strokeWidthPxFn: (TimeSeriesValue data, _) => 6,
+      strokeWidthPxFn: (TimeSeriesValue data, _) => 3,
       measureFn: (TimeSeriesValue data, _) => data.value,
       data: data
     )];
@@ -133,7 +133,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
       colorFn: (_, __) => charts.Color(
         r: colorOfTime.red, g: colorOfTime.green, b: colorOfTime.blue, a: colorOfTime.alpha),
       domainFn: (TimeSeriesValue data, _) => data.time,
-      strokeWidthPxFn: (TimeSeriesValue data, _) => 6,
+      strokeWidthPxFn: (TimeSeriesValue data, _) => 3,
       measureFn: (TimeSeriesValue data, _) => data.value,
       data: data
     )];
