@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../flower.dart';
-import '../action-dialog/postboneOrAction.dart';
-import '../action-dialog/actionDialog.dart';
 import '../../../utils/firebase-redux.dart';
 import '../../create-flower/intervall.dart';
+import '../action-dialog/actionDialog.dart';
+import '../action-dialog/postboneOrAction.dart';
 
 class FertilizeDialog extends StatefulWidget {
   final Flower flower;

@@ -1,20 +1,20 @@
 import 'package:firebase_admob/firebase_admob.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 
-import '../../flower.dart';
-import '../../reminders.dart';
+import '../../ad.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
+import '../../flower.dart';
+import '../../reminders.dart';
 import '../../utils/flowerHelpers.dart';
 import '../flowersList.dart';
-import './noFlowersToWater.dart';
 import '../page-title.dart';
-import './water-dialog/waterDialog.dart';
-import './rotate-dialog/rotateDialog.dart';
 import './fertilize-dialog/fertilizeDialog.dart';
-import '../../ad.dart';
+import './noFlowersToWater.dart';
+import './rotate-dialog/rotateDialog.dart';
+import './water-dialog/waterDialog.dart';
 
 class TodayPage extends StatelessWidget {
   @override

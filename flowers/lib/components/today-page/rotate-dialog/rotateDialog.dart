@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../flower.dart';
-import '../../../constants/enums.dart';
-import '../action-dialog/postboneOrAction.dart';
-import '../action-dialog/actionDialog.dart';
 import '../../../utils/firebase-redux.dart';
 import '../../create-flower/intervall.dart';
+import '../action-dialog/actionDialog.dart';
+import '../action-dialog/postboneOrAction.dart';
 
 class RotateDialog extends StatefulWidget {
   final Flower flower;
