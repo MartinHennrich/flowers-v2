@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
 import '../presentation/custom_icons_icons.dart';
 import '../reminders.dart';
 
@@ -21,4 +22,24 @@ IconData getReminderIcon(Reminder reminder) {
   }
 
   return icon;
+}
+
+Color getReminderColor(ReminderType type, bool isActive) {
+  if (!isActive) {
+    return Colors.black;
+  }
+
+  if (type == ReminderType.Water) {
+    return ReminderBlueSecond;
+  }
+
+  if (type == ReminderType.Fertilize) {
+    return BrownMain;
+  }
+
+  if (type == ReminderType.Rotate) {
+    return ReminderPurpleMain;
+  }
+
+  return RedMain;
 }
