@@ -41,7 +41,12 @@ class PostponeOrActionButtonsState extends State<PostponeOrActionButtons> {
     if (subtitle == null) {
       return Container();
     }
-    String days = int.parse(subtitle) == 1  ? 'day' : 'days';
+    String days = '';
+    try {
+      days = int.parse(subtitle) == 1  ? 'day' : 'days';
+    } catch (e) {
+      // swallow
+    }
 
     return Text('$subtitle $days',
       style: TextStyle(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
-import '../../../flower.dart';
 import '../../../constants/enums.dart';
+import '../../../flower.dart';
+import '../../../utils/firebase-redux.dart';
+import '../../../utils/soilMoisture.dart';
+import '../action-dialog/actionDialog.dart';
+import '../action-dialog/postboneOrAction.dart';
 import './soilMoistureSection.dart';
 import './waterAmountSection.dart';
-import './actionButtons.dart';
 
 class WaterDialog extends StatefulWidget {
   final Flower flower;
@@ -24,52 +26,46 @@ class WaterDialogState extends State<WaterDialog> {
   WaterAmount waterAmount = WaterAmount.Normal;
   SoilMoisture soilMoisture = SoilMoisture.Soil50;
   bool _isLoading = false;
+  int postponeDays = 1;
+
+  String _getWaterSubtitleString() {
+    if (soilMoisture == SoilMoisture.Soil75 || soilMoisture == SoilMoisture.Soil100) {
+
+      if (waterAmount == WaterAmount.Lots) {
+        return 'really sure?';
+      }
+
+      if (waterAmount == WaterAmount.Small) {
+        return 'okey';
+      }
+
+      return 'sure?';
+    }
+
+    return '';
+  }
+
+  String _getPostponeSubtitle() {
+    int days = postponeSoilMoistureToDays(soilMoisture);
+
+    if (days <= 0) {
+      return '';
+    }
+
+    if (days == 1) {
+      return '$days day';
+    }
+
+    return '$days days';
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      contentPadding: EdgeInsets.all(0),
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Center(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(widget.flower.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 8,
-              top: 8,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(Icons.close, size: 28, color: Colors.grey)
-              ),
-            ),
-          ],
-        ),
-
-        Center(
-          child: Container(
-            child: Text(widget.flower.name,
-              style: TextStyle(
-                fontSize: 28
-              )
-            ),
-          )
-        ),
-
-        SoilMoistureSection(
+    return ActionDialog(
+      flower: widget.flower,
+      customControls: Column(
+        children: <Widget>[
+          SoilMoistureSection(
           onPress: (type) {
             setState(() {
               this.soilMoisture = type;
@@ -86,19 +82,33 @@ class WaterDialogState extends State<WaterDialog> {
           },
           waterAmount: waterAmount,
         ),
-
-        ActionButtons(
-          isLoading: _isLoading,
-          flower: widget.flower,
-          soilMoisture: soilMoisture,
-          waterAmount: waterAmount,
-          onPress: () {
-            this.setState(() {
-              this._isLoading = true;
+        ],
+      ),
+      actionButtons: PostponeOrActionButtons(
+        isLoading: _isLoading,
+        onActionPress: () {
+          setState(() {
+            _isLoading = true;
+          });
+          waterFlower(widget.flower, waterAmount, soilMoisture)
+            .then((_) {
+              Navigator.of(context).pop();
             });
-          },
-        )
-      ],
+        },
+        onPostponePress: () {
+          setState(() {
+            _isLoading = true;
+          });
+          postponeWatering(widget.flower, soilMoisture)
+            .then((_) {
+              Navigator.of(context).pop();
+            });
+        },
+        postponeSubtitle: _getPostponeSubtitle(),
+        postponeTitle: 'POSTPONE',
+        actionSubtitle: _getWaterSubtitleString(),
+        actionTitle: 'WATER',
+      )
     );
   }
 }
