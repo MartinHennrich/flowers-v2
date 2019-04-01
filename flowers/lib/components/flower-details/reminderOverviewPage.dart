@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../actions/actions.dart';
@@ -100,8 +101,8 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     }
   }
 
-  void _select(_MenuChoice _Menuchoice) {
-    if (_Menuchoice.type == 'delete') {
+  void _select(_MenuChoice _menuchoice) {
+    if (_menuchoice.type == 'delete') {
       openDeleteDialog();
     }
   }
@@ -113,6 +114,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
         name: '${widget.reminder.key} reminder',
         onRemove: (context) async {
           Flower flower = widget.flower;
+          cancelOldNotification(widget.reminder.key);
           flower.reminders.removeReminderByType(widget.reminder.type);
           try {
             await database.updateflower(flower);

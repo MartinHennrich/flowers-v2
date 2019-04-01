@@ -11,6 +11,7 @@ import '../../store.dart';
 import '../../utils/colors.dart';
 import '../../utils/firebase-redux.dart';
 import '../../utils/firebase.dart';
+import '../../utils/notifications.dart';
 import '../../utils/soilMoisture.dart';
 import '../../utils/waterAmount.dart';
 import '../flowerCard.dart';
@@ -252,7 +253,15 @@ class FlowerDetailsState extends State<FlowerDetails> {
       builder: (_) => DeleteDialog(
         name: widget.flower.name,
         onRemove: (context) {
-          database.deleteFlower(widget.flower.key);
+          try {
+            database.deleteFlower(widget.flower.key);
+          } catch (e) {
+            Navigator.of(context).pop();
+          }
+          widget.flower.reminders.getRemindersAsList()
+            .forEach((reminder) {
+              cancelOldNotifications(reminder.key);
+            });
           Navigator.pop(context);
           AppStore.dispatch(DeleteFlowerAction(widget.flower));
           Navigator.of(context).pop();

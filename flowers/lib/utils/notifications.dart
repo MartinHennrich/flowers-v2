@@ -9,7 +9,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLoc
 AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
   'com.plant.reminders', 'flowers', 'Reminder to water your flowers',
   color: GreenMain,
-  groupKey: 'water-time',
+  groupKey: 'plantr-time',
   importance: Importance.Default,
   priority: Priority.Default
 );
@@ -29,7 +29,33 @@ void initNotifications() {
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
-void cancelOldNotification(String key, SharedPreferences prefs) {
+Future<void> cancelOldNotification(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int notisKey = key.hashCode;
+  int reminderKey = key.hashCode+1;
+
+  List<String> keys = (prefs.getStringList('$key-notifications') ?? []);
+  List<int> intKeys = keys.map((key) => int.parse(key)).toList();
+
+  intKeys.forEach((key) {
+    if (key == notisKey || key == reminderKey) {
+      flutterLocalNotificationsPlugin.cancel(key);
+    }
+  });
+}
+
+Future<void> cancelOldNotifications(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  List<String> keys = (prefs.getStringList('$key-notifications') ?? []);
+  List<int> intKeys = keys.map((key) => int.parse(key)).toList();
+
+  intKeys.forEach((key) {
+    flutterLocalNotificationsPlugin.cancel(key);
+  });
+}
+
+void _cancelOldNotifications(String key, SharedPreferences prefs) {
   List<String> keys = (prefs.getStringList('$key-notifications') ?? []);
   List<int> intKeys = keys.map((key) => int.parse(key)).toList();
 
@@ -70,7 +96,7 @@ List<String> getBodyTexts(ReminderType type, String name) {
 
 Future<void> _scheduleNotification(SharedPreferences prefs, String name, Reminder reminder) async {
   String key = reminder.key;
-  cancelOldNotification(key, prefs);
+  _cancelOldNotifications(key, prefs);
 
   DateTime notificationTime = DateTime(reminder.nextTime.year, reminder.nextTime.month, reminder.nextTime.day,
     reminder.timeOfDayForNotification.hour,
