@@ -6,5 +6,6 @@ int getDaysLeft(Reminder reminder) {
   DateTime nextWatertime = preSetTimeFrame(reminder.nextTime);
   Duration diff = nextWatertime.difference(today);
 
-  return (diff.inHours / 24).round();
+  int daysLeft = (diff.inHours / 24).round();
+  return daysLeft < 0 ? 0 : daysLeft;
 }
