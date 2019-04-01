@@ -13,7 +13,9 @@ class FlowerCard extends StatelessWidget {
   final bool withHero;
   final bool statusBar;
   final bool withReminderBar;
+  final bool isSelected;
   final Function(Flower flower) onPress;
+  final Function(Flower flower) onLongPress;
 
   FlowerCard({
     this.flower,
@@ -22,6 +24,8 @@ class FlowerCard extends StatelessWidget {
     this.withHero = false,
     this.statusBar = true,
     this.withReminderBar = false,
+    this.onLongPress,
+    this.isSelected = false,
   });
 
   LinearGradient _getColor(Flower flower) {
@@ -152,6 +156,11 @@ class FlowerCard extends StatelessWidget {
 
     return _withHero(
       GestureDetector(
+        onLongPress: () {
+          if (onLongPress != null) {
+            onLongPress(flower);
+          }
+        },
         onTap: disabled ? null : () {
           onPress(flower);
         },

@@ -34,13 +34,12 @@ class FlowerList extends StatefulWidget {
 }
 
 class _FlowerListState extends State<FlowerList> {
-
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevices,
     keywords: adKeywords,
     childDirected: true,
   );
-
+  List<String> _selectedIds = [];
   BannerAd _bannerAd;
 
   BannerAd createBannerAd() {
@@ -129,6 +128,9 @@ class _FlowerListState extends State<FlowerList> {
         var flowersToWaterWidget = FlowersList(
           flowers: flowersActiveWithReminders,
           withReminderBar: true,
+          onLongPress: (Flower flower) {
+            _selectedIds.add(flower.key);
+          },
           onPress: (Flower flower) {
             Reminder closestReminder = flower.reminders.getClosestDate(DateTime.now());
             _selectDialog(context, closestReminder, flower);
