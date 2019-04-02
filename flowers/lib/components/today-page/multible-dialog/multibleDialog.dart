@@ -32,7 +32,7 @@ class MultibleDialogState extends State<MultibleDialog> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(12))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
       contentPadding: EdgeInsets.all(0),
       children: <Widget>[
         Stack(
