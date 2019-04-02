@@ -29,26 +29,19 @@ class FlowerCard extends StatelessWidget {
   });
 
   LinearGradient _getColor(Flower flower) {
-
     if (disabled) {
       return BlueGradient;
     }
-    Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
-    if (clostToDate == null) {
-      return GreenGradient;
-    }
-    return getColorGradientBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
+
+   return getColorGradientForFlower(flower);
   }
 
   Color _getColor2(Flower flower) {
     if (disabled) {
       return BlueMain;
     }
-    Reminder clostToDate = flower.reminders.getClosestDate(DateTime.now());
-    if (clostToDate == null) {
-      return GreenMain;
-    }
-    return getColorBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
+
+    return getColorForFlower(flower);
   }
 
   Widget _withHero(Widget widget) {
@@ -135,11 +128,36 @@ class FlowerCard extends StatelessWidget {
     );
   }
 
+  Widget _getSelectedOverlay() {
+    return Positioned(
+      left: 0,
+      top: 16,
+      child: Container(
+        width: 144,
+        height: 170,
+        decoration: BoxDecoration(
+          color: Colors.grey.withAlpha(200),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.check,
+            size: 64,
+            color: Colors.white,
+          ),
+        ),
+      )
+    );
+  }
+
   Widget _withReminderBar(Widget widget) {
     return withReminderBar
       ? Stack(
           children: <Widget>[
             widget,
+            isSelected
+              ? _getSelectedOverlay()
+              : Container(),
             Positioned(
               left: 6,
               top: 20,
