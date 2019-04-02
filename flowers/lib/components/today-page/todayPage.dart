@@ -167,11 +167,11 @@ class _FlowerListState extends State<FlowerList> {
         List<Widget> children = [
           PageTitle(
             title: 'Today',
-            padding: _selectedIds.length > 1
-              ? EdgeInsets.fromLTRB(20, 44, 20, 20)
+            padding: _selectedIds.length >= 1
+              ? EdgeInsets.fromLTRB(20, 44, 20, 10)
               : EdgeInsets.fromLTRB(20, 44, 20, 40),
           ),
-          _selectedIds.length > 1
+          _selectedIds.length >= 1
             ? QuickActionBar(
               flowers: vm.flowers.where((flower) {
                 return _selectedIds.contains(flower.key);
