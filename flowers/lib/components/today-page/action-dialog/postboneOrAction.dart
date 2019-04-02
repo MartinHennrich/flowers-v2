@@ -104,7 +104,7 @@ class PostponeOrActionButtonsState extends State<PostponeOrActionButtons> {
     return Container(
       margin: EdgeInsets.only(top: 48),
       height: 80,
-      color: Colors.green,
+      color: Colors.transparent,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
