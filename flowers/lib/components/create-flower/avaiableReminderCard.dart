@@ -95,6 +95,7 @@ class AvaiableReminderCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
           onTap: () {
             if (remove) {
               _openDeleteDialog(reminder, context);

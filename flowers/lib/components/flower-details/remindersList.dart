@@ -38,6 +38,7 @@ class RemindersList extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
           onTap: () {
             Navigator.push(
               context,
@@ -75,6 +76,7 @@ class RemindersList extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
           onTap: () {
             Navigator.push(
               context,
