@@ -26,7 +26,7 @@ class NoFlowersToWater extends StatelessWidget {
 
   String _getText() {
     if (hasCompleted) {
-      return 'all plants are take care of <3';
+      return 'all plants are take care of';
     }
 
     if (hasNoFlowers) {
