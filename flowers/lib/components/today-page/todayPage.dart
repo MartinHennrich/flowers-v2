@@ -15,6 +15,7 @@ import './fertilize-dialog/fertilizeDialog.dart';
 import './noFlowersToWater.dart';
 import './rotate-dialog/rotateDialog.dart';
 import './water-dialog/waterDialog.dart';
+import './quick-action-bar/quickActionBar.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -128,13 +129,31 @@ class _FlowerListState extends State<FlowerList> {
         var flowersToWaterWidget = FlowersList(
           flowers: flowersActiveWithReminders,
           withReminderBar: true,
+          selectedIds: _selectedIds,
           onLongPress: (Flower flower) {
-            _selectedIds.add(flower.key);
+            if (_selectedIds.contains(flower.key)) {
+              setState(() {
+                _selectedIds.remove(flower.key);
+              });
+            } else {
+              setState(() {
+                _selectedIds.add(flower.key);
+              });
+            }
           },
           onPress: (Flower flower) {
-            Reminder closestReminder = flower.reminders.getClosestDate(DateTime.now());
-            _selectDialog(context, closestReminder, flower);
-
+            if (_selectedIds.contains(flower.key)) {
+              setState(() {
+                _selectedIds.remove(flower.key);
+              });
+            } else if (_selectedIds.length > 0) {
+              setState(() {
+                _selectedIds.add(flower.key);
+              });
+            } else {
+              Reminder closestReminder = flower.reminders.getClosestDate(DateTime.now());
+              _selectDialog(context, closestReminder, flower);
+            }
           },
         );
 
@@ -146,30 +165,61 @@ class _FlowerListState extends State<FlowerList> {
         );
 
         List<Widget> children = [
-          PageTitle(title: 'Today'),
+          PageTitle(
+            title: 'Today',
+            padding: _selectedIds.length > 1
+              ? EdgeInsets.fromLTRB(20, 44, 20, 20)
+              : EdgeInsets.fromLTRB(20, 44, 20, 40),
+          ),
+          _selectedIds.length > 1
+            ? QuickActionBar(
+              flowers: vm.flowers.where((flower) {
+                return _selectedIds.contains(flower.key);
+              }).toList(),
+              onAction: () {
+                setState(() {
+                  _selectedIds = [];
+                });
+              },
+            )
+            : Container(),
           flowersActiveWithReminders.length <= 0
-            ? NoFlowersToWater(
-              hasNoFlowers: vm.flowers.length == 0,
-              hasCompleted: completedFlowers.length > 0
+            ? Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: NoFlowersToWater(
+                hasNoFlowers: vm.flowers.length == 0,
+                hasCompleted: completedFlowers.length > 0
+              )
             )
             : Container(),
         ]
         ..add(
-          flowersToWaterWidget
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: flowersToWaterWidget
+          )
         )
         ..add(
           completedFlowers.length > 0
-            ? PageTitle(
+            ? Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: PageTitle(
                 title: 'Completed',
                 fontSize: 40,
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 16)
               )
+            )
             : Container()
         )
-        ..add(flowersBeenWateredWidget);
+        ..add(
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: flowersBeenWateredWidget
+          )
+        );
 
         return ListView(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.only(bottom: 20),
           children: vm.isFetchingData == true ? _getLoadingScreen() : children
         );
     });
