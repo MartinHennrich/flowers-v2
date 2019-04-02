@@ -47,17 +47,13 @@ class FlowerDetailsState extends State<FlowerDetails> {
     super.initState();
 
     setState(() {
+      colorOfTime = getColorForFlower(widget.flower);
       closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
 
       if (closestReminder == null) {
         isAnyRemindersActive = false;
-        colorOfTime = GreenMain;
       } else {
         isAnyRemindersActive = true;
-        colorOfTime = getColorBasedOnTime(
-          closestReminder.nextTime,
-          closestReminder.lastTime
-        );
       }
     });
 
