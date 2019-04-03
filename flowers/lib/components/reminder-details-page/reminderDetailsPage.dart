@@ -13,6 +13,11 @@ import '../create-flower/pickTime.dart';
 import '../flower-details/daysLeft.dart';
 import '../flower-details/deleteDialog.dart';
 import '../flower-details/reminderInfoPanel.dart';
+import '../../constants/availableReminders.dart';
+import '../../utils/avaiableReminderHelper.dart';
+import '../today-page/fertilize-dialog/fertilizeDialog.dart';
+import '../today-page/rotate-dialog/rotateDialog.dart';
+import '../today-page/water-dialog/waterDialog.dart';
 
 class ReminderDetailsPage extends StatefulWidget {
   final Reminder reminder;
@@ -39,6 +44,7 @@ class FlowerFormData {
 class ReminderDetailsPageState extends State<ReminderDetailsPage> {
   final _formKey = GlobalKey<FormState>();
   FlowerFormData flowerFormData = FlowerFormData();
+  AvaiableReminder _avaiableReminder;
 
   bool isEdited = false;
   int currentInterval = 0;
@@ -54,6 +60,7 @@ class ReminderDetailsPageState extends State<ReminderDetailsPage> {
     super.initState();
     currentInterval = widget.reminder.interval;
     initialInterval = widget.reminder.interval;
+    _avaiableReminder = getAvaiableReminderFromReminder(widget.reminder);
 
     mainColor = getReminderColor(widget.reminder.type, true);
     notificationTime = {
@@ -129,13 +136,44 @@ class ReminderDetailsPageState extends State<ReminderDetailsPage> {
     );
   }
 
+  void _selectDialog(BuildContext context) {
+    switch (widget.reminder.type) {
+      case ReminderType.Water:
+        showDialog(
+          context: context,
+          builder: (_) => WaterDialog(flower: widget.flower)
+        );
+        break;
+      case ReminderType.Fertilize:
+        showDialog(
+          context: context,
+          builder: (_) => FertilizeDialog(flower: widget.flower)
+        );
+        break;
+      case ReminderType.Rotate:
+        showDialog(
+          context: context,
+          builder: (_) => RotateDialog(flower: widget.flower)
+        );
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _selectDialog(context);
+        },
+        backgroundColor: _avaiableReminder.color,
+        child: Icon(_avaiableReminder.iconData)
+      ),
       appBar: AppBar(
         elevation: 0,
-        title: Text('${widget.reminder.key.toUpperCase()} REMINDER',),
+        title: Text('${widget.reminder.key.toUpperCase()}',),
         actions: <Widget>[
           FlatButton(
             onPressed: isEdited ? () {
