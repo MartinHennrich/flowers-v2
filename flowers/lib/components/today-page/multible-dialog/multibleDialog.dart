@@ -32,12 +32,13 @@ class MultibleDialogState extends State<MultibleDialog> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
       contentPadding: EdgeInsets.all(0),
       children: <Widget>[
         Stack(
           children: <Widget>[
             Container(
+              width: 290,
               margin: EdgeInsets.fromLTRB(16, 16, 0, 8),
               child: Text('Quick action',
                 style: TextStyle(
@@ -73,19 +74,22 @@ class MultibleDialogState extends State<MultibleDialog> {
             )
           : Container(),
 
-        IntervallPure(
-          type: 'postpone',
-          value: postponeDays,
-          onIncrease: (v) {
-            setState(() {
-              postponeDays = v;
-            });
-          },
-          onDecrease:  (v) {
-            setState(() {
-              postponeDays = v;
-            });
-          },
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 30),
+          child: IntervallPure(
+              type: 'postpone',
+              value: postponeDays,
+              onIncrease: (v) {
+                setState(() {
+                  postponeDays = v;
+                });
+              },
+              onDecrease:  (v) {
+                setState(() {
+                  postponeDays = v;
+                });
+              },
+          )
         ),
         PostponeOrActionButtons(
           isLoading: _isLoading,

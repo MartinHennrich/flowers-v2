@@ -12,6 +12,7 @@ class PostponeOrActionButtons extends StatefulWidget {
   final String postponeTitle;
   final String actionSubtitle;
   final String actionTitle;
+  final double marginTop;
 
   PostponeOrActionButtons({
     this.isLoading,
@@ -21,6 +22,7 @@ class PostponeOrActionButtons extends StatefulWidget {
     this.postponeTitle,
     this.actionSubtitle,
     this.actionTitle,
+    this.marginTop = 48,
   });
 
   @override
@@ -51,7 +53,7 @@ class PostponeOrActionButtonsState extends State<PostponeOrActionButtons> {
     return Text('$subtitle $days',
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        fontSize: 14,
+        fontSize: 12,
         color: Colors.white
       )
     );
@@ -86,7 +88,7 @@ class PostponeOrActionButtonsState extends State<PostponeOrActionButtons> {
         children: <Widget>[
           Text(widget.actionTitle,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               color: Colors.white
             ),
           ),
@@ -102,37 +104,41 @@ class PostponeOrActionButtonsState extends State<PostponeOrActionButtons> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 48),
-      height: 80,
-      color: Colors.transparent,
+      margin: EdgeInsets.only(top: widget.marginTop),
+      height: 90,
+      /* color: Colors.grey.withAlpha(30), */
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          GradientButton(
-            height: 80,
-            width: 120,
-            gradient: buttonAction == ButtonAction.Action ? GreyGradient : YellowGradient,
-            onPressed: widget.isLoading ? null : () {
-              setState(() {
-                buttonAction = ButtonAction.Postpone;
-              });
-              widget.onPostponePress();
-            },
-            child: getPostponeButtonChild()
-          ),
-          Expanded(
+          Container(
             child: GradientButton(
-              height: 80,
-              gradient: buttonAction == ButtonAction.Postpone ? GreyGradient : BlueGradient,
+              height: 60,
+              width: 120,
+              buttonRadius: BorderRadius.all(Radius.circular(8)),
+              gradient: buttonAction == ButtonAction.Action ? GreyGradient : YellowGradient,
               onPressed: widget.isLoading ? null : () {
                 setState(() {
-                  buttonAction = ButtonAction.Action;
+                  buttonAction = ButtonAction.Postpone;
                 });
-                widget.onActionPress();
+                widget.onPostponePress();
               },
-              child: getActionButtonChild(),
-            ),
-          ),
+              child: getPostponeButtonChild()
+            )),
+            Container(
+              child: GradientButton(
+                height: 60,
+                width: 160,
+                buttonRadius: BorderRadius.all(Radius.circular(8)),
+                gradient: buttonAction == ButtonAction.Postpone ? GreyGradient : BlueGradient,
+                onPressed: widget.isLoading ? null : () {
+                  setState(() {
+                    buttonAction = ButtonAction.Action;
+                  });
+                  widget.onActionPress();
+                },
+                child: getActionButtonChild(),
+          )),
         ]
       ),
     );
