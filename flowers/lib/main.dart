@@ -12,6 +12,14 @@ import './utils/firebase-redux.dart';
 import './utils/firebase.dart';
 import './utils/notifications.dart';
 
+/* class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+} */
+
 void main() {
   database
     .getIntialData()
@@ -37,6 +45,16 @@ class App extends StatelessWidget {
     return StoreProvider(
       store: store,
       child: MaterialApp(
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: Colors.white,
+              child: child
+            ),
+          );
+        },
         debugShowCheckedModeBanner: false,
         title: 'Flowers',
         theme: ThemeData(

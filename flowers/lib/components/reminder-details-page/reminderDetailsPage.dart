@@ -2,30 +2,36 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../actions/actions.dart';
+import '../../constants/availableReminders.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../store.dart';
+import '../../utils/avaiableReminderHelper.dart';
 import '../../utils/firebase.dart';
 import '../../utils/notifications.dart';
 import '../../utils/reminderHelpers.dart';
 import '../create-flower/intervall.dart';
 import '../create-flower/pickTime.dart';
-import './daysLeft.dart';
-import './deleteDialog.dart';
-import './reminderInfoPanel.dart';
+import '../flower-details/daysLeft.dart';
+import '../flower-details/deleteDialog.dart';
+import '../flower-details/reminderInfoPanel.dart';
+import '../today-page/fertilize-dialog/fertilizeDialog.dart';
+import '../today-page/rotate-dialog/rotateDialog.dart';
+import '../today-page/water-dialog/waterDialog.dart';
 
-class ReminderOverviewPage extends StatefulWidget {
+class ReminderDetailsPage extends StatefulWidget {
   final Reminder reminder;
   final Flower flower;
 
-  ReminderOverviewPage({
+  ReminderDetailsPage({
     this.flower,
     this.reminder
   });
 
   @override
   State<StatefulWidget> createState() {
-    return ReminderOverviewPageState();
+    return ReminderDetailsPageState();
   }
 }
 
@@ -36,9 +42,10 @@ class FlowerFormData {
   int intervall = 5;
 }
 
-class ReminderOverviewPageState extends State<ReminderOverviewPage> {
+class ReminderDetailsPageState extends State<ReminderDetailsPage> {
   final _formKey = GlobalKey<FormState>();
   FlowerFormData flowerFormData = FlowerFormData();
+  AvaiableReminder _avaiableReminder;
 
   bool isEdited = false;
   int currentInterval = 0;
@@ -54,6 +61,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     super.initState();
     currentInterval = widget.reminder.interval;
     initialInterval = widget.reminder.interval;
+    _avaiableReminder = getAvaiableReminderFromReminder(widget.reminder);
 
     mainColor = getReminderColor(widget.reminder.type, true);
     notificationTime = {
@@ -129,13 +137,44 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
     );
   }
 
+  void _selectDialog(BuildContext context) {
+    switch (widget.reminder.type) {
+      case ReminderType.Water:
+        showDialog(
+          context: context,
+          builder: (_) => WaterDialog(flower: widget.flower)
+        );
+        break;
+      case ReminderType.Fertilize:
+        showDialog(
+          context: context,
+          builder: (_) => FertilizeDialog(flower: widget.flower)
+        );
+        break;
+      case ReminderType.Rotate:
+        showDialog(
+          context: context,
+          builder: (_) => RotateDialog(flower: widget.flower)
+        );
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _selectDialog(context);
+        },
+        backgroundColor: _avaiableReminder.color,
+        child: Icon(_avaiableReminder.iconData)
+      ),
       appBar: AppBar(
         elevation: 0,
-        title: Text('${widget.reminder.key.toUpperCase()} REMINDER',),
+        title: Text('${widget.reminder.key.toUpperCase()}',),
         actions: <Widget>[
           FlatButton(
             onPressed: isEdited ? () {
@@ -163,7 +202,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
           ),
         ],
       ),
-      body: ListView(
+      body: CustomScrollColor(child: ListView(
         padding: EdgeInsets.only(bottom: 44),
         children: <Widget>[
           Container(
@@ -232,7 +271,7 @@ class ReminderOverviewPageState extends State<ReminderOverviewPage> {
           )
         ],
       )
-    );
+    ));
   }
 }
 

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:gradient_widgets/gradient_widgets.dart';
+/* import 'package:gradient_widgets/gradient_widgets.dart'; */
 
+import '../gradientMaterialButton.dart';
 import '../../actions/actions.dart';
 import '../../constants/colors.dart';
 import '../../flower.dart';
@@ -14,6 +15,7 @@ import '../../utils/notifications.dart';
 import './addReminders.dart';
 import './getImage.dart';
 import './name.dart';
+import '../../presentation/customScrollColor.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -72,7 +74,8 @@ class _CreateFlowerState extends State<CreateFlower> {
         elevation: 0,
         title: Text('ADD PLANT'),
       ),
-      body: ListView(
+      body: CustomScrollColor(
+        child: ListView(
         children: [
           Form(
             key: _formKey,
@@ -103,11 +106,11 @@ class _CreateFlowerState extends State<CreateFlower> {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 24, 0, 24),
                     child: GradientButton(
+                      shadow: true,
                       gradient: BlueGradient,
-                      increaseHeightBy: 30,
-                      increaseWidthBy: 300,
-                      shapeRadius: BorderRadius.horizontal(left: Radius.circular(0)),
-                      callback: _isCreatingFlower ? null : () async {
+                      height: 60,
+                      buttonRadius: BorderRadius.all(Radius.circular(8)),
+                      onPressed: _isCreatingFlower ? null : () async {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
                           setState(() {
@@ -137,6 +140,6 @@ class _CreateFlowerState extends State<CreateFlower> {
           ),
         ]
       )
-    );
+    ));
   }
 }

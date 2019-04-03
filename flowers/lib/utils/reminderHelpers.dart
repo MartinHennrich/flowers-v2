@@ -34,7 +34,7 @@ Color getReminderColor(ReminderType type, bool isActive) {
   }
 
   if (type == ReminderType.Water) {
-    return ReminderBlueSecond;
+    return ReminderBlueMain;
   }
 
   if (type == ReminderType.Fertilize) {

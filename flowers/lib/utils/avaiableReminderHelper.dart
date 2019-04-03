@@ -11,15 +11,28 @@ List<AvaiableReminder> getAvaiableReminderFromReminders(Reminders reminders) {
   List<AvaiableReminder> created = reminderItems.map((reminder) {
     switch (reminder.type) {
       case ReminderType.Water:
-        return AvaiableReminder('water', CustomIcons.water_amount_small, ReminderBlueMain, ReminderType.Water);
+        return avaiableWaterReminder;
       case ReminderType.Fertilize:
-        return AvaiableReminder('fertilize', Icons.flash_on, BrownMain, ReminderType.Fertilize);
+        return avaiableFertilizeReminder;
       case ReminderType.Rotate:
-        return AvaiableReminder('rotate', Icons.rotate_left, ReminderPurpleMain, ReminderType.Rotate);
+        return avaiableRotateReminder;
       default:
         return AvaiableReminder('none', Icons.warning, RedMain, ReminderType.Water);
     }
   }).toList();
 
   return created;
+}
+
+AvaiableReminder getAvaiableReminderFromReminder(Reminder reminder) {
+  switch (reminder.type) {
+    case ReminderType.Water:
+      return avaiableWaterReminder;
+    case ReminderType.Fertilize:
+      return avaiableFertilizeReminder;
+    case ReminderType.Rotate:
+      return avaiableRotateReminder;
+    default:
+      return AvaiableReminder('none', Icons.warning, RedMain, ReminderType.Water);
+  }
 }

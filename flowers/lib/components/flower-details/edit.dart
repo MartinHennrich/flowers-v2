@@ -4,6 +4,7 @@ import 'dart:io';
 
 import '../../actions/actions.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../store.dart';
 import '../../utils/firebase.dart';
 import '../../utils/image.dart';
@@ -80,7 +81,7 @@ class _EditFlowerState extends State<EditFlower> {
           )
         ],
       ),
-      body: ListView(
+      body: CustomScrollColor(child: ListView(
         children: [
           Form(
             key: _formKey,
@@ -107,7 +108,7 @@ class _EditFlowerState extends State<EditFlower> {
             ),
           ),
         ]
-      )
+      ))
     );
   }
 }

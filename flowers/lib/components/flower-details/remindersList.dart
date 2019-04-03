@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../constants/availableReminders.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../utils/reminderHelpers.dart';
 import '../../utils/timeHelpers.dart';
+import '../reminder-details-page/reminderDetailsPage.dart';
 import './add-reminders/addRemindersPage.dart';
-import './reminderOverviewPage.dart';
 
 class RemindersList extends StatelessWidget {
   final Reminders reminders;
@@ -38,6 +39,7 @@ class RemindersList extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
           onTap: () {
             Navigator.push(
               context,
@@ -75,11 +77,12 @@ class RemindersList extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ReminderOverviewPage(flower: flower, reminder: reminder,),
+                builder: (context) => ReminderDetailsPage(flower: flower, reminder: reminder,),
               ),
             );
           },
@@ -220,12 +223,14 @@ class RemindersList extends StatelessWidget {
           ),
           Container(
             height: 108,
-            child: ListView(
+            child: CustomScrollColor(
+              axisDirection: AxisDirection.right,
+              child: ListView(
               shrinkWrap: true,
               padding: EdgeInsets.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
               children: children,
-            )
+            ))
           )
         ]
       )

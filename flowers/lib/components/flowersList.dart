@@ -10,13 +10,17 @@ class FlowersList extends StatelessWidget {
   final bool withHero;
   final bool withReminderBar;
   final Function(Flower flower) onPress;
+  final Function(Flower flower) onLongPress;
+  final List<String> selectedIds;
 
   FlowersList({
     this.flowers,
     this.onPress,
     this.disabled = false,
     this.withHero = false,
-    this.withReminderBar = false
+    this.withReminderBar = false,
+    this.onLongPress,
+    this.selectedIds = const [],
   });
 
   List<Widget> _getFlowersListWidgets(List<Flower> flowers, BuildContext context) {
@@ -26,7 +30,9 @@ class FlowersList extends StatelessWidget {
         onPress: onPress,
         disabled: disabled,
         withHero: withHero,
+        isSelected: selectedIds.contains(flower.key),
         withReminderBar: withReminderBar,
+        onLongPress: this.onLongPress,
       );
     }).toList();
   }
