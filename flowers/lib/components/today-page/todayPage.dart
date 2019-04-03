@@ -7,15 +7,16 @@ import '../../ad.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../utils/flowerHelpers.dart';
 import '../flowersList.dart';
 import '../page-title.dart';
 import './fertilize-dialog/fertilizeDialog.dart';
 import './noFlowersToWater.dart';
+import './quick-action-bar/quickActionBar.dart';
 import './rotate-dialog/rotateDialog.dart';
 import './water-dialog/waterDialog.dart';
-import './quick-action-bar/quickActionBar.dart';
 
 class TodayPage extends StatelessWidget {
   @override
@@ -66,7 +67,10 @@ class _FlowerListState extends State<FlowerList> {
 
   List<Widget> _getLoadingScreen() {
     return [
-      PageTitle(title: 'Today'),
+      PageTitle(
+        title: 'Today',
+        padding: EdgeInsets.fromLTRB(20, 44, 20, 40),
+      ),
       Container(
         height: 300,
         child: Center(
@@ -218,10 +222,10 @@ class _FlowerListState extends State<FlowerList> {
           )
         );
 
-        return ListView(
+        return CustomScrollColor(child: ListView(
           padding: EdgeInsets.only(bottom: 20),
           children: vm.isFetchingData == true ? _getLoadingScreen() : children
-        );
+        ));
     });
   }
 }

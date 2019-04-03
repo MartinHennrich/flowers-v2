@@ -2,9 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../actions/actions.dart';
+import '../../constants/availableReminders.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../store.dart';
+import '../../utils/avaiableReminderHelper.dart';
 import '../../utils/firebase.dart';
 import '../../utils/notifications.dart';
 import '../../utils/reminderHelpers.dart';
@@ -13,8 +16,6 @@ import '../create-flower/pickTime.dart';
 import '../flower-details/daysLeft.dart';
 import '../flower-details/deleteDialog.dart';
 import '../flower-details/reminderInfoPanel.dart';
-import '../../constants/availableReminders.dart';
-import '../../utils/avaiableReminderHelper.dart';
 import '../today-page/fertilize-dialog/fertilizeDialog.dart';
 import '../today-page/rotate-dialog/rotateDialog.dart';
 import '../today-page/water-dialog/waterDialog.dart';
@@ -201,7 +202,7 @@ class ReminderDetailsPageState extends State<ReminderDetailsPage> {
           ),
         ],
       ),
-      body: ListView(
+      body: CustomScrollColor(child: ListView(
         padding: EdgeInsets.only(bottom: 44),
         children: <Widget>[
           Container(
@@ -270,7 +271,7 @@ class ReminderDetailsPageState extends State<ReminderDetailsPage> {
           )
         ],
       )
-    );
+    ));
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/enums.dart';
 import '../../../flower.dart';
+import '../../../presentation/customScrollColor.dart';
 import '../../../reminders.dart';
 import '../../../utils/firebase-redux.dart';
 import './actionButton.dart';
@@ -149,12 +150,14 @@ class QuickActionBarState extends State<QuickActionBar> {
 
     return Container(
       height: 54,
-      child: ListView(
+      child: CustomScrollColor(
+        axisDirection: AxisDirection.right,
+        child: ListView(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
         shrinkWrap: false,
         scrollDirection: Axis.horizontal,
         children: buttons
-      )
+      ))
     );
   }
 }

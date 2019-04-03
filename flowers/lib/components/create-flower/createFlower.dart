@@ -14,6 +14,7 @@ import '../../utils/notifications.dart';
 import './addReminders.dart';
 import './getImage.dart';
 import './name.dart';
+import '../../presentation/customScrollColor.dart';
 
 class CreateFlower extends StatefulWidget {
   @override
@@ -72,7 +73,8 @@ class _CreateFlowerState extends State<CreateFlower> {
         elevation: 0,
         title: Text('ADD PLANT'),
       ),
-      body: ListView(
+      body: CustomScrollColor(
+        child: ListView(
         children: [
           Form(
             key: _formKey,
@@ -137,6 +139,6 @@ class _CreateFlowerState extends State<CreateFlower> {
           ),
         ]
       )
-    );
+    ));
   }
 }

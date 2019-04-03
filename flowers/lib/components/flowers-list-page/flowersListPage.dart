@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../flower-details/flowerDetails.dart';
 import '../flowersList.dart';
 import '../page-title.dart';
@@ -61,11 +62,11 @@ class FlowersListPage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Colors.white,
-          body: ListView(
+          body: CustomScrollColor(child: ListView(
             padding: EdgeInsets.all(20.0),
             children: vm.isFetchingData == true ? _getLoadingScreen() : children
           ),
-        );
+        ));
       }
     );
   }

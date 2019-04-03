@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../constants/availableReminders.dart';
 import '../../flower.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../utils/reminderHelpers.dart';
 import '../../utils/timeHelpers.dart';
-import './add-reminders/addRemindersPage.dart';
 import '../reminder-details-page/reminderDetailsPage.dart';
+import './add-reminders/addRemindersPage.dart';
 
 class RemindersList extends StatelessWidget {
   final Reminders reminders;
@@ -222,12 +223,14 @@ class RemindersList extends StatelessWidget {
           ),
           Container(
             height: 108,
-            child: ListView(
+            child: CustomScrollColor(
+              axisDirection: AxisDirection.right,
+              child: ListView(
               shrinkWrap: true,
               padding: EdgeInsets.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
               children: children,
-            )
+            ))
           )
         ]
       )

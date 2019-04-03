@@ -3,9 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 import '../../actions/actions.dart';
-import '../../constants/colors.dart';
 import '../../flower.dart';
 import '../../presentation/custom_icons_icons.dart';
+import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../store.dart';
 import '../../utils/colors.dart';
@@ -293,7 +293,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
       ),
 
       backgroundColor: Colors.white,
-      body: ListView(
+      body: CustomScrollColor(child: ListView(
         children: [
           Container(
             color: Colors.white,
@@ -319,7 +319,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
           RemindersList(flower: widget.flower, reminders: widget.flower.reminders,),
           getGraphs()
         ]
-      )
+      ))
     );
   }
 }
