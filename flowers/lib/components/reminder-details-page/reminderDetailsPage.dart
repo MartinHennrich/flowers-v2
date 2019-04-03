@@ -10,22 +10,22 @@ import '../../utils/notifications.dart';
 import '../../utils/reminderHelpers.dart';
 import '../create-flower/intervall.dart';
 import '../create-flower/pickTime.dart';
-import './daysLeft.dart';
-import './deleteDialog.dart';
-import './reminderInfoPanel.dart';
+import '../flower-details/daysLeft.dart';
+import '../flower-details/deleteDialog.dart';
+import '../flower-details/reminderInfoPanel.dart';
 
-class ReminderOverviewPage extends StatefulWidget {
+class ReminderDetailsPage extends StatefulWidget {
   final Reminder reminder;
   final Flower flower;
 
-  ReminderOverviewPage({
+  ReminderDetailsPage({
     this.flower,
     this.reminder
   });
 
   @override
   State<StatefulWidget> createState() {
-    return ReminderOverviewPageState();
+    return ReminderDetailsPageState();
   }
 }
 
@@ -36,7 +36,7 @@ class FlowerFormData {
   int intervall = 5;
 }
 
-class ReminderOverviewPageState extends State<ReminderOverviewPage> {
+class ReminderDetailsPageState extends State<ReminderDetailsPage> {
   final _formKey = GlobalKey<FormState>();
   FlowerFormData flowerFormData = FlowerFormData();
 

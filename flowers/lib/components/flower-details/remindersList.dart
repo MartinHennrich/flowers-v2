@@ -6,7 +6,7 @@ import '../../reminders.dart';
 import '../../utils/reminderHelpers.dart';
 import '../../utils/timeHelpers.dart';
 import './add-reminders/addRemindersPage.dart';
-import './reminderOverviewPage.dart';
+import '../reminder-details-page/reminderDetailsPage.dart';
 
 class RemindersList extends StatelessWidget {
   final Reminders reminders;
@@ -81,7 +81,7 @@ class RemindersList extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ReminderOverviewPage(flower: flower, reminder: reminder,),
+                builder: (context) => ReminderDetailsPage(flower: flower, reminder: reminder,),
               ),
             );
           },
