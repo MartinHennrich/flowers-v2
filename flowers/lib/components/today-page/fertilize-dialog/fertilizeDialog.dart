@@ -28,6 +28,7 @@ class FertilizeDialogState extends State<FertilizeDialog> {
     return ActionDialog(
       flower: widget.flower,
       customControls: IntervallPure(
+        color: Colors.black,
         value: postponeDays,
         type: 'postpone',
         onIncrease: (v) {

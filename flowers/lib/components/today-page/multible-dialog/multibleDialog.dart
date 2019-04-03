@@ -77,18 +77,19 @@ class MultibleDialogState extends State<MultibleDialog> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 30),
           child: IntervallPure(
-              type: 'postpone',
-              value: postponeDays,
-              onIncrease: (v) {
-                setState(() {
-                  postponeDays = v;
-                });
-              },
-              onDecrease:  (v) {
-                setState(() {
-                  postponeDays = v;
-                });
-              },
+            color: Colors.black,
+            type: 'postpone',
+            value: postponeDays,
+            onIncrease: (v) {
+              setState(() {
+                postponeDays = v;
+              });
+            },
+            onDecrease:  (v) {
+              setState(() {
+                postponeDays = v;
+              });
+            },
           )
         ),
         PostponeOrActionButtons(

@@ -28,6 +28,7 @@ class RotateDialogState extends State<RotateDialog> {
     return ActionDialog(
       flower: widget.flower,
       customControls: IntervallPure(
+        color: Colors.black,
         type: 'postpone',
         value: postponeDays,
         onIncrease: (v) {
