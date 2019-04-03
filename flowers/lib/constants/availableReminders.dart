@@ -18,9 +18,13 @@ class AvaiableReminder {
   );
 }
 
+AvaiableReminder avaiableWaterReminder = AvaiableReminder('water', CustomIcons.water_amount_small, ReminderBlueMain, ReminderType.Water);
+AvaiableReminder avaiableFertilizeReminder = AvaiableReminder('fertilize', Icons.flash_on, BrownMain, ReminderType.Fertilize);
+AvaiableReminder avaiableRotateReminder = AvaiableReminder('rotate', Icons.rotate_left, ReminderPurpleMain, ReminderType.Rotate);
+
 List<AvaiableReminder> avaiableReminders = [
-  AvaiableReminder('water', CustomIcons.water_amount_small, ReminderBlueMain, ReminderType.Water),
-  AvaiableReminder('fertilize', Icons.flash_on, BrownMain, ReminderType.Fertilize),
-  AvaiableReminder('rotate', Icons.rotate_left, ReminderPurpleMain, ReminderType.Rotate)
+  avaiableWaterReminder,
+  avaiableFertilizeReminder,
+  avaiableRotateReminder,
 ];
 
