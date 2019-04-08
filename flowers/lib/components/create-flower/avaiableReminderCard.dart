@@ -46,6 +46,7 @@ class AvaiableReminderCard extends StatelessWidget {
           ButtonBar(
             children: <Widget>[
               FlatButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -53,6 +54,7 @@ class AvaiableReminderCard extends StatelessWidget {
               ),
               FlatButton(
                 color: RedMain,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
                 onPressed: () {
                   var r = Reminder(
                     type: reminder.reminderType

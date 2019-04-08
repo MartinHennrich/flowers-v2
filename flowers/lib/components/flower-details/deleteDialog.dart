@@ -20,6 +20,7 @@ class DeleteDialog extends StatelessWidget {
         ButtonBar(
           children: <Widget>[
             FlatButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -27,6 +28,7 @@ class DeleteDialog extends StatelessWidget {
             ),
             FlatButton(
               color: RedMain,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
               onPressed: () {
                 onRemove(context);
               },

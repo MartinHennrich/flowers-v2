@@ -99,6 +99,7 @@ class CreateReminderState extends State<CreateReminder> {
         ButtonBar(
           children: <Widget>[
             FlatButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -107,7 +108,7 @@ class CreateReminderState extends State<CreateReminder> {
             GradientButton(
                 gradient: BlueGradient,
                 elevation: 0,
-                shapeRadius: BorderRadius.horizontal(left: Radius.circular(0)),
+                shapeRadius: BorderRadius.all(Radius.circular(8)),
                 callback: () {
                   _formKey.currentState.save();
                   _onCreate();
