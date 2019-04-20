@@ -10,11 +10,14 @@ import './pickTime.dart';
 class CreateReminder extends StatefulWidget {
   final Function(Reminder) onCreate;
   final ReminderType reminderType;
+  final Color color;
 
   CreateReminder(
     this.reminderType,
-    this.onCreate
-  );
+    this.onCreate,
+    {
+      this.color = BlueMain
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -77,21 +80,23 @@ class CreateReminderState extends State<CreateReminder> {
                 onSave: (DateTime lastTime) {
                   reminderFormData.lastTime = lastTime;
                 },
-                type: _getName()
+                type: _getName(),
+                color: widget.color,
               ),
-
 
               Intervall(
                 onSave: (int interval) {
                   reminderFormData.interval = interval;
                 },
                 type: _getName(),
+                color: widget.color,
               ),
 
               PickTimeForm(
                 onSave: (DateTime time) {
                   reminderFormData.timeOfDayForNotification = time;
                 },
+                color: widget.color,
               ),
             ],
           )
@@ -109,6 +114,7 @@ class CreateReminderState extends State<CreateReminder> {
                 gradient: BlueGradient,
                 elevation: 0,
                 shapeRadius: BorderRadius.all(Radius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
                 callback: () {
                   _formKey.currentState.save();
                   _onCreate();
