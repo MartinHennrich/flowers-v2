@@ -103,7 +103,7 @@ class ReminderDetailsPageState extends State<ReminderDetailsPage> {
       AppStore.dispatch(UpdateFlowerAction(flower));
       Navigator.pop(context);
 
-      scheduleNotificationsForReminders(flower.name, flower.reminders);
+      scheduleNotificationsForReminders(flower, flower.reminders);
     } catch (e) {
       Navigator.pop(context);
     }

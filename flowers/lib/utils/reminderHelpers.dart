@@ -58,7 +58,7 @@ Flower runActionOnReminder(Flower flower, Reminder reminder){
 
   flower.reminders.updateReminder(reminder);
   scheduleNotificationForReminder(
-    flower.name,
+    flower,
     reminder
   );
 
@@ -75,7 +75,7 @@ Flower postponeReminder(Flower flower, Reminder reminder, int nextDays) {
 
   flower.reminders.updateReminder(reminder);
   scheduleNotificationForReminder(
-    flower.name,
+    flower,
     reminder
   );
 

@@ -61,7 +61,7 @@ class _CreateFlowerState extends State<CreateFlower> {
     AppStore.dispatch(AddFlowerAction(flower));
     AppStore.dispatch(CreatingFlower.Available);
 
-    scheduleNotificationsForReminders(flower.name, flower.reminders);
+    scheduleNotificationsForReminders(flower, flower.reminders);
 
     await result.delete();
   }

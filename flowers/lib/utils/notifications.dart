@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart';
 import '../reminders.dart';
+import '../flower.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -94,8 +95,8 @@ List<String> getBodyTexts(ReminderType type, String name) {
   }
 }
 
-Future<void> _scheduleNotification(SharedPreferences prefs, String name, Reminder reminder) async {
-  String key = reminder.key;
+Future<void> _scheduleNotification(SharedPreferences prefs, String name, String flowerKey, Reminder reminder) async {
+  String key = '${reminder.key}-$flowerKey';
   _cancelOldNotifications(key, prefs);
 
   DateTime notificationTime = DateTime(reminder.nextTime.year, reminder.nextTime.month, reminder.nextTime.day,
@@ -128,16 +129,16 @@ Future<void> _scheduleNotification(SharedPreferences prefs, String name, Reminde
   saveNotificationKeys(key, [notisKey, reminderKey], prefs);
 }
 
-Future<void> scheduleNotificationForReminder(String name, Reminder reminder) async {
+Future<void> scheduleNotificationForReminder(Flower flower, Reminder reminder) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await _scheduleNotification(prefs, name, reminder);
+  await _scheduleNotification(prefs, flower.name, flower.key, reminder);
 }
 
-Future<void> scheduleNotificationsForReminders(String name, Reminders reminders) async {
+Future<void> scheduleNotificationsForReminders(Flower flower, Reminders reminders) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   List<Reminder> activeReminders = reminders.getRemindersAsList(sortActive: true);
 
   activeReminders.forEach((r) {
-    _scheduleNotification(prefs, name, r);
+    _scheduleNotification(prefs, flower.name, flower.key, r);
   });
 }

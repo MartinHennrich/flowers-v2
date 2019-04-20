@@ -47,7 +47,7 @@ class AddRemindersPageState extends State<AddRemindersPage> {
       AppStore.dispatch(UpdateFlowerAction(flower));
       Navigator.pop(context);
 
-      scheduleNotificationsForReminders(flower.name, remindersFormData);
+      scheduleNotificationsForReminders(flower, remindersFormData);
     } catch (e) {
       Navigator.pop(context);
     }
