@@ -10,6 +10,7 @@ import '../../flower.dart';
 import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../utils/flowerHelpers.dart';
+import '../../utils/loadInitialData.dart';
 import '../flowersList.dart';
 import '../page-title.dart';
 import './fertilize-dialog/fertilizeDialog.dart';
@@ -118,9 +119,29 @@ class _FlowerListState extends State<FlowerList> {
     }
   }
 
+  void _onInitialFetchError(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Could not load :('),
+      duration: Duration(seconds: 60),
+      action: SnackBarAction(
+        textColor: GreenMain,
+        label: 'Try again',
+        onPressed: () {
+          loadInitialData();
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
+      onDidChange: (_ViewModel vm) {
+        if (vm.isFetchingData == null) {
+          _onInitialFetchError(context);
+        }
+      },
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
         if (vm.flowers.length > 0) {

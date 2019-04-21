@@ -24,7 +24,8 @@ class DeleteFlowerAction {
 
 enum FetchingData {
   Completed,
-  Fetching
+  Fetching,
+  Error
 }
 
 enum CreatingFlower {

@@ -6,6 +6,7 @@ import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../flower.dart';
 import '../../presentation/customScrollColor.dart';
+import '../../utils/loadInitialData.dart';
 import '../flower-details/flowerDetails.dart';
 import '../flowersList.dart';
 import '../page-title.dart';
@@ -34,9 +35,29 @@ class FlowersListPage extends StatelessWidget {
     return flowers;
   }
 
+  void _onInitialFetchError(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Could not load :('),
+      duration: Duration(seconds: 60),
+      action: SnackBarAction(
+        textColor: GreenMain,
+        label: 'Try again',
+        onPressed: () {
+          loadInitialData();
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
+      onDidChange: (_ViewModel vm) {
+        if (vm.isFetchingData == null) {
+          _onInitialFetchError(context);
+        }
+      },
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
         List<Flower> sorted = _sortFlowersAlphabetically(vm.flowers);

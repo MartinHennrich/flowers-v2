@@ -8,25 +8,11 @@ import './appState.dart';
 import './components/create-flower/createFlower.dart';
 import './components/MaintabBarNavigation.dart';
 import './store.dart';
-import './utils/firebase-redux.dart';
-import './utils/firebase.dart';
 import './utils/notifications.dart';
-
-/* class MyBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
-  }
-} */
+import './utils/loadInitialData.dart';
 
 void main() {
-  database
-    .getIntialData()
-    .then((snapshot) {
-      addSnapshotToRedux(snapshot);
-      AppStore.dispatch(FetchingData.Completed);
-    });
+  loadInitialData();
   initNotifications();
   runApp(App(store: AppStore));
 }
