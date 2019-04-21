@@ -59,6 +59,7 @@ class Database {
       return await _createInitialData();
     }
     _setUserRef();
+    _initialStorage();
     return await _fetchData();
   }
 
@@ -119,10 +120,6 @@ class Database {
   }
 
   Future<Map<String, String>> _uploadImageFile(File file) async {
-    if (_storage == null) {
-      _initialStorage();
-    }
-
     return await _storage.uploadImageFile(file);
   }
 

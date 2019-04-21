@@ -5,6 +5,7 @@ import 'dart:io';
 import '../../actions/actions.dart';
 import '../../flower.dart';
 import '../../presentation/customScrollColor.dart';
+import '../../constants/colors.dart';
 import '../../store.dart';
 import '../../utils/firebase.dart';
 import '../../utils/image.dart';
@@ -35,6 +36,9 @@ class _EditFlowerState extends State<EditFlower> {
   FlowerFormData flowerFormData = FlowerFormData();
 
   Future<void> _onEditFlower() async {
+    setState(() {
+      _isCreatingFlower = true;
+    });
     Flower flower = widget.flower;
     if (flowerFormData.flowerName.length >= 3) {
       flower.name = flowerFormData.flowerName;
@@ -72,13 +76,20 @@ class _EditFlowerState extends State<EditFlower> {
         elevation: 0,
         title: Text('EDIT ${widget.flower.name.toUpperCase()}'),
         actions: <Widget>[
-          FlatButton(
-            onPressed: _isCreatingFlower ? null : () async {
-              _formKey.currentState.save();
-              _onEditFlower();
-            },
-            child: Text('SAVE'),
-          )
+          _isCreatingFlower
+            ? Container(
+                width: 56,
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(BlueMain),
+              ))
+            : FlatButton(
+                onPressed: () async {
+                  _formKey.currentState.save();
+                  _onEditFlower();
+                },
+                child: Text('SAVE'),
+              )
         ],
       ),
       body: CustomScrollColor(child: ListView(
