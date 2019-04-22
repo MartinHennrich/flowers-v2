@@ -4,8 +4,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import '../../appState.dart';
 import '../../actions/actions.dart';
+import '../../appState.dart';
 import '../../flower.dart';
 import '../../presentation/custom_icons_icons.dart';
 import '../../presentation/customScrollColor.dart';
@@ -14,13 +14,16 @@ import '../../store.dart';
 import '../../utils/colors.dart';
 import '../../utils/firebase-redux.dart';
 import '../../utils/firebase.dart';
+import '../../utils/labelsHelper.dart';
 import '../../utils/notifications.dart';
 import '../../utils/soilMoisture.dart';
 import '../../utils/waterAmount.dart';
+import '../add-labels/addLabels.dart';
 import '../flowerCard.dart';
 import './daysLeft.dart';
 import './deleteDialog.dart';
 import './edit.dart';
+import './labels-list/labelsList.dart';
 import './reminderInfoPanelCarousel.dart';
 import './remindersList.dart';
 import './timeGraph.dart';
@@ -142,9 +145,9 @@ class FlowerDetailsState extends State<FlowerDetails> {
     )];
   }
 
-  Widget _getGraphContainer(String title, Widget widget) {
+  Widget _getGraphContainer(String title, Widget widget, double bootomPadding) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(32, 32, 16, 32),
+      padding: EdgeInsets.fromLTRB(32, 32, 16, bootomPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -175,6 +178,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
         _getTimeSeriesSoil(flower),
         type: TimeGraphType.SoilM
       ),
+      32
     );
   }
 
@@ -185,6 +189,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
         _getTimeSeriesWaterAmount(flower),
         type: TimeGraphType.WaterAmount
       ),
+      64
     );
   }
 
@@ -312,7 +317,22 @@ class FlowerDetailsState extends State<FlowerDetails> {
               ),
             ]
           ),
-
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddLabels(
+                    activeLabels: flower.labels,
+                    allAvailable: getAllUniqLabelsForFlower(flower.labels),
+                    flower: flower
+                  ),
+                ),
+              );
+            },
+            backgroundColor: colorOfTime,
+            child: Icon(Icons.label, color: Colors.white)
+          ),
           backgroundColor: Colors.white,
           body: CustomScrollColor(child: ListView(
             children: [
@@ -336,6 +356,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
                   ],
                 )
               ),
+              LabelsList(labels: flower.labels, hasTitle: true,),
               ReminderInfoPanelCarousel(reminders: flower.reminders.getRemindersAsList(sortActive: true)),
               RemindersList(flower: flower, reminders: flower.reminders,),
               getGraphs(flower)
