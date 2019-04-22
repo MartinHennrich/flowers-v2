@@ -112,7 +112,7 @@ class AddLabelsState extends State<AddLabels> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
-                    maxLength: 14,
+                    maxLength: 24,
                     onFieldSubmitted: (String value) {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
@@ -129,7 +129,7 @@ class AddLabelsState extends State<AddLabels> {
                         return 'Minimun of 2 chars';
                       }
 
-                      if (value.length > 14) {
+                      if (value.length > 24) {
                         return 'Max of 14 chars';
                       }
 
