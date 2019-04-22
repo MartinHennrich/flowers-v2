@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
@@ -83,4 +85,9 @@ Color getColorForFlower(Flower flower) {
   }
 
   return getColorBasedOnTime(clostToDate.nextTime, clostToDate.lastTime);
+}
+
+Color getRandomLabelColor() {
+  final Random random = Random();
+  return labelColors[random.nextInt(labelColors.length)];
 }

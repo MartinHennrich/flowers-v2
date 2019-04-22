@@ -105,3 +105,16 @@ const ReminderPurpleGradient = LinearGradient(
     ReminderPurpleSecond,
   ],
 );
+
+const List<Color> labelColors = [
+  ReminderBlueMain,
+  ReminderBlueSecond,
+  BrownMain,
+  BrownSecond,
+  RedMain,
+  YellowMain,
+  YellowSecond,
+  BlueMain,
+  GreenMain,
+  GreenSecondMain,
+];
