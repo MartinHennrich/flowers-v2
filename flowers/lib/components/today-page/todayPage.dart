@@ -57,14 +57,20 @@ class _FlowerListState extends State<FlowerList> {
   void initState() {
     super.initState();
     FirebaseAdMob.instance.initialize(appId: appAdId);
-    _bannerAd = createBannerAd()..load();
+    if (_bannerAd == null) {
+      _bannerAd = createBannerAd()..load();
+    } else {
+      _bannerAd.dispose();
+    }
   }
 
   @override
-  void dispose() {
-    _bannerAd?.dispose();
+  void dispose() async {
     super.dispose();
+    await _bannerAd?.dispose();
   }
+
+
 
   List<Widget> _getLoadingScreen() {
     return [
