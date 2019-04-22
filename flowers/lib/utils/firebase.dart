@@ -140,6 +140,7 @@ class Database {
           'image': fileUrl,
           'imageId': fileId,
           'reminders': flower.reminders.toFirebaseObject(),
+          'labels': flower.toLabelsFirebaseObject(),
         });
 
       return {
@@ -154,6 +155,7 @@ class Database {
       .update({
         'name': flower.name,
         'reminders': flower.reminders.toFirebaseObject(),
+        'labels': flower.toLabelsFirebaseObject(),
       });
 
     return {
