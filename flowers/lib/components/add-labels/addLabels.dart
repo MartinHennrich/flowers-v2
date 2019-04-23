@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
 import '../../presentation/customScrollColor.dart';
@@ -5,6 +6,8 @@ import '../../utils/labelsHelper.dart';
 import '../../flower.dart';
 import '../../utils/firebase-redux.dart';
 import '../../presentation/custom_icons_icons.dart';
+import '../../utils/rewardAdHelpers.dart';
+import '../../ad.dart';
 
 class AddLabels extends StatefulWidget {
   final List<Label> allAvailable;
@@ -25,6 +28,7 @@ class AddLabels extends StatefulWidget {
 
 class AddLabelsState extends State<AddLabels> {
   final _formKey = GlobalKey<FormState>();
+  bool isUnlocked = false;
   List<Label> allAvailable;
   List<Label> activeLabels;
 
@@ -34,9 +38,32 @@ class AddLabelsState extends State<AddLabels> {
 
     allAvailable = widget.allAvailable;
     activeLabels = widget.activeLabels;
+    isRewardUnlocked(labelRewardKey)
+      .then((bool isUnlocked) {
+        setState(() {
+          this.isUnlocked = isUnlocked;
+        });
+      });
+    RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+      if (event == RewardedVideoAdEvent.rewarded) {
+        setState(() {
+          this.isUnlocked = true;
+        });
+        setRewardLockStatus(labelRewardKey, DateTime.now().toIso8601String());
+      }
+    };
   }
 
   void _onCreateLable(String value) {
+    if (!isUnlocked && widget.flower.labels.length > 0) {
+      RewardedVideoAd.instance.load(
+        adUnitId: rewardId,
+        targetingInfo: targetingInfo
+      )..then((_) {
+        RewardedVideoAd.instance..show();
+      });
+    }
+
     Label label = createOrGetLabel(value.trim());
 
     Label hasLabel = widget.flower.labels.firstWhere(
@@ -70,7 +97,6 @@ class AddLabelsState extends State<AddLabels> {
 
   @override
   Widget build(BuildContext context) {
-    print(Colors.cyan.toString());
     List<Widget> avaiable = activeLabels.map((label) {
       return Chip(
         label: Text(label.value),
@@ -107,10 +133,16 @@ class AddLabelsState extends State<AddLabels> {
           Form(
             key: _formKey,
             child: Container(
-              /* margin: EdgeInsets.symmetric(horizontal: 16), */
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  isUnlocked
+                  ? Container()
+                  : Icon(
+                    Icons.videocam,
+                    size: 14,
+                    color: Colors.black26,
+                  ),
                   TextFormField(
                     maxLength: 24,
                     onFieldSubmitted: (String value) {
@@ -203,7 +235,6 @@ class AddLabelsState extends State<AddLabels> {
               ],
             )
           ),
-
         ],
       )
     ));

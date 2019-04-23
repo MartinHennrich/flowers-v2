@@ -48,7 +48,7 @@ class AddRemindersState extends State<AddReminders> {
         }).toList();
     }
 
-    isRemindersUnlocked()
+    isRewardUnlocked(rewardKey)
       .then((bool isUnlocked) {
         setState(() {
           this.isUnlocked = isUnlocked;
@@ -59,7 +59,7 @@ class AddRemindersState extends State<AddReminders> {
         setState(() {
           this.isUnlocked = true;
         });
-        setRemindersLockStatus(DateTime.now().toIso8601String());
+        setRewardLockStatus(rewardKey, DateTime.now().toIso8601String());
       }
     };
   }
