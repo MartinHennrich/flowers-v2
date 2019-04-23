@@ -8,6 +8,7 @@ final AppStore = Store<AppState>(
   initialState: AppState(
     isFetchingData: true,
     flowers: [],
-    isCreatingFlower: false
+    isCreatingFlower: false,
+    isFirstTimeUser: false
   ),
 );

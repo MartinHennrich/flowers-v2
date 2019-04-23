@@ -32,3 +32,8 @@ enum CreatingFlower {
   Creating,
   Available
 }
+
+enum IsFirstTimeUser {
+  Yes,
+  No
+}
