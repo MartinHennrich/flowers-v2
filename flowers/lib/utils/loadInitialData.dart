@@ -4,7 +4,7 @@ import '../actions/actions.dart';
 import '../store.dart';
 import './firebase-redux.dart';
 
-void loadInitialData() {
+void loadInitialData({ retry = 0 }) {
   AppStore.dispatch(FetchingData.Fetching);
   database
     .getIntialData()
@@ -13,6 +13,10 @@ void loadInitialData() {
       AppStore.dispatch(FetchingData.Completed);
     })
     .catchError((_) {
-      AppStore.dispatch(FetchingData.Error);
+      if (retry > 4) {
+        AppStore.dispatch(FetchingData.Error);
+      } else {
+        loadInitialData(retry: retry + 1);
+      }
     });
 }
