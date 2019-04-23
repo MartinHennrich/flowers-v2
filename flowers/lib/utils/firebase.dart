@@ -203,6 +203,17 @@ class Database {
       .child(key)
       .remove();
   }
+
+  Future<void> addRating(int rating) async {
+    return databaseReference
+      .child('rating')
+      .child('update-1')
+      .push().set({
+        'time': DateTime.now().toIso8601String(),
+        'rating': rating,
+        'userId': currentUser.uid
+      });
+  }
 }
 
 Database database = Database();
