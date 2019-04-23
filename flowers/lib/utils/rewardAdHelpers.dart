@@ -13,7 +13,7 @@ Future<bool> isRemindersUnlocked() async {
   DateTime timeParsed = DateTime.parse(timeString);
 
   int daysSenceLastView = today.difference(timeParsed).inDays;
-  return daysSenceLastView <= 4;
+  return daysSenceLastView <= 2;
 }
 
 Future<void> setRemindersLockStatus(String time) async {
