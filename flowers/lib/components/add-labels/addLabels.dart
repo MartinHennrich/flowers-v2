@@ -78,6 +78,14 @@ class AddLabelsState extends State<AddLabels> {
     addLabel(widget.flower, label);
   }
 
+  String _removeUnsafeValues(String value) {
+    List<String> unSafe = ['/', '.', '#', '\$', '[', ']'];
+
+    return unSafe.fold(value, (String prev, String element) {
+      return prev.replaceAll(element, '');
+    });
+  }
+
   void _onRemoveFromFlower(Label label) {
     setState(() {
       widget.flower.removeLable(label);
@@ -112,7 +120,6 @@ class AddLabelsState extends State<AddLabels> {
         label: Text(label.value),
         backgroundColor: label.color,
         onPressed: () {
-          print('pressing anothre');
           _onAddAvailable(label);
         },
       );
@@ -149,7 +156,7 @@ class AddLabelsState extends State<AddLabels> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         _formKey.currentState.reset();
-                        _onCreateLable(value);
+                        _onCreateLable(_removeUnsafeValues(value));
                       }
                     },
                     decoration: InputDecoration(
