@@ -356,7 +356,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
                   ],
                 )
               ),
-              LabelsList(labels: flower.labels, hasTitle: true,),
+              LabelsList(labels: flower.labels, hasTitle: true),
               ReminderInfoPanelCarousel(reminders: flower.reminders.getRemindersAsList(sortActive: true)),
               RemindersList(flower: flower, reminders: flower.reminders,),
               getGraphs(flower)

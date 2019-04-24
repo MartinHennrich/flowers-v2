@@ -47,9 +47,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     super.initState();
 
     FirebaseAdMob.instance.initialize(appId: appAdId);
-    print('should create ad');
     if (_bannerAd == null) {
-      print('create ad!!!');
       _bannerAd = createBannerAd()..load();
     } else {
       _bannerAd.dispose();
@@ -64,29 +62,28 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
   void _onInitialBuild(_ViewModel vm) {
     isFirstTimeUser()
-      .then((bool isFirstTime) {
+      .then((bool isFirstTime) {});
+
+      if (!vm.isFirstTimeUser) {
         AppStore.dispatch(
-          isFirstTime
-            ? IsFirstTimeUser.Yes
-            : IsFirstTimeUser.No
+          IsFirstTimeUser.No
         );
+      }
 
-        // TODO: later update, add isFirstTime instead of false
-        shouldSeeWhatsNew(false)
-          .then((bool shouldSee) {
-            if (shouldSee) {
-              showDialog(
-                context: context,
-                builder: (_) => WhatsNewDialog()
-              );
-            }
-          });
-      });
-
-      _onDidChange(vm);
+      // TODO: later update, add isFirstTime instead of false
+      shouldSeeWhatsNew(vm.isFirstTimeUser)
+        .then((bool shouldSee) {
+          if (shouldSee) {
+            showDialog(
+              context: context,
+              builder: (_) => WhatsNewDialog()
+            );
+          }
+        });
+      _createAdForPage(vm);
   }
 
-  void _onDidChange(_ViewModel vm) {
+  void _createAdForPage(_ViewModel vm) {
     if (_selectedIndex == 0) {
       if (vm.flowers.length > 0) {
         _bannerAd.isLoaded()
@@ -104,17 +101,24 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     }
   }
 
+  void _onDidChange(_ViewModel vm) {
+    _createAdForPage(vm);
+  }
+
   void _onItemTapped(int index) async {
     setState(() {
       if (index != 0) {
-        print('disponse not 0');
-        _bannerAd?.dispose();
+        _bannerAd?.dispose()
+          .then((_) {
+            _bannerAd = null;
+          })
+          .catchError((_) {
+            // swallow
+          });
       }
 
       if (index == 0 && _selectedIndex != 0) {
-        print('load againt index 0');
         if (_bannerAd == null) {
-          print('creating add');
           _bannerAd = createBannerAd()..load()
             .then((_) {
               _bannerAd.show(
@@ -182,16 +186,19 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 class _ViewModel {
   final bool isCreatingFlower;
   final List<Flower> flowers;
+  final bool isFirstTimeUser;
 
   _ViewModel({
     this.isCreatingFlower,
     this.flowers,
+    this.isFirstTimeUser,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       isCreatingFlower: store.state.isCreatingFlower,
       flowers: store.state.flowers,
+      isFirstTimeUser: store.state.isFirstTimeUser,
     );
   }
 }

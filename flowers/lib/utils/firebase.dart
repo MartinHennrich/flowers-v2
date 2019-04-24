@@ -8,6 +8,8 @@ import '../reminders.dart';
 import '../utils/soilMoisture.dart';
 import '../utils/waterAmount.dart';
 import './firebase-storage.dart';
+import '../store.dart';
+import '../actions/actions.dart';
 
 class Database {
   Storage _storage;
@@ -55,9 +57,12 @@ class Database {
     currentUser = await firebaseAuth.currentUser();
 
     if (currentUser == null) {
+      AppStore.dispatch(IsFirstTimeUser.Yes);
       currentUser = await _signInAnonymous();
       return await _createInitialData();
     }
+
+    AppStore.dispatch(IsFirstTimeUser.No);
     _setUserRef();
     _initialStorage();
     return await _fetchData();
