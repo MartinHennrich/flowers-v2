@@ -47,11 +47,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     super.initState();
 
     FirebaseAdMob.instance.initialize(appId: appAdId);
-    if (_bannerAd == null) {
-      _bannerAd = createBannerAd()..load();
-    } else {
-      _bannerAd.dispose();
-    }
+    _bannerAd = createBannerAd()..load();
   }
 
   @override
@@ -85,18 +81,11 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
   void _createAdForPage(_ViewModel vm) {
     if (_selectedIndex == 0) {
-      if (vm.flowers.length > 0) {
-        _bannerAd.isLoaded()
-          .then((isLoaded) {
-            if (!isLoaded) {
-              _bannerAd..show(
-                anchorOffset: 36,
-                anchorType: AnchorType.top
-              );
-            }
-          }).catchError((_) {
-            // swallow
-          });
+      if (_bannerAd != null) {
+        _bannerAd..show(
+          anchorOffset: 36,
+          anchorType: AnchorType.top
+        );
       }
     }
   }
