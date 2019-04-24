@@ -47,7 +47,10 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     super.initState();
 
     FirebaseAdMob.instance.initialize(appId: appAdId);
-    _bannerAd = createBannerAd()..load();
+    _bannerAd = createBannerAd()..load()..show(
+        anchorOffset: 36,
+        anchorType: AnchorType.top
+      );
   }
 
   @override
@@ -76,22 +79,6 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
             );
           }
         });
-      _createAdForPage(vm);
-  }
-
-  void _createAdForPage(_ViewModel vm) {
-    if (_selectedIndex == 0) {
-      if (_bannerAd != null) {
-        _bannerAd..show(
-          anchorOffset: 36,
-          anchorType: AnchorType.top
-        );
-      }
-    }
-  }
-
-  void _onDidChange(_ViewModel vm) {
-    _createAdForPage(vm);
   }
 
   void _onItemTapped(int index) async {
@@ -108,13 +95,12 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
       if (index == 0 && _selectedIndex != 0) {
         if (_bannerAd == null) {
-          _bannerAd = createBannerAd()..load()
-            .then((_) {
-              _bannerAd.show(
-                anchorOffset: 36,
-                anchorType: AnchorType.top
-              );
-            });
+          _bannerAd = createBannerAd()
+            ..load()
+            ..show(
+              anchorOffset: 36,
+              anchorType: AnchorType.top
+            );
         }
       }
 
@@ -157,7 +143,6 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     return StoreConnector(
       converter: _ViewModel.fromStore,
       onInitialBuild: _onInitialBuild,
-      onDidChange: _onDidChange,
       builder: (context, _ViewModel vm) {
         return Scaffold(
           body: Center(
