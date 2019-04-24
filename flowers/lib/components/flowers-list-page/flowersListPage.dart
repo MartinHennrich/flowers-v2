@@ -13,6 +13,7 @@ import '../page-title.dart';
 import './emptyList.dart';
 import '../flower-details/labels-list/labelsList.dart';
 import '../../utils/labelsHelper.dart';
+import '../../presentation/custom_icons_icons.dart';
 
 class FlowersListPage extends StatefulWidget {
 
@@ -163,8 +164,18 @@ class FlowersListPageState extends State<FlowersListPage> {
             ),
           ),
           vm.flowers.length == 0
-            ? EmptyList()
-            : Container()
+            ? EmptyList(
+              iconData: CustomIcons.emo_sunglasses,
+              color: YellowMain,
+              text: 'add plants\nto start you journey',
+            )
+            : sorted.length == 0
+              ? EmptyList(
+                iconData: CustomIcons.emo_surprised,
+                color: Colors.black12,
+                text: 'No plants for selected labels'
+              )
+              : Container()
         ];
 
         return Scaffold(
