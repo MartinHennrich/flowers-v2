@@ -23,7 +23,7 @@ class LabelsList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 0, 6),
+              padding: EdgeInsets.fromLTRB(40, 20, 0, 6),
               child:Text('LABELS',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
