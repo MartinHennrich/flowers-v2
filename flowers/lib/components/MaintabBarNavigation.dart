@@ -45,8 +45,11 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
   @override
   void initState() {
     super.initState();
+
     FirebaseAdMob.instance.initialize(appId: appAdId);
+    print('should create ad');
     if (_bannerAd == null) {
+      print('create ad!!!');
       _bannerAd = createBannerAd()..load();
     } else {
       _bannerAd.dispose();
@@ -79,6 +82,8 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
             }
           });
       });
+
+      _onDidChange(vm);
   }
 
   void _onDidChange(_ViewModel vm) {
@@ -92,6 +97,8 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
                 anchorType: AnchorType.top
               );
             }
+          }).catchError((_) {
+            // swallow
           });
       }
     }
@@ -106,14 +113,16 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
       if (index == 0 && _selectedIndex != 0) {
         print('load againt index 0');
-        _bannerAd = createBannerAd()..load()
-          .then((_) {
-            _bannerAd.show(
-              anchorOffset: 36,
-              anchorType: AnchorType.top
-            );
-          });
-
+        if (_bannerAd == null) {
+          print('creating add');
+          _bannerAd = createBannerAd()..load()
+            .then((_) {
+              _bannerAd.show(
+                anchorOffset: 36,
+                anchorType: AnchorType.top
+              );
+            });
+        }
       }
 
       _selectedIndex = index;
