@@ -9,7 +9,9 @@ List<Label> getAllUniqLabels() {
   List<Label> uniqLabels = [];
 
   flowers.forEach((flower) {
-    allLabels.addAll(flower.labels);
+    if (flower.labels != null) {
+      allLabels.addAll(flower.labels);
+    }
   });
 
   allLabels.forEach((label) {
