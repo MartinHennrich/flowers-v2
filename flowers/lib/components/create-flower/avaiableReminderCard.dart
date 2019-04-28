@@ -32,7 +32,9 @@ class AvaiableReminderCard extends StatelessWidget {
         reminder.reminderType,
         (Reminder reminder) {
           onCreate(reminder);
-        })
+        },
+        color: reminder.color
+      ),
     );
   }
 

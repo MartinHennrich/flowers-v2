@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
@@ -7,6 +8,13 @@ import '../constants/colors.dart';
 import './fabBottomAppBar.dart';
 import './flowers-list-page/flowersListPage.dart';
 import './today-page/todayPage.dart';
+import '../utils/whatsNew.dart';
+import './whats-new/whatsNewDialog.dart';
+import '../actions/actions.dart';
+import '../store.dart';
+import '../utils/firstTimeUser.dart';
+import '../ad.dart';
+import '../flower.dart';
 
 class MainPagesTabBar extends StatefulWidget {
   @override
@@ -19,9 +27,83 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final _widgetOptions = [TodayPage(), FlowersListPage()];
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevices,
+    keywords: adKeywords,
+    childDirected: true,
+  );
+  BannerAd _bannerAd;
 
-  void _onItemTapped(int index) {
+  BannerAd createBannerAd() {
+    return BannerAd(
+      adUnitId: bannerId,
+      size: AdSize.banner,
+      targetingInfo: targetingInfo,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseAdMob.instance.initialize(appId: appAdId);
+    _bannerAd = createBannerAd()..load()..show(
+        anchorOffset: 36,
+        anchorType: AnchorType.top
+      );
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await _bannerAd?.dispose();
+  }
+
+  void _onInitialBuild(_ViewModel vm) {
+    isFirstTimeUser()
+      .then((bool isFirstTime) {});
+
+      if (!vm.isFirstTimeUser) {
+        AppStore.dispatch(
+          IsFirstTimeUser.No
+        );
+      }
+
+      // TODO: later update, add isFirstTime instead of false
+      shouldSeeWhatsNew(vm.isFirstTimeUser)
+        .then((bool shouldSee) {
+          if (shouldSee) {
+            showDialog(
+              context: context,
+              builder: (_) => WhatsNewDialog()
+            );
+          }
+        });
+  }
+
+  void _onItemTapped(int index) async {
     setState(() {
+      if (index != 0) {
+        _bannerAd?.dispose()
+          .then((_) {
+            _bannerAd = null;
+          })
+          .catchError((_) {
+            // swallow
+          });
+      }
+
+      if (index == 0 && _selectedIndex != 0) {
+        if (_bannerAd == null) {
+          _bannerAd = createBannerAd()
+            ..load()
+            ..show(
+              anchorOffset: 36,
+              anchorType: AnchorType.top
+            );
+        }
+      }
+
       _selectedIndex = index;
     });
   }
@@ -60,6 +142,7 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
   Widget build(BuildContext context) {
     return StoreConnector(
       converter: _ViewModel.fromStore,
+      onInitialBuild: _onInitialBuild,
       builder: (context, _ViewModel vm) {
         return Scaffold(
           body: Center(
@@ -76,14 +159,20 @@ class MainPagesTabBarState extends State<MainPagesTabBar>
 
 class _ViewModel {
   final bool isCreatingFlower;
+  final List<Flower> flowers;
+  final bool isFirstTimeUser;
 
   _ViewModel({
-    this.isCreatingFlower
+    this.isCreatingFlower,
+    this.flowers,
+    this.isFirstTimeUser,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       isCreatingFlower: store.state.isCreatingFlower,
+      flowers: store.state.flowers,
+      isFirstTimeUser: store.state.isFirstTimeUser,
     );
   }
 }

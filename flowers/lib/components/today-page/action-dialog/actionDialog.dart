@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../flower.dart';
+import '../../flower-details/labels-list/labelsList.dart';
 
 class ActionDialog extends StatelessWidget {
   final Flower flower;
@@ -58,6 +59,14 @@ class ActionDialog extends StatelessWidget {
                 fontSize: 28
               )
             ),
+          )
+        ),
+        Container(
+          width: 10,
+          padding: EdgeInsets.only(top: flower.labels.length > 0 ? 16 : 0),
+          alignment: Alignment(0, 0),
+          child: LabelsList(
+            labels: flower.labels
           )
         ),
         customControls,

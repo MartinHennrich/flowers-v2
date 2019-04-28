@@ -11,10 +11,12 @@ enum LastActionTimes {
 class LastActionTime extends StatelessWidget {
   final Function(DateTime) onSave;
   final String type;
+  final Color color;
 
   LastActionTime({
     @required this.onSave,
-    this.type
+    this.type,
+    this.color = BlueMain
   });
 
   Widget _getGenericButton(Function onPressed, String text, LastActionTimes activeValue, LastActionTimes lastActionTime, {
@@ -24,7 +26,7 @@ class LastActionTime extends StatelessWidget {
       onPressed: () {
         onPressed();
       },
-      color: activeValue == lastActionTime ? BlueMain : Colors.black12,
+      color: activeValue == lastActionTime ? color : Colors.black12,
       shape: shape,
       child: Text(text,
         style: TextStyle(
@@ -86,7 +88,7 @@ class LastActionTime extends StatelessWidget {
           lastActionTimeForm.setState(() {});
         }
       },
-      color: lastActionTimeForm.value['enum'] == LastActionTimes.Custom ? BlueMain : Colors.black12,
+      color: lastActionTimeForm.value['enum'] == LastActionTimes.Custom ? color : Colors.black12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(20))),
       child: lastActionTimeForm.value['enum'] == LastActionTimes.Custom
         ? Text('${lastActionTimeForm.value['time'].month} / ${lastActionTimeForm.value['time'].day}', style: TextStyle(color: Colors.white))

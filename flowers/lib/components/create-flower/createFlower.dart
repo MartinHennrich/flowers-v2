@@ -42,6 +42,7 @@ class _CreateFlowerState extends State<CreateFlower> {
       key: '',
       name: flowerFormData.flowerName,
       imageUrl: '',
+      labels: [],
       reminders: flowerFormData.reminders
     );
 
@@ -55,6 +56,7 @@ class _CreateFlowerState extends State<CreateFlower> {
       name: flowerFormData.flowerName,
       imageUrl:  response['imageUrl'],
       imageId: response['imageId'],
+      labels: [],
       reminders: flowerFormData.reminders
     );
 

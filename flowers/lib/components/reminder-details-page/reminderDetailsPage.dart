@@ -36,8 +36,6 @@ class ReminderDetailsPage extends StatefulWidget {
 }
 
 class FlowerFormData {
-  DateTime lastTime = DateTime.now();
-  bool isAvtive = true;
   DateTime notificationTime = DateTime(2019, 1, 1, 8, 0);
   int intervall = 5;
 }
@@ -87,7 +85,7 @@ class ReminderDetailsPageState extends State<ReminderDetailsPage> {
     Flower flower = widget.flower;
     Reminder reminder = widget.reminder;
 
-    DateTime nextTime = flowerFormData
+    DateTime nextTime = reminder
       .lastTime
       .add(Duration(days: flowerFormData.intervall));
 

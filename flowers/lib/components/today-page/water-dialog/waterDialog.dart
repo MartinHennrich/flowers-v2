@@ -108,6 +108,7 @@ class WaterDialogState extends State<WaterDialog> {
         postponeTitle: 'POSTPONE',
         actionSubtitle: _getWaterSubtitleString(),
         actionTitle: 'WATER',
+        marginTop: 20,
       )
     );
   }

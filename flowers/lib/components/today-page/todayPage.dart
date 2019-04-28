@@ -1,15 +1,14 @@
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 
-import '../../ad.dart';
 import '../../appState.dart';
 import '../../constants/colors.dart';
 import '../../flower.dart';
 import '../../presentation/customScrollColor.dart';
 import '../../reminders.dart';
 import '../../utils/flowerHelpers.dart';
+import '../../utils/loadInitialData.dart';
 import '../flowersList.dart';
 import '../page-title.dart';
 import './fertilize-dialog/fertilizeDialog.dart';
@@ -36,34 +35,7 @@ class FlowerList extends StatefulWidget {
 }
 
 class _FlowerListState extends State<FlowerList> {
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: testDevices,
-    keywords: adKeywords,
-    childDirected: true,
-  );
   List<String> _selectedIds = [];
-  BannerAd _bannerAd;
-
-  BannerAd createBannerAd() {
-    return BannerAd(
-      adUnitId: bannerId,
-      size: AdSize.banner,
-      targetingInfo: targetingInfo,
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseAdMob.instance.initialize(appId: appAdId);
-    _bannerAd = createBannerAd()..load();
-  }
-
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
-  }
 
   List<Widget> _getLoadingScreen() {
     return [
@@ -118,17 +90,31 @@ class _FlowerListState extends State<FlowerList> {
     }
   }
 
+  void _onInitialFetchError(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Could not load :('),
+      duration: Duration(seconds: 60),
+      action: SnackBarAction(
+        textColor: GreenMain,
+        label: 'Try again',
+        onPressed: () {
+          loadInitialData();
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
+      onDidChange: (_ViewModel vm) {
+        if (vm.isFetchingData == null) {
+          _onInitialFetchError(context);
+        }
+      },
       converter: _ViewModel.fromStore,
       builder: (context, _ViewModel vm) {
-        if (vm.flowers.length > 0) {
-          _bannerAd..show(
-            anchorOffset: 36,
-            anchorType: AnchorType.top
-          );
-        }
         List<Flower> flowersActiveWithReminders = getFlowersThatNeedAction(vm.flowers);
         var flowersToWaterWidget = FlowersList(
           flowers: flowersActiveWithReminders,

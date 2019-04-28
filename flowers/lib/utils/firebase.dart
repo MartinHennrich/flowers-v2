@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -7,6 +8,8 @@ import '../reminders.dart';
 import '../utils/soilMoisture.dart';
 import '../utils/waterAmount.dart';
 import './firebase-storage.dart';
+import '../store.dart';
+import '../actions/actions.dart';
 
 class Database {
   Storage _storage;
@@ -54,10 +57,14 @@ class Database {
     currentUser = await firebaseAuth.currentUser();
 
     if (currentUser == null) {
+      AppStore.dispatch(IsFirstTimeUser.Yes);
       currentUser = await _signInAnonymous();
       return await _createInitialData();
     }
+
+    AppStore.dispatch(IsFirstTimeUser.No);
     _setUserRef();
+    _initialStorage();
     return await _fetchData();
   }
 
@@ -118,10 +125,6 @@ class Database {
   }
 
   Future<Map<String, String>> _uploadImageFile(File file) async {
-    if (_storage == null) {
-      _initialStorage();
-    }
-
     return await _storage.uploadImageFile(file);
   }
 
@@ -142,6 +145,7 @@ class Database {
           'image': fileUrl,
           'imageId': fileId,
           'reminders': flower.reminders.toFirebaseObject(),
+          'labels': flower.toLabelsFirebaseObject(),
         });
 
       return {
@@ -156,6 +160,7 @@ class Database {
       .update({
         'name': flower.name,
         'reminders': flower.reminders.toFirebaseObject(),
+        'labels': flower.toLabelsFirebaseObject(),
       });
 
     return {
@@ -202,6 +207,17 @@ class Database {
       .child('flowers')
       .child(key)
       .remove();
+  }
+
+  Future<void> addRating(int rating) async {
+    return databaseReference
+      .child('rating')
+      .child('update-1')
+      .push().set({
+        'time': DateTime.now().toIso8601String(),
+        'rating': rating,
+        'userId': currentUser.uid
+      });
   }
 }
 

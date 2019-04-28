@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -91,6 +92,26 @@ Reminders snapshotToReminders(dynamic remindersSnapshot) {
   );
 }
 
+List<Label> snapshotToLabels(dynamic labelsSnapshot) {
+  if (labelsSnapshot == null) {
+    return [];
+  }
+
+  var lablesMap = Map.from(labelsSnapshot);
+  List<Label> labels = [];
+
+  lablesMap.forEach((key, value) {
+    labels.add(
+      Label(
+        value: value['value'],
+        color: new Color(value['color'])
+      )
+    );
+  });
+
+  return labels;
+}
+
 List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
   var databaseFlowers = snapshot.value['flowers'];
   var flowersMap = Map.from(databaseFlowers);
@@ -105,6 +126,7 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
     String imageUrl = value['image'];
     String imageId = value['imageId'];
     Reminders reminders = snapshotToReminders(value['reminders']);
+    List<Label> labels = snapshotToLabels(value['labels']);
 
     flowers.add(
       Flower(
@@ -112,6 +134,7 @@ List<Flower> snapshotToFlowers(DataSnapshot snapshot) {
         imageUrl: imageUrl,
         imageId: imageId,
         reminders: reminders,
+        labels: labels,
         key: k,
       )
     );
@@ -166,4 +189,19 @@ Future<void> postponeFertilize(Flower flower, int days) {
   AppStore.dispatch(UpdateFlowerAction(posteponedfertilizeFlower));
 
   return database.postpone(flower, flower.reminders.fertilize);
+}
+
+
+Future<void> addLabel(Flower flower, Label label) {
+  flower.addLable(label);
+  AppStore.dispatch(UpdateFlowerAction(flower));
+
+  return database.updateflower(flower);
+}
+
+Future<void> removeLabel(Flower flower, Label label) {
+  flower.removeLable(label);
+  AppStore.dispatch(UpdateFlowerAction(flower));
+
+  return database.updateflower(flower);
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
 import '../../actions/actions.dart';
+import '../../appState.dart';
 import '../../flower.dart';
 import '../../presentation/custom_icons_icons.dart';
 import '../../presentation/customScrollColor.dart';
@@ -11,13 +14,16 @@ import '../../store.dart';
 import '../../utils/colors.dart';
 import '../../utils/firebase-redux.dart';
 import '../../utils/firebase.dart';
+import '../../utils/labelsHelper.dart';
 import '../../utils/notifications.dart';
 import '../../utils/soilMoisture.dart';
 import '../../utils/waterAmount.dart';
+import '../add-labels/addLabels.dart';
 import '../flowerCard.dart';
 import './daysLeft.dart';
 import './deleteDialog.dart';
 import './edit.dart';
+import './labels-list/labelsList.dart';
 import './reminderInfoPanelCarousel.dart';
 import './remindersList.dart';
 import './timeGraph.dart';
@@ -45,10 +51,14 @@ class FlowerDetailsState extends State<FlowerDetails> {
   @override
   void initState() {
     super.initState();
+    _initialState(widget.flower);
+    _fetchFlowerData();
+  }
 
+  _initialState(Flower flower) {
     setState(() {
-      colorOfTime = getColorForFlower(widget.flower);
-      closestReminder = widget.flower.reminders.getClosestDate(DateTime.now());
+      colorOfTime = getColorForFlower(flower);
+      closestReminder = flower.reminders.getClosestDate(DateTime.now());
 
       if (closestReminder == null) {
         isAnyRemindersActive = false;
@@ -56,8 +66,6 @@ class FlowerDetailsState extends State<FlowerDetails> {
         isAnyRemindersActive = true;
       }
     });
-
-    _fetchFlowerData();
   }
 
   @override
@@ -101,8 +109,8 @@ class FlowerDetailsState extends State<FlowerDetails> {
     return list;
   }
 
-  List<charts.Series<TimeSeriesValue, DateTime>> _getTimeSeriesSoil() {
-    var data = _sortOnTime(widget.flower.waterTimes.map((WaterTime waterTime) {
+  List<charts.Series<TimeSeriesValue, DateTime>> _getTimeSeriesSoil(Flower flower) {
+    var data = _sortOnTime(flower.waterTimes.map((WaterTime waterTime) {
       return TimeSeriesValue(
         waterTime.wateredTime,
         soilMoistureToInt(waterTime.soilMoisture));
@@ -119,8 +127,8 @@ class FlowerDetailsState extends State<FlowerDetails> {
     )];
   }
 
-  List<charts.Series<TimeSeriesValue, DateTime>> _getTimeSeriesWaterAmount() {
-    var data = _sortOnTime(widget.flower.waterTimes.map((WaterTime waterTime) {
+  List<charts.Series<TimeSeriesValue, DateTime>> _getTimeSeriesWaterAmount(Flower flower) {
+    var data = _sortOnTime(flower.waterTimes.map((WaterTime waterTime) {
       return TimeSeriesValue(
         waterTime.wateredTime,
         waterAmountToInt(waterTime.waterAmount));
@@ -137,9 +145,9 @@ class FlowerDetailsState extends State<FlowerDetails> {
     )];
   }
 
-  Widget _getGraphContainer(String title, Widget widget) {
+  Widget _getGraphContainer(String title, Widget widget, double bootomPadding) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(32, 32, 16, 32),
+      padding: EdgeInsets.fromLTRB(32, 32, 16, bootomPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -163,27 +171,29 @@ class FlowerDetailsState extends State<FlowerDetails> {
     );
   }
 
-  Widget _getSoilGraph() {
+  Widget _getSoilGraph(Flower flower) {
     return _getGraphContainer(
       'SOIL MOISTURE',
       TimeSeriesGraph(
-        _getTimeSeriesSoil(),
+        _getTimeSeriesSoil(flower),
         type: TimeGraphType.SoilM
       ),
+      32
     );
   }
 
-  Widget _getWaterAmountGraph() {
+  Widget _getWaterAmountGraph(Flower flower) {
     return _getGraphContainer(
       'WATER AMOUNT',
       TimeSeriesGraph(
-        _getTimeSeriesWaterAmount(),
+        _getTimeSeriesWaterAmount(flower),
         type: TimeGraphType.WaterAmount
       ),
+      64
     );
   }
 
-  Widget getGraphs() {
+  Widget getGraphs(Flower flower) {
     if (isLoading) {
       return Container(
         height: 200,
@@ -195,7 +205,7 @@ class FlowerDetailsState extends State<FlowerDetails> {
       );
     }
 
-    if (widget.flower.waterTimes.length < 2) {
+    if (flower.waterTimes.length < 2) {
       return Center(child: Container(
         height: 300,
         child: Column(
@@ -224,16 +234,16 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
     return Column(
       children: <Widget>[
-        _getSoilGraph(),
-        _getWaterAmountGraph()
+        _getSoilGraph(flower),
+        _getWaterAmountGraph(flower)
       ],
     );
   }
 
-  void _select(_MenuChoice _Menuchoice) {
-    if (_Menuchoice.type == 'delete') {
+  void _select(_MenuChoice menuChoice) {
+    if (menuChoice.type == 'delete') {
       openDeleteDialog();
-    } else if (_Menuchoice.type == 'edit') {
+    } else if (menuChoice.type == 'edit') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -268,58 +278,92 @@ class FlowerDetailsState extends State<FlowerDetails> {
 
   @override
   Widget build(BuildContext context) {
+    return StoreConnector(
+      onDidChange: (_ViewModel vm) {
+        Flower flower = vm.flowers.firstWhere((flower) {
+          return flower.key == widget.flower.key;
+        });
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(widget.flower.name),
-        actions: [
-          PopupMenuButton<_MenuChoice>(
-            onSelected: _select,
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<_MenuChoice>(
-                  value: _menuChoices[0],
-                  child: Text(_menuChoices[0].title),
+        _initialState(flower != null ? flower : widget.flower);
+      },
+      converter: _ViewModel.fromStore,
+      builder: (context, _ViewModel vm) {
+        Flower flower = vm.flowers.firstWhere((flower) {
+          return flower.key == widget.flower.key;
+        });
+        if (flower == null) {
+          flower = widget.flower;
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            title: Text(flower.name),
+            actions: [
+              PopupMenuButton<_MenuChoice>(
+                onSelected: _select,
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem<_MenuChoice>(
+                      value: _menuChoices[0],
+                      child: Text(_menuChoices[0].title),
+                    ),
+                    PopupMenuItem<_MenuChoice>(
+                      value: _menuChoices[1],
+                      child: Text(_menuChoices[1].title),
+                    )
+                  ];
+                },
+              ),
+            ]
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddLabels(
+                    activeLabels: flower.labels,
+                    allAvailable: getAllUniqLabelsForFlower(flower.labels),
+                    flower: flower
+                  ),
                 ),
-                PopupMenuItem<_MenuChoice>(
-                  value: _menuChoices[1],
-                  child: Text(_menuChoices[1].title),
-                )
-              ];
+              );
             },
+            backgroundColor: colorOfTime,
+            child: Icon(Icons.label, color: Colors.white)
           ),
-        ]
-      ),
+          backgroundColor: Colors.white,
+          body: CustomScrollColor(child: ListView(
+            children: [
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FlowerCard(
+                      flower: flower,
+                      withHero: true,
+                    ),
 
-      backgroundColor: Colors.white,
-      body: CustomScrollColor(child: ListView(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                FlowerCard(
-                  flower: widget.flower,
-                  withHero: true,
-                ),
-
-                closestReminder != null
-                  ? Expanded(child: DaysLeft(
-                      reminder: closestReminder,
-                      color: colorOfTime
-                    ))
-                  : Expanded(child: Container())
-              ],
-            )
-          ),
-          ReminderInfoPanelCarousel(reminders: widget.flower.reminders.getRemindersAsList(sortActive: true)),
-          RemindersList(flower: widget.flower, reminders: widget.flower.reminders,),
-          getGraphs()
-        ]
-      ))
+                    closestReminder != null
+                      ? Expanded(child: DaysLeft(
+                          reminder: closestReminder,
+                          color: colorOfTime
+                        ))
+                      : Expanded(child: Container())
+                  ],
+                )
+              ),
+              LabelsList(labels: flower.labels, hasTitle: true),
+              ReminderInfoPanelCarousel(reminders: flower.reminders.getRemindersAsList(sortActive: true)),
+              RemindersList(flower: flower, reminders: flower.reminders,),
+              getGraphs(flower)
+            ]
+          ))
+        );
+      }
     );
   }
 }
@@ -335,3 +379,18 @@ const List<_MenuChoice> _menuChoices = [
   _MenuChoice(title: 'Edit', type: 'edit'),
   _MenuChoice(title: 'Delete', type: 'delete'),
 ];
+
+
+class _ViewModel {
+  final List<Flower> flowers;
+
+  _ViewModel({
+    this.flowers,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      flowers: store.state.flowers
+    );
+  }
+}

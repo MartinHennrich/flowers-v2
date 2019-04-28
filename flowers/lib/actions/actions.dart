@@ -24,10 +24,16 @@ class DeleteFlowerAction {
 
 enum FetchingData {
   Completed,
-  Fetching
+  Fetching,
+  Error
 }
 
 enum CreatingFlower {
   Creating,
   Available
+}
+
+enum IsFirstTimeUser {
+  Yes,
+  No
 }
